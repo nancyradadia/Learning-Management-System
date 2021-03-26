@@ -5,7 +5,37 @@
     <title></title>
 </head>
 <body>
-    <p>Hello, pal! </p>
-   
+<p>Hello, {{ name }} </p>
+    <br>
+    <p>Total courses: {{ no_of_course }}</p>
+    <br>
+    {% for i in course %}
+        <a id="cour" class="nav-link"  href="/faculty_assignment/?i.course_id={{ i.course_id }}">
+{#            <a class="nav-link" href="{% url 'faculty_assignment' %}">#}
+            <h1>{{ i.course_id}}</h1>
+            <h1>{{ i.course_name}}</h1>
+            </a>
+
+{#        </a>#}
+    {% endfor %}
+
+<script>
+       document.getElementById("cour")
+
+
+{#function setGetParameter(){#}
+    {#var search_word = $("#course").val();#}
+{#    $.ajax({#}
+{#      type: "GET",#}
+{#      url: {% url 'faculty_assignment' %},#}
+{#      data: search_word,#}
+{#      success: function(result){#}
+{#        alert("Success");#}
+{#      }#}
+{#    });#}
+
+{#       #}
+</script>
+
 </body>
 </html>

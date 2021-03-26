@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+
+        * {
+            margin: 0px;
+            padding: 0px;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        /* Full-width input fields */
+        input[type=text], input[type=password] {
+            width: 90%;
+            padding: 12px 20px;
+            margin: 8px 26px;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        /* Set a style for all buttons */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 26px;
+            border: none;
+            cursor: pointer;
+            width: 90%;
+            font-size: 20px;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        /* Center the image and position the close button */
+        .imgcontainer {
+            text-align: center;
+            margin: 24px 0 12px 0;
+            position: relative;
+        }
+
+        .avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Modal Content Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 4% auto 15% auto;
+            border: 1px solid #888;
+            width: 40%;
+            padding-bottom: 30px;
+        }
+
+        /* The Close Button (x) */
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 0;
+            color: #000;
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+        .close:hover, .close:focus {
+            color: red;
+            cursor: pointer;
+        }
+
+        /* Add Zoom Animation */
+        .animate {
+            animation: zoom 0.6s
+        }
+
+        @keyframes zoom {
+            from {
+                transform: scale(0)
+            }
+            to {
+                transform: scale(1)
+            }
+        }
+
+
+        body, .jumbotron {
+            padding: 30px;
+        }
+
+        html {
+            overflow-y: scroll;
+        }
+
+        body {
+            background: #EFEFEF;
+        }
+
+        ul {
+            margin-bottom: 0;
+        }
+
+        .accordion {
+            background: #FFF;
+            border-radius: 5px;
+            padding: 30px;
+        }
+
+        .question {
+            border-top: 1px solid #EEE;
+            padding: 20px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .question h2 {
+            font-size: 20px;
+            margin: 0;
+            color: #C00C00;
+        }
+
+        .question .glyphicon {
+            position: absolute;
+            right: 20px;
+            top: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            color: #C00C00;
+            transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
+        }
+
+        .answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
+        }
+
+        .answer p {
+            padding: 20px;
+        }
+
+        .accordion li.open .question .glyphicon {
+            transform: rotate(180deg);
+        }
+
+        .accordion li.open .answer {
+            max-height: 150px;
+        }
+    </style>
+</head>
+<body>
+
+<body>
+<div class="container">
+
+    <div class="accordion">
+        <ul class="list-unstyled">
+            <h2>Assignments for course {{ course_id }} &emsp;&emsp;&emsp;&emsp;
+
+                <button href="/faculty_assignment/?course_id={{ course_id }}"
+                        onclick="document.getElementById('modal-wrapper').style.display='block'"
+                        style="width:200px; margin-top:200px; margin-left:160px;">
+
+                    <i style="font-size:24px" class="fa">&#xf067;</i>
+
+                </button>
+
+            </h2>
+
+            <div id="modal-wrapper" class="modal">
+
+                <form class="modal-content animate" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="imgcontainer">
+                        <!-- <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+                        <img src="1.png" alt="Avatar" class="avatar"> -->
+                    </div>
+                    <h1 style="text-align:center">Upload Assignment Details</h1>
+
+
+                    <div class="container">
+
+                        <input type="number" placeholder="Assignment marks" name="marks">
+                        <input type="text" placeholder="Assignment Details" name="description">
+                        <input type="file" placeholder="Upload Assignment" name="PDF">
+                        <input type="datetime-local" placeholder="deadline" name="deadline">
+
+                        <button type="submit" value="POST">Upload</button>
+                        <!-- <input type="checkbox" style="margin:26px 30px;"> Remember me
+                        <a href="#" style="text-decoration:none; float:right; margin-right:34px; margin-top:26px;">Forgot Password ?</a> -->
+                    </div>
+
+
+                </form>
+{#                <?php#}
+{#                print "hii";#}
+{#                $target_Path = "static/images/";#}
+{#                $target_Path = $target_Path.basename( $_FILES['PDF']['name'] );#}
+{#                move_uploaded_file( $_FILES['PDF']['name'], $target_Path );#}
+{#                ?>#}
+
+            </div>
+
+
+            {% for i in assign_info %}
+                <br>
+                <li class="open">
+                    <div class="question">
+                        <h2>{{ i.assign_id }}&emsp;&emsp;
+                            <i class="fa fa-edit" style="font-size:24px"></i>
+                        </h2>
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </div>
+                    <div class="answer">
+                        <p><b>Assignment:</b>
+                            <a href="../{{ i.PDF }}" target="_blank" style="color: blue">
+                                PDF
+                            </a>
+                            <br><br>
+                            <b>Assignment Description:</b> {{ i.description }}
+                            <br><br>
+                            <b>Weightage: </b> {{ i.marks }} marks
+                            &emsp;
+                            <b>Deadline: </b> {{ i.deadline }}
+
+                        </p>
+
+                    </div>
+                </li>
+            {% endfor %}
+
+        </ul>
+    </div>
+
+</div>
+</body>
+<script>
+    var modal = document.getElementById('modal-wrapper');
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    const accordion = document.querySelector('.accordion');
+    const items = accordion.querySelectorAll('li');
+    const questions = accordion.querySelectorAll('.question');
+
+    function toggleAccordion() {
+        const thisItem = this.parentNode;
+
+        items.forEach(item => {
+            if (thisItem == item) {
+                thisItem.classList.toggle('open');
+                return;
+            }
+
+            item.classList.remove('open');
+        });
+    }
+
+    questions.forEach(question => question.addEventListener('click', toggleAccordion));
+
+
+</script>
+
+</body>
+</html>

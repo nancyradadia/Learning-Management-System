@@ -148,14 +148,14 @@
 
               <div class="charts__right__cards">
                   {% for i in course %}
-                      {% if forloop.counter  %}
+
                           <div class="card1">
                           <a class="nav-link" href="{% url 'dashboard' %}">
                                 <h1>{{ i.course_id}}</h1>
                                 <h1>{{ i.course_name}}</h1>
                           </a>
                           </div>
-                      {% endif %}
+
                   {% endfor %}
 
               </div>

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lms.apps.LmsConfig',
+    'livereload',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_session_timeout.middleware.SessionTimeoutMiddleware',
+    'livereload.middleware.LiveReloadScript',
 
 ]
 
@@ -129,6 +131,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIR=[
    os.path.join(BASE_DIR, 'static')
 ]
+MEDIA_URL = 'http://127.0.0.1:8000/static/images/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'lms')
 
 AUTH_USER_MODEL = 'lms.CustomUser'
 
