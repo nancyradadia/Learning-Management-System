@@ -6,7 +6,7 @@ import requests
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Student, Student_Course, CustomUser, Course
+from .models import Student, Student_Course, CustomUser, Course, Faculty, Faculty_Course
 
 
 def loginPage(request):
@@ -64,7 +64,19 @@ def dashboard(request):
 # Create your views here.
 @login_required(login_url='login')
 def faculty_dashboard(request):
+    fac_info = Faculty.objects.get(email_id=request.user)
+    fac_course_info = Faculty_Course.objects.filter(email=fac_info)
+    course = []
+    no_of_course = 0
+    for i in fac_course_info:
+        cn = Course.objects.filter(course_id=i.course_id)
+        for j in cn:
+            data = {"course_id": i.course_id,
+                    "course_name": j.course_name,
+                    }
+            course.append(data)
+            no_of_course = no_of_course + 1
 
-
-    return render(request,'lms/faculty_dashboard.html')
+    return render(request,'lms/faculty_dashboard.html', 
+        context={"name": fac_info.f_name, "course": course, "no_of_course": no_of_course})
 
