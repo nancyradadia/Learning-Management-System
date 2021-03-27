@@ -212,38 +212,12 @@ main {
 
 .card1 {
   background: #d1ecf1;
-  color: #35a4ba;
+  color: #000;
   text-align: center;
   padding: 25px;
   border-radius: 5px;
   font-size: 14px;
-}
-
-.card2 {
-  background: #d2f9ee;
-  color: #38e1b0;
-  text-align: center;
-  padding: 25px;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-.card3 {
-  background: #d6d8d9;
-  color: #3a3e41;
-  text-align: center;
-  padding: 25px;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-.card4 {
-  background: #fddcdf;
-  color: #f65a6f;
-  text-align: center;
-  padding: 25px;
-  border-radius: 5px;
-  font-size: 14px;
+  text-decoration: none;
 }
 
 /*  SIDEBAR STARTS HERE  */

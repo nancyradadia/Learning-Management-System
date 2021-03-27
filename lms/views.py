@@ -68,18 +68,21 @@ def faculty_dashboard(request):
     fac_course_info = Faculty_Course.objects.filter(email=fac_info)
     course = []
     no_of_course = 0
-    no_of_students = 0
+    no_of_students = []
     for i in fac_course_info:
         cn = Course.objects.filter(course_id=i.course_id)
+        total_stu = Student_Course.objects.filter(course_id=i.course_id)
         for j in cn:
+            count = 0
+            for k in total_stu:
+                count = count + 1
             data = {"course_id": i.course_id,
                     "course_name": j.course_name,
+                    "course_count": count
                     }
             course.append(data)
             no_of_course = no_of_course + 1
-        total_stu = Student_Course.objects.filter(course_id=i.course_id)
-        for k in total_stu:
-            no_of_students = no_of_students + 1
+       
     return render(request,'lms/faculty_dashboard.html', 
         context={"name": fac_info.f_name, "course": course, "no_of_course": no_of_course, "total_students": no_of_students})
 
