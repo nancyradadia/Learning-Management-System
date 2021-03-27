@@ -82,7 +82,7 @@
           <!-- MAIN TITLE STARTS HERE -->
 
           <div class="main__title">
-            <img src={% static 'css/hello.svg' %}  />
+            <img src={% static 'css/faculty.svg' %}  />
             <div class="main__greeting">
               <h1>Hello, {{ name }}</h1>
               <p>Welcome to your dashboard</p>
@@ -94,10 +94,7 @@
           <!-- MAIN CARDS STARTS HERE -->
           <div class="main__cards">
             <div class="card">
-              <i
-                class="fa fa-user-o fa-2x text-lightblue"
-                aria-hidden="true"
-              ></i>
+              <img width="40" src={% static 'css/books.svg' %} />
               <div class="card_inner">
                 <p class="text-primary-p">Number of courses</p>
                 <span class="font-bold text-title">{{no_of_course}}</span>
@@ -105,7 +102,7 @@
             </div>
 
             <div class="card">
-              <i class="fa fa-calendar fa-2x text-red" aria-hidden="true"></i>
+              <img width="35" src={% static 'css/assignment.svg' %} />
               <div class="card_inner">
                 <p class="text-primary-p">Ungraded Assingments</p>
                 <span class="font-bold text-title">2</span>
@@ -115,10 +112,7 @@
             
 
             <div class="card">
-              <i
-                class="fa fa-thumbs-up fa-2x text-green"
-                aria-hidden="true"
-              ></i>
+              <img width="40" src={% static 'css/exam.svg' %} />
               <div class="card_inner">
                 <p class="text-primary-p">Upcoming Quizes</p>
                 <span class="font-bold text-title">2</span>
