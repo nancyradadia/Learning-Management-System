@@ -1,171 +1,79 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href={% static 'css/styles.css' %}>
-    <title>DASHBOARD</title>
-  </head>
-  <body id="body">
-    <div class="navigation">
-      <ul>
-        <li>
-          <a href="">
-            <span class="icon"><i class="fa fa-home"></i></span>
-            <span class="title">Home</span>
-          </a>
-        </li>
-        <li>
-          <a href="">
-            <span class="icon"><i class="fa fa-book"></i></span>
-            <span class="title">Courses</span>
-          </a>
-        </li>
+{% extends "lms/base.html" %} {% load static %} {% block content %}
 
-        <li>
-          <a href="">
-            <span class="icon"><i class="fa fa-trophy"></i></span>
-            <span class="title">Grades</span>
-          </a>
-        </li>
-        <li>
-          <a href="">
-            <span class="icon"><i class="fa fa-pencil"></i></span>
-            <span class="title">Quiz</span>
-          </a>
-        </li>
-        <li>
-          <a href="">
-            <span class="icon"><i class="fa fa-comment"></i></span>
-            <span class="title">Messages</span>
-          </a>
-        </li>
-        <li>
-          <a href="">
-            <span class="icon"><i class="fa fa-cog"></i></span>
-            <span class="title">Settings</span>
-          </a>
-        </li>
+<div class="main__container">
+    <!-- MAIN TITLE STARTS HERE -->
 
-        <li>
-          <a href="">
-              <span> <a href="{% url 'logout' %}">
-            <span class="icon"><i class="fa fa-sign-out"></i></span>
-              </a></span>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="container">
-      <nav class="navbar">
-        <div class="toggle" onclick="toggleMenu()"></div>
-        <div class="navbar__right">
-          <a href="#">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-          </a>
-          <a href="#">
-            <img width="30" src={% static 'css/avatar.svg' %} />
-            <!-- <i class="fa fa-user-circle-o" aria-hidden="true"></i> -->
-          </a>
+    <div class="main__title">
+        <img src={% static 'css/faculty.svg' %} />
+        <div class="main__greeting">
+            <h1>Hello, {{ name }}</h1>
+            <p>Welcome to your dashboard</p>
         </div>
-      </nav>
+    </div>
 
-      <main>
-        <div class="main__container">
-          <!-- MAIN TITLE STARTS HERE -->
+    <!-- MAIN TITLE ENDS HERE -->
 
-          <div class="main__title">
-            <img src={% static 'css/faculty.svg' %}  />
-            <div class="main__greeting">
-              <h1>Hello, {{ name }}</h1>
-              <p>Welcome to your dashboard</p>
-            </div>
-          </div>
-
-          <!-- MAIN TITLE ENDS HERE -->
-
-          <!-- MAIN CARDS STARTS HERE -->
-          <div class="main__cards">
-            <div class="card">
-              <img width="40" src={% static 'css/books.svg' %} />
-              <div class="card_inner">
+    <!-- MAIN CARDS STARTS HERE -->
+    <div class="main__cards">
+        <div class="card">
+            <img width="40" src={% static 'css/books.svg' %} />
+            <div class="card_inner">
                 <p class="text-primary-p">Number of courses</p>
                 <span class="font-bold text-title">{{no_of_course}}</span>
-              </div>
             </div>
+        </div>
 
-            <div class="card">
-              <img width="35" src={% static 'css/assignment.svg' %} />
-              <div class="card_inner">
+        <div class="card">
+            <img width="35" src={% static 'css/assignment.svg' %} />
+            <div class="card_inner">
                 <p class="text-primary-p">Ungraded Assingments</p>
                 <span class="font-bold text-title">2</span>
-              </div>
             </div>
+        </div>
 
-            
 
-            <div class="card">
-              <img width="40" src={% static 'css/exam.svg' %} />
-              <div class="card_inner">
+
+        <div class="card">
+            <img width="40" src={% static 'css/exam.svg' %} />
+            <div class="card_inner">
                 <p class="text-primary-p">Upcoming Quizes</p>
                 <span class="font-bold text-title">2</span>
-              </div>
             </div>
-          </div>
-          <!-- MAIN CARDS ENDS HERE -->
-
-          <!-- CHARTS STARTS HERE -->
-          <div class="charts">
-
-            <div class="charts__right">
-              <div class="charts__right__title">
-                <div>
-                  <h1>Your Courses</h1>
-                </div>
-              </div>
-
-              <div class="charts__right__cards">
-                  {% for i in course %}
-                      {% if forloop.counter  %}
-                        <div class="card1" id="{{i.course_id}}">
-                        <a class="nav-link" href="{% url 'dashboard' %}">
-                          <h1>{{ i.course_id}}</h1>
-                          <h1>{{ i.course_name}}</h1>
-                        </a>
-                        <p>Number of students enrolled: {{i.course_count}}</p>
-                        </div>
-                        <script>
-                          var colors = ["#e9c46a","#f4a261","#e76f51","#90e0ef"];
-                          var randomColor = colors[Math.floor(Math.random() * colors.length)];
-                          document.getElementById("{{i.course_id}}").style.backgroundColor = randomColor;  
-                        </script>
-                      {% endif %}
-                  {% endfor %}
-
-              </div>
-
-            </div>
-          </div>
-          <!-- CHARTS ENDS HERE -->
         </div>
-      </main>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src={% static 'css/script.js' %}></script>
-    <script type="text/javascript">
-      function toggleMenu() {
-        let navigation = document.querySelector(".navigation");
-        let toggle = document.querySelector(".toggle");
-        navigation.classList.toggle("active");
-        toggle.classList.toggle("active");
-      }
-    </script>
-  </body>
-</html>
+    <!-- MAIN CARDS ENDS HERE -->
+
+    <!-- CHARTS STARTS HERE -->
+    <div class="charts">
+
+        <div class="charts__right">
+            <div class="charts__right__title">
+                <div>
+                    <h1>Your Courses</h1>
+                </div>
+            </div>
+
+            <div class="charts__right__cards">
+                {% for i in course %} {% if forloop.counter %}
+                <div class="card1" id="{{i.course_id}}">
+                    <a class="nav-link" href=" /faculty_assignment/?i.course_id={{ i.course_id }} ">
+                        <!-- <a class="nav-link" href="{% url 'faculty_assignment' %}"> -->
+                        <h1>{{ i.course_id}}</h1>
+                        <h1>{{ i.course_name}}</h1>
+                    </a>
+                    <p>Number of students enrolled: {{i.course_count}}</p>
+                </div>
+                <script>
+                    var colors = ["#e9c46a ", "#f4a261 ", "#e76f51 ", "#90e0ef "];
+                    var randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    document.getElementById("{{i.course_id}} ").style.backgroundColor = randomColor;
+                </script>
+                {% endif %} {% endfor %}
+
+            </div>
+
+        </div>
+    </div>
+    <!-- CHARTS ENDS HERE -->
+</div>
+{% endblock %}

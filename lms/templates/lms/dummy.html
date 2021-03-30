@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+
+<head>
+
+    <title>PClub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Nanum+Gothic+Coding:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <link rel="stylesheet" href={% static 'css/f_ass.css' %}>
+
+
+
+</head>
+
+
+<body>
+
+
+    <div class="right">
+
+
+        <ul class="text-center" style="vertical-align: middle; padding-left: 50px;padding-right: 50px; padding-top: 100px">
+
+            <h2>Assignments for {{ course_id }}
+
+                <p>
+                    <a href="/upload_assignment/?course_id={{ course_id }} ">Add Assignment</a>
+                </p>
+
+            </h2>
+
+
+
+            <br><br> {% for i in assign_info %}
+            <li>
+                <input type="checkbox" checked>
+                <i></i>
+                <h2>{{ i.assign_id }}</h2>
+
+                <p style="font-family: Verdana ">
+
+
+
+
+                    <a href="/edit_assignment/?assign_id={{ i.assign_id }}&PDF={{ i.PDF }}&marks={{ i.marks }}&deadline={{ i.deadline }} " onclick="return foo()">Edit Assignment</a>
+                    <br>
+                    <b>Assignment:</b>
+
+                    <a href="../{{ i.PDF }} " target="_blank" style="color: blue">
+                        PDF
+                    </a>
+
+
+                    <br><br>
+                    <b>Weightage: </b> {{ i.marks }} marks &emsp;
+                    <b>Deadline: </b> {{ i.deadline }}
+                </p>
+
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script type="text/javascript ">
+        function foo() {
+            var t = "{{assign_info}} ";
+            console.log(t)
+        }
+    </script>
+
+</body>
+
+</html>
