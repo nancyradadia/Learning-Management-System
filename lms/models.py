@@ -100,7 +100,7 @@ class Course(models.Model):
 class Faculty_Course(models.Model):
 
     course_id = models.CharField(max_length=50)
-    course_enrollment_year = models.DateField(default=timezone.now())
+    course_enrollment_year = models.DateField(default=timezone.now)
     email = models.CharField(max_length=50)
 
     class Meta:
@@ -114,7 +114,7 @@ class Faculty_Course(models.Model):
 
 @receiver(post_save, sender=Course)
 def create_faculty_profile(sender, instance, created, **kwargs):
-    year = timezone.now()
+    year = timezone.now
     print(instance.course_id)
     print(instance.professor_id)
     Faculty_Course.objects.create(course_id=instance.course_id, course_enrollment_year=year,
@@ -127,7 +127,7 @@ def delete_faculty_profile(sender, instance, **kwargs):
 
 class Student_Course(models.Model):
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE,null=False)
-    course_enrollment_year = models.DateField(default=timezone.now(),null=False)
+    course_enrollment_year = models.DateField(default=timezone.now,null=False)
     email = models.ForeignKey(Student, on_delete=models.CASCADE,null=False)
 
     class Meta:
@@ -149,27 +149,36 @@ def delete_profile(sender, instance, **kwargs):
 
 class Faculty_Assignment(models.Model):
 
-    # def validate_PDF(value):
-    #     value = str(value)
-    #     if value.endswith(".pdf") != True :
-    #         raise ValidationError("Only PDF can be uploaded")
-    #     else:
-    #         return value
-
-
-    assign_id = models.CharField(max_length=10)
-    current_year = models.DateField(default=timezone.now())
+    assign_id = models.CharField(primary_key=True,max_length=10)
     course_id = models.CharField(max_length=50)
     faculty_id = models.CharField(max_length=50)
-    description = models.CharField(max_length=200, null=False)
-    PDF = models.FileField(upload_to='static/images/', null=False)
+    PDF = models.CharField(max_length=50)
     marks = models.IntegerField(null=False)
     deadline = models.DateTimeField()
 
-    # @property
-    # def faculty_assignment(self):
-    #     return '{} : {}'.format(self.assign_id, self.course_id)
+    def __str__(self):
+        return str(self.course_id)
+        return str(self.course_id)
 
+
+class Student_Assignment(models.Model):
+
+    assign_id = models.CharField(max_length=10)
+    course_id = models.CharField(max_length=50)
+    student_id = models.CharField(max_length=50)
+    PDF = models.FileField(upload_to='files/', null=True)
+    time_of_submission = models.DateTimeField()
 
     def __str__(self):
         return str(self.course_id)
+
+class Student_Grade(models.Model):
+
+    assign_id = models.CharField(max_length=10)
+    course_id = models.CharField(max_length=50)
+    student_id = models.CharField(max_length=50)
+    comments = models.CharField(max_length=200)
+    marks = models.IntegerField()
+
+    def __str__(self):
+        return str(self.assign_id)

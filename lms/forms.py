@@ -26,4 +26,4 @@ class CreateUserForm(UserCreationForm):
 class CreateAssignment(ModelForm):
     class Meta:
         model = Faculty_Assignment
-        fields = ['marks','description','deadline','PDF']
+        fields = ['marks','deadline','PDF']

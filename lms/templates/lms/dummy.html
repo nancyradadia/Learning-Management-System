@@ -60,7 +60,6 @@
         }
 
 
-
         .row:after {
             content: "";
             display: table;
@@ -285,7 +284,7 @@
         }
 
         /* Full-width input fields */
-        input[type=text]{
+        input[type=text] {
             width: 90%;
             padding: 12px 20px;
             margin: 8px 26px;
@@ -294,7 +293,8 @@
             box-sizing: border-box;
             font-size: 16px;
         }
-        input[type=number]{
+
+        input[type=number] {
             width: 90%;
             padding: 12px 20px;
             margin: 8px 26px;
@@ -303,7 +303,8 @@
             box-sizing: border-box;
             font-size: 16px;
         }
-        input[type=datetime-local]{
+
+        input[type=datetime-local] {
             width: 90%;
             padding: 12px 20px;
             margin: 8px 26px;
@@ -312,7 +313,8 @@
             box-sizing: border-box;
             font-size: 16px;
         }
-        input[type=file]{
+
+        input[type=file] {
             width: 90%;
             padding: 12px 20px;
             margin: 8px 26px;
@@ -418,39 +420,42 @@
         style="vertical-align: middle; padding-left: 50px;padding-right: 50px; padding-top: 100px">
 
         <h2>Assignments for {{ course_id }}
-            <button href="/faculty_assignment/?course_id={{ course_id }}"
-                    onclick="document.getElementById('modal-wrapper').style.display='block'"
-                    style="width:100px; margin-top:20px; margin-left:100px; background-color: black">
-                Add
-            </button>
+{#            <button id="cour" class="nav-link" href="/upload_assignment/?course_id={{ course_id }}"#}
+{#                    style="width:100px; margin-top:20px; margin-left:100px; background-color: black">#}
+{#                Add#}
+{#            </button>#}
+            <p>
+                <a href="/upload_assignment/?course_id={{ course_id }}" >Add Assignment</a>
+            </p>
+
         </h2>
 
-        <div id="modal-wrapper" class="modal new-form">
-
-            <form class="modal-content animate" action="" method="POST" >
-                {% csrf_token %}
-{#                {{ form }}#}
-
-                                    <h4 style="text-align:center">Upload Assignment Details</h4>
-
-
-                                    <div class="container" >
-                                        <input  type="text" placeholder="Assignment Details" name="description">
-                                        <input type="number" placeholder="Assignment marks" name="marks">
-                                        <input type="file" placeholder="Upload Assignment" name="PDF">
-                                        <br>
-                                        <input  type="datetime-local" placeholder="deadline" name="deadline">
-
-                                        <br>
-                                        <button type="submit" value="POST" >Upload</button>
-
-                                           </div>
-
-
-            </form>
-
-
-        </div>
+{#        <div id="modal-wrapper" class="modal new-form">#}
+{##}
+{#            <form class="modal-content animate" action="" method="POST">#}
+{#                {% csrf_token %}#}
+                {#                {{ form }}#}
+{##}
+{#                <h4 style="text-align:center">Upload Assignment Details</h4>#}
+{##}
+{##}
+{#                <div class="container">#}
+{#                    <input type="text" placeholder="Assignment Details" name="description">#}
+{#                    <input type="number" placeholder="Assignment marks" name="marks">#}
+{#                    <input type="file" placeholder="Upload Assignment" name="PDF">#}
+{#                    <br>#}
+{#                    <input type="datetime-local" placeholder="deadline" name="deadline">#}
+{##}
+{#                    <br>#}
+{#                    <button type="submit" value="POST">Upload</button>#}
+{##}
+{#                </div>#}
+{##}
+{##}
+{#            </form>#}
+{##}
+{##}
+{#        </div>#}
 
 
         <br><br>
@@ -462,21 +467,27 @@
 
                 <p style="font-family: Verdana">
 
-{#                    <button type="button" class="btn btn-primary btn-sm">Small button</button>#}
+                    {#                    <button type="button" class="btn btn-primary btn-sm">Small button</button>#}
 
-                    <button href="/faculty_assignment/?course_id={{ course_id }}"
-                    onclick="document.getElementById('modal-wrapper').style.display='block'"
-                    style="width:100px; margin-top:5px; margin-left:10px; background-color: black">
-                        Edit
-                    </button>
+                    {#                    href="/faculty_assignment/?i.course_id={{ i.course_id }}&i.course_name={{ i.course_name }}"#}
 
 
+{#                    <button formmethod="get" href="/faculty_assignment/?assign_id={{ i.assign_id }}"#}
+{#                            onclick="document.getElementById('modal-wrapper').style.display='block'"#}
+{#                            style="width:100px; margin-top:5px; margin-left:10px; background-color: black">#}
+{#                        Edit#}
+{#                    </button>#}
+
+
+                    <a href="/edit_assignment/?assign_id={{ i.assign_id }}&PDF={{ i.PDF }}&marks={{ i.marks }}&deadline={{ i.deadline }}" onclick="return foo()" >Edit Assignment</a>
+                    <br>
                     <b>Assignment:</b>
+
                     <a href="../{{ i.PDF }}" target="_blank" style="color: blue">
                         PDF
                     </a>
-                    <br><br>
-                    <b>Assignment Description:</b> {{ i.description }}
+
+
                     <br><br>
                     <b>Weightage: </b> {{ i.marks }} marks
                     &emsp;
@@ -488,18 +499,13 @@
     </ul>
 </div>
 
-<script>
-    function refreshPage(){
-    window.parent.location = window.parent.location.href;
-    }
-
-    var modal = document.getElementById('modal-wrapper');
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
+<script type="text/javascript">
+    function foo() {
+        var t = "{{assign_info}}";
+        console.log(t)
     }
 </script>
+
 </body>
 
 </html>

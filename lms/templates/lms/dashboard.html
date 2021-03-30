@@ -150,7 +150,8 @@
                   {% for i in course %}
 
                           <div class="card1">
-                          <a class="nav-link" href="{% url 'dashboard' %}">
+                          <a  id="cour" class="nav-link"  href="/student_assignment/?course_id={{ i.course_id }}">
+{#                          <a class="nav-link" href="{% url 'dashboard' %}">#}
                                 <h1>{{ i.course_id}}</h1>
                                 <h1>{{ i.course_name}}</h1>
                           </a>
