@@ -86,3 +86,8 @@ def faculty_dashboard(request):
     return render(request,'lms/faculty_dashboard.html', 
         context={"name": fac_info.f_name, "course": course, "no_of_course": no_of_course, "total_students": no_of_students})
 
+
+@login_required(login_url='login')
+def fac_courses(request):
+        
+    return render(request,'lms/fac_courses.html' )

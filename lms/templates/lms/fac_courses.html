@@ -10,14 +10,14 @@
       integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href={% static 'css/fac_style.css' %}>
+    <link rel="stylesheet" type="text/css" href={% static 'css/fac_style.css' %}>
     <title>DASHBOARD</title>
   </head>
   <body id="body">
     <div class="navigation">
       <ul>
         <li>
-          <a href="">
+            <a href="{% url 'faculty_dashboard' %}">
             <span class="icon"><i class="fa fa-home"></i></span>
             <span class="title">Home</span>
           </a>
@@ -55,11 +55,9 @@
         </li>
 
         <li>
-          <a href="">
-             <a href="{% url 'logout' %}">
+               <a href="{% url 'logout' %}">
             <span class="icon"><i class="fa fa-sign-out"></i></span>
             <span class="title">Sign Out</span>
-              </a>
           </a>
         </li>
       </ul>
@@ -72,86 +70,53 @@
             <i class="fa fa-clock-o" aria-hidden="true"></i>
           </a>
           <a href="#">
-            <img width="30" src={% static 'css/avatar.svg' %} />
+            <img width="30"src={% static 'css/avatar.svg' %}/>
             <!-- <i class="fa fa-user-circle-o" aria-hidden="true"></i> -->
           </a>
         </div>
       </nav>
-
       <main>
         <div class="main__container">
           <!-- MAIN TITLE STARTS HERE -->
 
           <div class="main__title">
-            <img src={% static 'css/hello.svg' %}  />
+            <img src={% static 'css/faculty.svg' %} alt="" />
             <div class="main__greeting">
-              <h1>Hello, {{ name }}</h1>
-              <p>Welcome to your dashboard</p>
+              <h1>Course Name</h1>
+              <p>Credits</p>
             </div>
           </div>
-
           <!-- MAIN TITLE ENDS HERE -->
 
           <!-- MAIN CARDS STARTS HERE -->
           <div class="main__cards">
-            <div class="card">
-              <img width="40" src={% static 'css/books.svg' %} />
-              <div class="card_inner">
-                <p class="text-primary-p">Number of courses</p>
-                <span class="font-bold text-title">{{no_of_course}}</span>
+            <div class="card2">
+              <img width="45" src={% static 'css/assignment.svg' %} alt="" />
+
+              <div class="card_in">
+                <p class="text-primary-p">Assignments</p>
               </div>
             </div>
 
-            <div class="card">
-              <img width="40" src={% static 'css/due assignments.svg' %} />
-              <div class="card_inner">
-                <p class="text-primary-p">Due Assingments</p>
-                <span class="font-bold text-title">2</span>
+            <div class="card2">
+              <img width="50" src={% static 'css/cgpa.svg' %} alt="" />
+              <div class="card_in">
+                <p class="text-primary-p">Grades</p>
               </div>
             </div>
 
-            <div class="card">
-              <img width="35" src={% static 'css/credits.svg' %} />
-              <div class="card_inner">
-                <p class="text-primary-p">Total Credits earned</p>
-                <span class="font-bold text-title">{{ total_credits }}</span>
+            <div class="card2">
+              <img width="45" src={% static 'css/upload.svg' %} alt="" />
+
+              <div class="card_in">
+                <p class="text-primary-p">Upload Resources</p>
               </div>
             </div>
           </div>
           <!-- MAIN CARDS ENDS HERE -->
 
-          <!-- CHARTS STARTS HERE -->
-        
-
-            <div class="charts__right">
-              <div class="charts__right__title">
-                  <h1>Your Courses</h1>
-              </div>
-
-              <div class="charts__right__cards">
-                  {% for i in course %}
-                      {% if forloop.counter  %}
-                          <div class="card1" id="{{i.course_id}}">
-                          <a class="nav-link" href="{% url 'dashboard' %}">
-                                <h1>{{ i.course_id}}</h1>
-                                <h1>{{ i.course_name}}</h1>
-                          </a>
-                          </div>
-                          <script>
-                            var colors = ["#e9c46a","#f4a261","#e76f51","#90e0ef"];
-                            var randomColor = colors[Math.floor(Math.random() * colors.length)];
-                            document.getElementById("{{i.course_id}}").style.backgroundColor = randomColor;  
-                          </script>
-                      {% endif %}
-                  {% endfor %}
-              </div>
-            </div>
-          <!-- CHARTS ENDS HERE -->
-        </div>
-      </main>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src={% static 'css/script.js' %}></script>
+<script src={% static 'css/script.js' %}></script>
     <script type="text/javascript">
       function toggleMenu() {
         let navigation = document.querySelector(".navigation");

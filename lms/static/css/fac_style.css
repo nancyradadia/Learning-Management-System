@@ -31,32 +31,19 @@ body {
 
 .text-primary-p {
   color: #a5aaad;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 700;
 }
-
+a{
+  text-decoration: none;
+}
 .font-bold {
   font-weight: 700;
+  font-size: 30px;
 }
 
 .text-title {
   color: #2e4a66;
-}
-
-.text-lightblue {
-  color: #469cac;
-}
-
-.text-red {
-  color: #cc3d38;
-}
-
-.text-yellow {
-  color: #a98921;
-}
-
-.text-green {
-  color: #3b9668;
 }
 
 .navbar {
@@ -125,7 +112,7 @@ main {
 
 .main__cards {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 30px;
   margin: 20px 0;
 }
@@ -147,25 +134,7 @@ main {
   justify-content: space-between;
 }
 
-.card_inner > span {
-  font-size: 25px;
-}
 
-.charts {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 30px;
-  margin-top: 50px;
-  position: relative;
-  z-index: 1;
-}
-
-.charts__left {
-  padding: 25px;
-  border-radius: 5px;
-  background: #ffffff;
-  box-shadow: 5px 5px 13px #ededed, -5px -5px 13px #ffffff;
-}
 
 .charts__right {
   padding: 25px;
@@ -180,28 +149,12 @@ main {
   justify-content: space-between;
 }
 
-.charts__right__title > div > h1 {
+.charts__right__title > h1 {
   font-size: 24px;
   color: #2e4a66;
   margin-bottom: 5px;
 }
 
-.charts__right__title > div > p {
-  font-size: 14px;
-  font-weight: 700;
-  color: #a5aaad;
-}
-
-.charts__right__title > i {
-  color: #ffffff;
-  font-size: 20px;
-  background: #39447a;
-  border-radius: 200px 0px 200px 200px;
-  -moz-border-radius: 200px 0px 200px 200px;
-  -webkit-border-radius: 200px 0px 200px 200px;
-  border: 0px solid #000000;
-  padding: 15px;
-}
 
 .charts__right__cards {
   display: grid;
@@ -217,7 +170,6 @@ main {
   padding: 25px;
   border-radius: 5px;
   font-size: 14px;
-  text-decoration: none;
 }
 
 /*  SIDEBAR STARTS HERE  */
@@ -301,10 +253,6 @@ main {
     margin-bottom: 0;
   }
 
-  .charts {
-    grid-template-columns: 1fr;
-    margin-top: 30px;
-  }
   .charts__right__cards{
     grid-template-columns: 1fr 1fr;
   }
@@ -341,9 +289,31 @@ main {
     margin: 0;
   }
 }
-@media (max-width:400px){
+@media (max-width:500px){
   
   .charts__right__cards{
     grid-template-columns: 1fr;
   }
+}
+
+/*COurses*/
+.card_in{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.card2 > img{
+  padding-bottom: 8px;
+}
+.card2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+  padding: 25px;
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 13px #ededed, -5px -5px 13px #ffffff;
 }
