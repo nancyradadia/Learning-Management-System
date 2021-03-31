@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+    <link rel="stylesheet" href={% static 'css/fac_styles.css' %}>
+    <title>DASHBOARD</title>
+</head>
+
+<body id="body">
+    <div class="navigation">
+        <ul>
+            <li>
+                <a href="">
+                    <span class="icon"><i class="fa fa-home"></i></span>
+                    <span class="title">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <span class="icon"><i class="fa fa-book"></i></span>
+                    <span class="title">Courses</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="">
+                    <span class="icon"><i class="fa fa-trophy"></i></span>
+                    <span class="title">Grades</span>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <span class="icon"><i class="fa fa-pencil"></i></span>
+                    <span class="title">Quiz</span>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <span class="icon"><i class="fa fa-comment"></i></span>
+                    <span class="title">Messages</span>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <span class="icon"><i class="fa fa-cog"></i></span>
+                    <span class="title">Settings</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'logout' %}">
+                    <span class="icon"><i class="fa fa-sign-out"></i></span>
+                    <span class="title">Log out</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="container">
+        <nav class="navbar">
+            <div class="toggle" onclick="toggleMenu()"></div>
+            <div class="navbar__right">
+                <a href="#">
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                </a>
+                <a href="#">
+                    <img width="30" src={% static 'css/avatar.svg' %} />
+                    <!-- <i class="fa fa-user-circle-o" aria-hidden="true"></i> -->
+                </a>
+            </div>
+        </nav>
+
+        <main>
+            {% block content %}
+
+
+            <!-- The main content goes here -->
+
+
+            {% endblock %}
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts "></script>
+    <script src={% static 'css/script.js' %}></script>
+    <script type="text/javascript ">
+        function toggleMenu() {
+            let navigation = document.querySelector(".navigation ");
+            let toggle = document.querySelector(".toggle ");
+            navigation.classList.toggle("active ");
+            toggle.classList.toggle("active ");
+        }
+    </script>
+</body>
+
+</html>

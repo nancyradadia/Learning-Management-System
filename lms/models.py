@@ -149,27 +149,34 @@ def delete_profile(sender, instance, **kwargs):
 
 class Faculty_Assignment(models.Model):
 
-    def validate_PDF(value):
-        value = str(value)
-        if value.endswith(".pdf") != True :
-            raise ValidationError("Only PDF can be uploaded")
-        else:
-            return value
-
-
-    assign_id = models.CharField(max_length=10)
-    current_year = models.DateField(default=timezone.now())
+    assign_id = models.CharField(primary_key=True,max_length=10)
     course_id = models.CharField(max_length=50)
     faculty_id = models.CharField(max_length=50)
-    description = models.CharField(max_length=200, null=False)
-    PDF = models.FileField(upload_to='static/', null=False, validators=[validate_PDF])
+    PDF = models.CharField(max_length=50)
     marks = models.IntegerField(null=False)
     deadline = models.DateTimeField()
 
-    @property
-    def faculty_assignment(self):
-        return '{} : {}'.format(self.assign_id, self.course_id)
+    def __str__(self):
+        return str(self.course_id)
 
+class Student_Assignment(models.Model):
 
-    # def __str__(self):
-    #     return str(self.assign_id, self.course_id)
+    assign_id = models.CharField(max_length=10)
+    course_id = models.CharField(max_length=50)
+    student_id = models.CharField(max_length=50)
+    PDF = models.FileField(upload_to='files/', null=True)
+    time_of_submission = models.DateTimeField()
+
+    def __str__(self):
+        return str(self.course_id)
+
+class Student_Grade(models.Model):
+
+    assign_id = models.CharField(max_length=10)
+    course_id = models.CharField(max_length=50)
+    student_id = models.CharField(max_length=50)
+    comments = models.CharField(max_length=200)
+    marks = models.IntegerField()
+
+    def __str__(self):
+        return str(self.assign_id)
