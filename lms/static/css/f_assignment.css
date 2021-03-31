@@ -28,7 +28,7 @@ h2 {
     /*float: left;*/
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
     padding: 0px 10px 10px;
     display: flex;
     justify-content: center;
@@ -93,9 +93,9 @@ p {
     padding-bottom: 18px;
     padding-top: 18px;
     border-top: 1px dotted black;
-    padding-left: 50px;
+    /*padding-left: 50px;
     padding-right: 50px;
-
+*/
 }
 
 .right ul li:nth-of-type(n) {

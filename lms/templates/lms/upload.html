@@ -1,8 +1,7 @@
+{% extends "lms/base.html" %} {% load static %} {% block content %} 
+<link rel="stylesheet" type="text/css" href={% static 'css/fac_style.css' %}>
 
-{% extends "lms/base.html" %} {% load static %} {% block content %} <link
-rel="stylesheet" type="text/css" href={% static 'css/fac_style.css' %}>
-
-<div class="main__container">
+<div class="main__container scroll">
   <!-- MAIN TITLE STARTS HERE -->
 
   <div class="main__title">
@@ -12,15 +11,50 @@ rel="stylesheet" type="text/css" href={% static 'css/fac_style.css' %}>
       <p>Credits</p>
     </div>
   </div>
-  <div class="container">
-  <h1>Add New Assignment</h1>
+
+  <div class="container cont1">
+    <h1> Add New Assignment</h1>
+    <form enctype="multipart/form-data" action="" method="POST">
+    {% csrf_token %}
+      <div class="form-row">
+        <div class="input-data">
+          <input type="number" name="marks" required />
+          <div class="underline"></div>
+          <label for="">Marks</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="input-data">
+          <input name="deadline"
+            type="text"
+            onfocus="(this.type='datetime-local')"
+            onblur="(this.type='text')"
+            required
+          />
+          <div class="underline"></div>
+          <label for="">Deadline</label>
+        </div>
+      </div>
+
+      <div class="form-row">
+       <div class="input-data">
+          <div class="upload-btn-wrapper">
+            <button class="btn">Upload Assignment</button>
+            <input type="file" name="PDF" />
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <div class="form-row submit-btn">
+        <input type="submit" class="btn1" value="POST" value="Submit" />
+      </div>
+    </form>
   </div>
-  
- 
 
-{% endblock %}
+  {% endblock %}
 
-<!--<!DOCTYPE html>
+  <!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -65,4 +99,4 @@ rel="stylesheet" type="text/css" href={% static 'css/fac_style.css' %}>
         </p>
     </div>
 </form>
--->
+--></div>
