@@ -89,15 +89,11 @@ def faculty_dashboard(request):
 
 
 @login_required(login_url='login')
-def fac_courses(request):
-        
-    return render(request,'lms/fac_courses.html' )
-
-    
 def faculty_assignment(request):
     if request.method == 'GET':
         course_id = request.GET.get('course_id')
         assignment_id = request.GET.get('i.assign_id')
+        course_name = request.GET.get('course_name')
         print(assignment_id)
     else:
         course_id = []
@@ -116,7 +112,8 @@ def faculty_assignment(request):
         total_assignment = total_assignment + 1
         assign_info.append(data)
 
-    return render(request, 'lms/dummy.html', context={"course_id": course_id, "assign_info": assign_info})
+    return render(request, 'lms/faculty_assignments.html',
+                  context={"course_id": course_id, "assign_info": assign_info, "course_name": course_name})
 
 
 def student_assignment(request):
@@ -209,8 +206,9 @@ def edit_assignment(request):
 
 def static_page(request):
     if request.method == 'GET':
-        course_id = request.GET.get('i.course_id')
+        course_id = request.GET.get('course_id')
+        course_name = request.GET.get('course_name')
     else:
         course_id = []
 
-    return render(request, 'lms/static.html', context={"course_id": course_id})
+    return render(request, 'lms/static.html', context={"course_id": course_id, "course_name": course_name})

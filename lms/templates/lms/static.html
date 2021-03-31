@@ -1,9 +1,5 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+{% extends "lms/base.html" %} {% load static %} {% block content %}
+
     <link
             rel="stylesheet"
             href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -11,121 +7,59 @@
             crossorigin="anonymous"
     />
     <link rel="stylesheet" type="text/css" href={% static 'css/fac_style.css' %}>
-    <title>DASHBOARD</title>
-</head>
-<body id="body">
-<div class="navigation">
-    <ul>
-        <li>
-            <a href="{% url 'faculty_dashboard' %}">
-                <span class="icon"><i class="fa fa-home"></i></span>
-                <span class="title">Home</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <span class="icon"><i class="fa fa-book"></i></span>
-                <span class="title">Courses</span>
-            </a>
-        </li>
 
-        <li>
-            <a href="">
-                <span class="icon"><i class="fa fa-trophy"></i></span>
-                <span class="title">Grades</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <span class="icon"><i class="fa fa-pencil"></i></span>
-                <span class="title">Quiz</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <span class="icon"><i class="fa fa-comment"></i></span>
-                <span class="title">Messages</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <span class="icon"><i class="fa fa-cog"></i></span>
-                <span class="title">Settings</span>
-            </a>
-        </li>
 
-        <li>
-            <a href="{% url 'logout' %}">
-                <span class="icon"><i class="fa fa-sign-out"></i></span>
-                <span class="title">Sign Out</span>
-            </a>
-        </li>
-    </ul>
-</div>
-<div class="container">
-    <nav class="navbar">
-        <div class="toggle" onclick="toggleMenu()"></div>
-        <div class="navbar__right">
-            <a href="#">
-                <i class="fa fa-clock-o" aria-hidden="true"></i>
-            </a>
-            <a href="#">
-                <img width="30" src={% static 'css/avatar.svg' %}/>
-                <!-- <i class="fa fa-user-circle-o" aria-hidden="true"></i> -->
-            </a>
+    <div class="main__container">
+        <!-- MAIN TITLE STARTS HERE -->
+
+        <div class="main__title">
+            <img src={% static 'css/faculty.svg' %} alt=""/>
+            <div class="main__greeting">
+                <h1>{{ course_id}} : {{ course_name }}</h1>
+                <p>Credits</p>
+            </div>
         </div>
-    </nav>
-    <main>
-        <div class="main__container">
-            <!-- MAIN TITLE STARTS HERE -->
+        <!-- MAIN TITLE ENDS HERE -->
 
-            <div class="main__title">
-                <img src={% static 'css/faculty.svg' %} alt=""/>
-                <div class="main__greeting">
-                    <h1>Course Name</h1>
-                    <p>Credits</p>
-                </div>
-            </div>
-            <!-- MAIN TITLE ENDS HERE -->
-
-            <!-- MAIN CARDS STARTS HERE -->
-            <div class="main__cards">
-                <a href=" /faculty_assignment/?course_id={{ course_id }} ">
-                    <div class="card2">
-                        <img width="45" src={% static 'css/assignment.svg' %} alt=""/>
-
-                        <div class="card_in">
-                            <p class="text-primary-p ">Assignments</p>
-                        </div>
-
-                    </div>
-                </a>
+        <!-- MAIN CARDS STARTS HERE -->
+        <div class="main__cards">
+            <a href=" /faculty_assignment/?course_id={{ course_id }}&course_name={{ course_name }} ">
                 <div class="card2">
-                    <img width="50" src={% static 'css/cgpa.svg' %} alt=""/>
-                    <div class="card_in">
-                        <p class="text-primary-p">Grades</p>
-                    </div>
-                </div>
-
-                <div class="card2">
-                    <img width="45" src={% static 'css/upload.svg' %} alt=""/>
+                    <img width="45" src={% static 'css/assignment.svg' %} alt=""/>
 
                     <div class="card_in">
-                        <p class="text-primary-p">Upload Resources</p>
+                        <p class="text-primary-p ">Assignments</p>
                     </div>
+
+                </div>
+            </a>
+            <div class="card2">
+                <img width="50" src={% static 'css/cgpa.svg' %} alt=""/>
+                <div class="card_in">
+                    <p class="text-primary-p">Grades</p>
                 </div>
             </div>
-            <!-- MAIN CARDS ENDS HERE -->
 
-            <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-            <script src={% static 'css/script.js' %}></script>
-            <script type="text/javascript">
-                function toggleMenu() {
-                    let navigation = document.querySelector(".navigation");
-                    let toggle = document.querySelector(".toggle");
-                    navigation.classList.toggle("active");
-                    toggle.classList.toggle("active");
-                }
-            </script>
-</body>
-</html>
+            <div class="card2">
+                <img width="45" src={% static 'css/upload.svg' %} alt=""/>
+
+                <div class="card_in">
+                    <p class="text-primary-p">Upload Resources</p>
+                </div>
+            </div>
+        </div>
+        <!-- MAIN CARDS ENDS HERE -->
+
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src={% static 'css/script.js' %}></script>
+        <script type="text/javascript">
+            function toggleMenu() {
+                let navigation = document.querySelector(".navigation");
+                let toggle = document.querySelector(".toggle");
+                navigation.classList.toggle("active");
+                toggle.classList.toggle("active");
+            }
+        </script>
+    </div>
+
+{% endblock %}
