@@ -35,10 +35,8 @@ def loginPage(request):
 
 
 def logoutUser(request):
-
     logout(request)
     return redirect('login')
-
 
 
 @login_required(login_url='login')
@@ -62,6 +60,7 @@ def dashboard(request):
                   context={"name": student_info.f_name, "course": course, "no_of_course": no_of_course,
                            "total_credits": total_credits})
 
+
 # Create your views here.
 @login_required(login_url='login')
 def faculty_dashboard(request):
@@ -83,9 +82,10 @@ def faculty_dashboard(request):
                     }
             course.append(data)
             no_of_course = no_of_course + 1
-       
-    return render(request,'lms/faculty_dashboard.html', 
-        context={"name": fac_info.f_name, "course": course, "no_of_course": no_of_course, "total_students": no_of_students})
+
+    return render(request, 'lms/faculty_dashboard.html',
+                  context={"name": fac_info.f_name, "course": course, "no_of_course": no_of_course,
+                           "total_students": no_of_students})
 
 
 @login_required(login_url='login')
@@ -96,7 +96,7 @@ def fac_courses(request):
     
 def faculty_assignment(request):
     if request.method == 'GET':
-        course_id = request.GET.get('i.course_id')
+        course_id = request.GET.get('course_id')
         assignment_id = request.GET.get('i.assign_id')
         print(assignment_id)
     else:
@@ -105,21 +105,21 @@ def faculty_assignment(request):
     # course_id = request.GET.get('i.course_id')
     course_info = Faculty_Assignment.objects.filter(course_id=course_id)
 
-    assign_info=[]
-    total_assignment=0
+    assign_info = []
+    total_assignment = 0
     for i in course_info:
         data = {"assign_id": i.assign_id,
                 "marks": i.marks,
                 "PDF": i.PDF,
                 "deadline": i.deadline
                 }
-        total_assignment = total_assignment+1
+        total_assignment = total_assignment + 1
         assign_info.append(data)
 
-    return render(request, 'lms/dummy.html',context={"course_id": course_id,"assign_info":assign_info})
+    return render(request, 'lms/dummy.html', context={"course_id": course_id, "assign_info": assign_info})
+
 
 def student_assignment(request):
-
     course_id = request.GET.get('course_id')
 
     assignments = Faculty_Assignment.objects.filter(course_id=course_id)
@@ -136,8 +136,7 @@ def student_assignment(request):
         assign_info.append(data)
         print(assign_info)
 
-
-    return render(request, 'lms/student_assignment.html',context={"assign_info":assign_info})
+    return render(request, 'lms/student_assignment.html', context={"assign_info": assign_info})
 
 
 def upload_assignment(request):
@@ -159,23 +158,23 @@ def upload_assignment(request):
             post.deadline = request.POST.get('deadline')
             post.faculty_id = faculty.email_id
             post.course_id = course_id
-            id = course_id+'_'+str(l+1)
+            id = course_id + '_' + str(l + 1)
             post.assign_id = id
             file = request.FILES['PDF']
             print(request.FILES)
             f = FileSystemStorage()
             fileName = f.save(file.name, file)
-            f = 'static/files/'+fileName
+            f = 'static/files/' + fileName
             post.PDF = f
             print(post.course_id)
             print(post.faculty_id)
 
             post.save()
             print("Data saved")
-            s = '/faculty_assignment/?i.course_id='+course_id
+            s = '/faculty_assignment/?i.course_id=' + course_id
             return redirect(s)
 
-    return render(request, 'lms/upload.html',context={"course_id":course_id})
+    return render(request, 'lms/upload.html', context={"course_id": course_id})
 
 
 def edit_assignment(request):
@@ -198,11 +197,20 @@ def edit_assignment(request):
             f = 'static/files/' + fileName
             post.PDF = f
             print(assign_id)
-            Faculty_Assignment.objects.filter(assign_id=assign_id).update(PDF=post.PDF,marks=post.marks,deadline=post.deadline)
+            Faculty_Assignment.objects.filter(assign_id=assign_id).update(PDF=post.PDF, marks=post.marks,
+                                                                          deadline=post.deadline)
             j = assign_id.partition('_')
             course_id = j[0]
             s = '/faculty_assignment/?i.course_id=' + course_id
             return redirect(s)
 
-    return render(request, 'lms/edit.html',context={"assign_id":assign_id})
+    return render(request, 'lms/edit.html', context={"assign_id": assign_id})
 
+
+def static_page(request):
+    if request.method == 'GET':
+        course_id = request.GET.get('i.course_id')
+    else:
+        course_id = []
+
+    return render(request, 'lms/static.html', context={"course_id": course_id})
