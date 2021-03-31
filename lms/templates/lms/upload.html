@@ -1,4 +1,26 @@
-<!DOCTYPE html>
+
+{% extends "lms/base.html" %} {% load static %} {% block content %} <link
+rel="stylesheet" type="text/css" href={% static 'css/fac_style.css' %}>
+
+<div class="main__container">
+  <!-- MAIN TITLE STARTS HERE -->
+
+  <div class="main__title">
+    <img src={% static 'css/faculty.svg' %} alt="" />
+    <div class="main__greeting">
+      <h1>Course Name</h1>
+      <p>Credits</p>
+    </div>
+  </div>
+  <div class="container">
+  <h1>Add New Assignment</h1>
+  </div>
+  
+ 
+
+{% endblock %}
+
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,8 +45,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 </head>
-<body>
-<h2>Upload book</h2>
+ <h2>Upload book</h2>
 
 
 <form enctype="multipart/form-data" action="" method="POST">
@@ -44,5 +65,4 @@
         </p>
     </div>
 </form>
-</body>
-</html>
+-->
