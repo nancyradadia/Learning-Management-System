@@ -114,11 +114,10 @@ class Faculty_Course(models.Model):
 
 @receiver(post_save, sender=Course)
 def create_faculty_profile(sender, instance, created, **kwargs):
-    year = timezone.now
+    year = timezone.now()
     print(instance.course_id)
     print(instance.professor_id)
-    Faculty_Course.objects.create(course_id=instance.course_id, course_enrollment_year=year,
-                                   email=instance.professor_id)
+    Faculty_Course.objects.create(course_id=instance.course_id, course_enrollment_year=year, email=instance.professor_id)
 
 @receiver(pre_delete, sender=Course)
 def delete_faculty_profile(sender, instance, **kwargs):
