@@ -14,57 +14,55 @@
         </div>
 
         <div class="container cont1">
-            <h1> New Assignment</h1>
+            <h1>Upload Assignment</h1>
             <form enctype="multipart/form-data" action="" method="POST" onsubmit="return validateForm()" name="myForm">
                 {% csrf_token %}
-                <div class="form-row">
-                    <div class="input-data">
-                        <input type="number" name="marks" value={{ marks }}>
-                        <div class="underline"></div>
-                        <label for="">Marks</label>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="input-data">
-                        <input id="dhatri"
-                               name="deadline"
-                               type="text"
-                               onfocus="(this.type='datetime-local')"
-                               onload="deadline_func();"
-                               onblur="(this.type='text')"
-                               value={{ deadline }}>
-                        <div class="underline"></div>
-                        <label for="">Deadline</label>
-                    </div>
-                </div>
-
-                <div class="form-row">
+                <div class="form-row1">
                     <div class="input-data">
                         <div class="form-group">
                             <div class="upload-btn-wrapper">
-                                {#                            <input id="uploadFile"  disabled="disabled"/>#}
-                                {#                            <div class="fileUpload btn btn-primary btn">#}
-                                {#                                <span>Upload</span>#}
-                                {#                                <input id="uploadBtn" type="file" class="upload" name="PDF"/>#}
-                                {#                            </div>#}
-                                {#                            <input id="uploadFile"  disabled="disabled"/>#}
-                                <button class="btn">Choose Assignment</button>
-                                <input id="uploadBtn" type="file" name="PDF"/>
-
-
+                            <a href="../{{ i.PDF }}" target="_blank">
+                                <button class="btn">Assignment</button>
+                            </a>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <input id="uploadFile" disabled="disabled"/>
-
                         </div>
                     </div>
                 </div>
+                <div class="form-row1">
+                <div class="input-data">
+                        <div class="form-group">
+                        <h3>Marks:30</h3>
+                  </div>
+                  </div>
+                  </div>
+                  <div class="form-row1">
+                <div class="input-data">
+                        <div class="form-group">
+                        <h3> Remaining Time:30 mins</h3>
+                  </div>
+                  </div>
+                  </div>
+                
+                <div class="form-row1">
+                    <div class="input-data">
+                        <div class="form-group">
+                                <div class="upload-btn-wrapper">
+                                    <button class="btn">Choose Assignment</button>
+                                <input id="uploadBtn" type="file" name="PDF"/>
 
-
-                <br/>
-                <div class="form-row submit-btn">
-                    <input type="submit" class="btn1" value="POST" value="Create"/>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row1">
+                    <div class="input-data">
+                        <div class="form-group">
+                            <input id="uploadFile"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row1 submit-btn">
+                    <input type="submit" class="btn1" value="POST" value="Submit"/>
                 </div>
             </form>
         </div>

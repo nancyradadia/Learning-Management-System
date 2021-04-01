@@ -26,7 +26,7 @@
             <h6>Deadline : {{ i.deadline }}</h6>
             <h6>Assesment status :<h6>
             <h6>---------------------------</h6>
-            <a href="#">Enter marks</a>
+            <a href="/students_submission_list/?assign_id={{ i.assign_id }}">Enter marks</a>
         </div>
     </div>
     {% endfor %}
@@ -42,7 +42,7 @@
       }
 </script>
 
-
+<!--
   <h4 class="header">Assignment of {{ course_id }}: {{ course_name }} list for grading</h4>
     {% for i in assign_info %}
     <div class="card horizontal">
@@ -56,7 +56,7 @@
            Deadline: {{ i.deadline }}
         </div>
       </div>
-    </div>
+    </div>-->>
     {% endfor %}
 
 {#    <h3>Assignment of {{ course_id }} list for grading</h3>#}
