@@ -1,3 +1,4 @@
+{#Faculty upload#}
 {% extends "lms/base.html" %} {% load static %} {% block content %}
     <link rel="stylesheet" type="text/css" href={% static 'css/fac_style.css' %}>
 
@@ -14,11 +15,11 @@
 
         <div class="container cont1">
             <h1> New Assignment</h1>
-            <form enctype="multipart/form-data" action="" method="POST">
+            <form enctype="multipart/form-data" action="" method="POST" onsubmit="return validateForm()" name="myForm">
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="input-data">
-                        <input type="number" name="marks" value={{ marks }} >
+                        <input type="number" name="marks" value={{ marks }}>
                         <div class="underline"></div>
                         <label for="">Marks</label>
                     </div>
@@ -31,7 +32,7 @@
                                onfocus="(this.type='datetime-local')"
                                onload="deadline_func();"
                                onblur="(this.type='text')"
-                               value={{ deadline }} >
+                               value={{ deadline }}>
                         <div class="underline"></div>
                         <label for="">Deadline</label>
                     </div>
@@ -74,19 +75,29 @@
             console.log(this.value)
         };
 
-        document.getElementById("dhatri").onchange = function(){
+        document.getElementById("dhatri").onchange = function () {
             var temp = this.value;
             console.log(temp)
         };
 
 
-
     </script>
     <script>
-    function deadline_func(){
-          var temp2="Test";
-          console.log(temp2);
+        function deadline_func() {
+            var temp2 = "Test";
+            console.log(temp2);
         };
+
+        function validateForm() {
+            var x = document.forms["myForm"]["marks"].value;
+            var y = document.forms["myForm"]["PDF"].value;
+            var z = document.forms["myForm"]["deadline"].value;
+            if (x == "" || y == "" || z == "") {
+                alert("All the fields must be filled !");
+                return false;
+            }
+        }
+
     </script>
 
 {% endblock %}
