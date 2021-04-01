@@ -1,3 +1,5 @@
+import datetime
+
 from django.db.models import Count
 
 from .forms import CreateUserForm
@@ -139,12 +141,15 @@ def student_assignment(request):
 def upload_assignment(request):
     if request.method == 'GET':
         course_id = request.GET.get('course_id')
+        course_name = request.GET.get('course_name')
     else:
         course_id = []
+        course_name = []
     email = request.user
     faculty = Faculty.objects.get(email_id=email)
     if request.method == 'POST':
         course_id = request.GET.get('course_id')
+        course_name = request.GET.get('course_name')
 
         course_info = Faculty_Assignment.objects.filter(course_id=course_id)
         l = len(course_info)
@@ -168,22 +173,35 @@ def upload_assignment(request):
 
             post.save()
             print("Data saved")
-            s = '/faculty_assignment/?i.course_id=' + course_id
+            s = '/faculty_assignment/?course_id=' + course_id + '&course_name=' + course_name
             return redirect(s)
 
-    return render(request, 'lms/upload.html', context={"course_id": course_id})
+    return render(request, 'lms/upload.html', context={"course_id": course_id, "course_name": course_name})
 
 
 def edit_assignment(request):
     if request.method == 'GET':
         assign_id = request.GET.get('assign_id')
+        course_id = request.GET.get('course_id')
+        course_name = request.GET.get('course_name')
+        marks = request.GET.get('marks')
+        deadline = request.GET.get('deadline')
+        # print("In edit assignment")
+        # print(deadline.type())
+        # deadline.replace("a.m.", "AM")
+        # datetime_str = datetime.datetime.strptime(deadline, '%b %d, %Y, %I:%M %p')
+        # print(datetime_str)
+        # # deadline = deadline.replace("%", " ")
 
     else:
         assign_id = []
 
     if request.method == 'POST':
         if request.POST.get('marks'):
+            course_id = request.GET.get('course_id')
+            course_name = request.GET.get('course_name')
             assign_id = request.GET.get('assign_id')
+
             post = Faculty_Assignment()
             post.marks = request.POST.get('marks')
             post.deadline = request.POST.get('deadline')
@@ -194,14 +212,14 @@ def edit_assignment(request):
             f = 'static/files/' + fileName
             post.PDF = f
             print(assign_id)
-            Faculty_Assignment.objects.filter(assign_id=assign_id).update(PDF=post.PDF, marks=post.marks,
-                                                                          deadline=post.deadline)
-            j = assign_id.partition('_')
-            course_id = j[0]
-            s = '/faculty_assignment/?i.course_id=' + course_id
+            Faculty_Assignment.objects.filter(assign_id=assign_id).update(PDF=post.PDF, marks=post.marks, deadline=post.deadline)
+            # j = assign_id.partition(',_')
+            # course_id = j[0]
+            s = '/faculty_assignment/?course_id=' + course_id + '&course_name=' + course_name
+
             return redirect(s)
 
-    return render(request, 'lms/edit.html', context={"assign_id": assign_id})
+    return render(request, 'lms/upload.html', context={"assign_id": assign_id, "marks": marks, "deadline": deadline})
 
 
 def static_page(request):

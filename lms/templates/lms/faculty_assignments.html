@@ -15,7 +15,8 @@
             <h2>Assignments of {{ course_id }} : {{ course_name }}
 
                 <p>
-                    <a href="/upload_assignment/?course_id={{ course_id }} ">Add Assignment</a>
+                    <a href="/upload_assignment/?course_id={{ course_id }}&course_name={{ course_name }}">Add
+                        Assignment</a>
                 </p>
 
             </h2>
@@ -30,7 +31,7 @@
                 <p style="font-family: Verdana ">
 
 
-                    <a href="/edit_assignment/?assign_id={{ i.assign_id }}&PDF={{ i.PDF }}&marks={{ i.marks }}&deadline={{ i.deadline }} "
+                    <a href="/edit_assignment/?assign_id={{ i.assign_id }}&PDF={{ i.PDF }}&marks={{ i.marks }}&deadline={{ i.deadline }}&course_id={{ course_id }}&course_name={{ course_name }}"
                        onclick="return foo()">Edit Assignment</a>
                     <br>
                     <b>Assignment:</b>
