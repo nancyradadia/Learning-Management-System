@@ -122,7 +122,6 @@ def faculty_assignment(request):
 
 
 def student_assignment(request):
-
     course_id = request.GET.get('course_id')
     course_name = request.GET.get('course_name')
     assignments = Faculty_Assignment.objects.filter(course_id=course_id)
@@ -131,7 +130,7 @@ def student_assignment(request):
     total_assignment = 0
     for i in assignments:
         count_check = Student_Assignment.objects.filter(assign_id=i.assign_id, student_id=request.user).count()
-        if(count_check==0):
+        if (count_check == 0):
             status = "Upload"
             d = Faculty_Assignment.objects.filter(assign_id=i.assign_id)
             for i in d:
@@ -152,7 +151,7 @@ def student_assignment(request):
             for i in d:
                 deadline = i.deadline
 
-            sub = deadline-submisson
+            sub = deadline - submisson
             string_format = str(sub)
             k = string_format.partition('.')
             diff = k[0]
@@ -168,8 +167,8 @@ def student_assignment(request):
                 }
         total_assignment = total_assignment + 1
         assign_info.append(data)
-    return render(request, 'lms/student_assignment.html',context={"assign_info":assign_info,"course_id":course_id,"course_name":course_name})
-
+    return render(request, 'lms/student_assignment.html',
+                  context={"assign_info": assign_info, "course_id": course_id, "course_name": course_name})
 
 
 def edit_upload_assignment(request):
@@ -197,7 +196,7 @@ def edit_upload_assignment(request):
             file = request.FILES['PDF']
             f = FileSystemStorage()
             fileName = f.save(file.name, file)
-            f = 'static/files/'+fileName
+            f = 'static/files/' + fileName
             post.PDF = f
 
             assign_id = request.GET.get('assign_id')
@@ -210,13 +209,13 @@ def edit_upload_assignment(request):
 
             else:
 
-                Faculty_Assignment.objects.filter(assign_id=assign_id).update(PDF=post.PDF,marks=post.marks,deadline=post.deadline)
+                Faculty_Assignment.objects.filter(assign_id=assign_id).update(PDF=post.PDF, marks=post.marks,
+                                                                              deadline=post.deadline)
 
             s = '/faculty_assignment/?course_id=' + course_id + '&course_name=' + course_name
             return redirect(s)
 
-    return render(request, 'lms/upload.html',context={"course_id":course_id,"course_name":course_name})
-
+    return render(request, 'lms/upload.html', context={"course_id": course_id, "course_name": course_name})
 
 
 # def upload_assignment(request):
@@ -313,7 +312,8 @@ def static_page(request):
 
     designation = CustomUser.objects.get(email=request.user)
 
-    return render(request, 'lms/static.html', context={"course_id": course_id, "designation": designation.designation, "course_name":course_name})
+    return render(request, 'lms/static.html',
+                  context={"course_id": course_id, "designation": designation.designation, "course_name": course_name})
 
 
 # Where student can upload or edit assignments
@@ -335,16 +335,16 @@ def upload_student_assignment(request):
             fileName = f.save(file.name, file)
             f = 'static/files/' + fileName
 
-            status_check = Student_Assignment.objects.filter(assign_id=assign_id,student_id = request.user).count()
+            status_check = Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user).count()
 
-            if(status_check == 0):
+            if (status_check == 0):
                 post = Student_Assignment()
                 post.assign_id = assign_id
                 post.course_id = course_id
                 post.student_id = request.user
 
-                tz=pytz.timezone('asia/kolkata')
-                ct=datetime.datetime.now(tz=tz)
+                tz = pytz.timezone('asia/kolkata')
+                ct = datetime.datetime.now(tz=tz)
 
                 post.time_of_submission = ct
                 post.PDF = f
@@ -357,12 +357,13 @@ def upload_student_assignment(request):
                 ct = datetime.datetime.now(tz=tz)
 
                 post.time_of_submission = ct
-                Student_Assignment.objects.filter(assign_id=assign_id,student_id=request.user).update(PDF=post.PDF,time_of_submission = post.time_of_submission)
+                Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user).update(PDF=post.PDF,
+                                                                                                       time_of_submission=post.time_of_submission)
 
             s = '/student_assignment/?course_id=' + course_id
             return redirect(s)
 
-    return render(request,'lms/student_upload.html',context={"assign_id":assign_id})
+    return render(request, 'lms/student_upload.html', context={"assign_id": assign_id})
 
 
 def faculty_assignment_list_for_grading(request):
@@ -382,7 +383,9 @@ def faculty_assignment_list_for_grading(request):
                 }
         assign_info.append(data)
 
-    return render(request,'lms/faculty_assignment_list_for_grading.html',context={"course_id":course_id,"assign_info":assign_info,"course_name":course_name})
+    return render(request, 'lms/faculty_assignment_list_for_grading.html',
+                  context={"course_id": course_id, "assign_info": assign_info, "course_name": course_name})
+
 
 # Where faculty can view students submission
 def students_submission_list(request):
@@ -395,27 +398,27 @@ def students_submission_list(request):
     course_id = j[0]
     print(course_id)
 
-    course_info = Faculty_Assignment.objects.filter(course_id=course_id,assign_id=assign_id)
+    course_info = Faculty_Assignment.objects.filter(course_id=course_id, assign_id=assign_id)
     for i in course_info:
         deadline = i.deadline
         total_marks = i.marks
 
     list = Student_Assignment.objects.filter(assign_id=assign_id)
 
-    student_list=[]
+    student_list = []
     total_submissions = 0
     for i in list:
-        id = CustomUser.objects.get(email = i.student_id)
+        id = CustomUser.objects.get(email=i.student_id)
         student_grade = Student_Grade.objects.filter(assign_id=assign_id, student_id=i.student_id).count()
-        if(student_grade>0):
+        if (student_grade > 0):
             stu = Student_Grade.objects.filter(assign_id=assign_id, student_id=i.student_id)
             for j in stu:
-                marks = str(j.marks)+"/"+str(total_marks)
+                marks = str(j.marks) + "/" + str(total_marks)
         else:
             marks = "Enter marks"
 
-        if(i.time_of_submission>deadline):
-            status_check = i.time_of_submission-deadline
+        if (i.time_of_submission > deadline):
+            status_check = i.time_of_submission - deadline
             string_format = str(status_check)
             k = string_format.partition('.')
             t = k[0]
@@ -437,11 +440,13 @@ def students_submission_list(request):
         total_submissions = total_submissions + 1
         student_list.append(data)
 
-    return render(request,'lms/students_submission_list.html',context={"course_id":course_id,"assign_id":assign_id,"student_list":student_list,"total_submissions":total_submissions})
+    return render(request, 'lms/students_submission_list.html',
+                  context={"course_id": course_id, "assign_id": assign_id, "student_list": student_list,
+                           "total_submissions": total_submissions})
+
 
 # where faculty can upload marks of each student
 def faculty_grades(request):
-
     if request.method == 'GET':
         course_id = request.GET.get('course_id')
         assign_id = request.GET.get('assign_id')
@@ -451,7 +456,7 @@ def faculty_grades(request):
         assign_id = []
         student_id = []
 
-    get_pdf = Student_Assignment.objects.filter(assign_id=assign_id,student_id=student_id)
+    get_pdf = Student_Assignment.objects.filter(assign_id=assign_id, student_id=student_id)
 
     for i in get_pdf:
         pdf = i.PDF
@@ -462,9 +467,9 @@ def faculty_grades(request):
             course_id = request.GET.get('course_id')
             assign_id = request.GET.get('assign_id')
             student_id = request.GET.get('student_id')
-            status_check = Student_Grade.objects.filter(assign_id=assign_id,student_id = student_id).count()
+            status_check = Student_Grade.objects.filter(assign_id=assign_id, student_id=student_id).count()
 
-            if(status_check == 0):
+            if (status_check == 0):
                 post = Student_Grade()
                 post.assign_id = assign_id
                 post.course_id = course_id
@@ -483,15 +488,17 @@ def faculty_grades(request):
                 post.marks = request.POST.get('marks')
                 post.comments = request.POST.get('comments')
 
-
-                Student_Grade.objects.filter(assign_id=assign_id,student_id=student_id).update(marks=post.marks,comments=post.comments)
+                Student_Grade.objects.filter(assign_id=assign_id, student_id=student_id).update(marks=post.marks,
+                                                                                                comments=post.comments)
 
             s = '/students_submission_list/?assign_id=' + assign_id
             return redirect(s)
 
-    return render(request, 'lms/faculty_grades.html',context={"course_id":course_id,"assign_id":assign_id,"pdf":pdf})
+    return render(request, 'lms/faculty_grades.html',
+                  context={"course_id": course_id, "assign_id": assign_id, "pdf": pdf})
 
 
+# students
 def get_students_grade(request):
     if request.method == 'GET':
         course_id = request.GET.get('course_id')
@@ -499,7 +506,7 @@ def get_students_grade(request):
     else:
         course_id = []
 
-    list = Student_Grade.objects.filter(course_id=course_id,student_id = request.user)
+    list = Student_Grade.objects.filter(course_id=course_id, student_id=request.user)
     graded_assignments = []
     for i in list:
         stu = Faculty_Assignment.objects.filter(assign_id=i.assign_id)
@@ -511,5 +518,6 @@ def get_students_grade(request):
                 "comments": i.comments}
         graded_assignments.append(data)
 
-
-    return render(request, 'lms/get_students_grade.html',context={"course_id":course_id,"graded_assignments":graded_assignments,"course_name":course_name})
+    return render(request, 'lms/get_students_grade.html',
+                  context={"course_id": course_id, "graded_assignments": graded_assignments,
+                           "course_name": course_name})
