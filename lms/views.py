@@ -378,12 +378,19 @@ def faculty_assignment_list_for_grading(request):
 
     assign_info = []
     for i in course_info:
+        a = Student_Grade.objects.filter(assign_id=i.assign_id).count()
+        b = Student_Assignment.objects.filter(assign_id=i.assign_id).count()
+        if(a==b):
+            status = "completed"
+        else:
+            status = "Pending"
+
         data = {"assign_id": i.assign_id,
-                "deadline": i.deadline
+                "deadline": i.deadline,
+                "status": status
                 }
         assign_info.append(data)
-
-    return render(request, 'lms/faculty_assignment_list_for_grading.html',
+    return render(request, 'lms/cards.html',
                   context={"course_id": course_id, "assign_info": assign_info, "course_name": course_name})
 
 

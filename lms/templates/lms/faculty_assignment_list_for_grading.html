@@ -9,20 +9,43 @@
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
-
+    <link rel="stylesheet" href={% static 'css/cards.css' %}>
+    <link rel="stylesheet" href={% static 'css/styles.css' %}>
 </head>
 
-
 <body >
+  <main>
+  <div class="container">
+    {% for i in assign_info %}
+    <div class="card">
+        <div class="circle">
+            <h2>{{forloop.counter}}</h2>
+        </div>
+        <div class="content">
+            <h6>Assignment Id: {{ i.assign_id }}</h6>
+            <h6>Deadline : {{ i.deadline }}</h6>
+            <h6>Assesment status :<h6>
+            <h6>---------------------------</h6>
+            <a href="#">Enter marks</a>
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+  </main>
+<script src="script.js"></script>
+    <script type="text/javascript">
+      function toggleMenu() {
+        let navigation = document.querySelector(".navigation");
+        let toggle = document.querySelector(".toggle");
+        navigation.classList.toggle("active");
+        toggle.classList.toggle("active");
+      }
+</script>
 
 
-
-
-    <h4 class="header">Assignment of {{ course_id }}: {{ course_name }} list for grading</h4>
+  <h4 class="header">Assignment of {{ course_id }}: {{ course_name }} list for grading</h4>
     {% for i in assign_info %}
     <div class="card horizontal">
-
       <div class="card-stacked">
         <div class="card-content">
           <p><a id="cour" class="nav-link"  href="/students_submission_list/?assign_id={{ i.assign_id }}">
