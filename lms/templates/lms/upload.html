@@ -5,7 +5,7 @@
         <!-- MAIN TITLE STARTS HERE -->
 
         <div class="main__title">
-            <img src={% static 'css/faculty.svg' %} alt=""/>
+            <img src={% static 'css/course.svg' %} alt=""/>
             <div class="main__greeting">
                 <h1>Course Name</h1>
                 <p>Credits</p>
@@ -13,7 +13,7 @@
         </div>
 
         <div class="container cont1">
-            <h1> Add New Assignment</h1>
+            <h1> New Assignment</h1>
             <form enctype="multipart/form-data" action="" method="POST">
                 {% csrf_token %}
                 <div class="form-row">
@@ -63,7 +63,7 @@
 
                 <br/>
                 <div class="form-row submit-btn">
-                    <input type="submit" class="btn1" value="POST" value="Submit"/>
+                    <input type="submit" class="btn1" value="POST" value="Create"/>
                 </div>
             </form>
         </div>
