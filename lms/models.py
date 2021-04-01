@@ -100,7 +100,7 @@ class Course(models.Model):
 class Faculty_Course(models.Model):
 
     course_id = models.CharField(max_length=50)
-    course_enrollment_year = models.DateField(default=timezone.now())
+    course_enrollment_year = models.DateField(default=timezone.now)
     email = models.CharField(max_length=50)
 
     class Meta:
@@ -114,7 +114,7 @@ class Faculty_Course(models.Model):
 
 @receiver(post_save, sender=Course)
 def create_faculty_profile(sender, instance, created, **kwargs):
-    year = timezone.now()
+    year = timezone.now
     print(instance.course_id)
     print(instance.professor_id)
     Faculty_Course.objects.create(course_id=instance.course_id, course_enrollment_year=year,
@@ -164,7 +164,7 @@ class Student_Assignment(models.Model):
     assign_id = models.CharField(max_length=10)
     course_id = models.CharField(max_length=50)
     student_id = models.CharField(max_length=50)
-    PDF = models.FileField(upload_to='files/', null=True)
+    PDF =  models.CharField(max_length=50)
     time_of_submission = models.DateTimeField()
 
     def __str__(self):

@@ -15,7 +15,7 @@
         <div class="main__title">
             <img src={% static 'css/faculty.svg' %} alt=""/>
             <div class="main__greeting">
-                <h1>{{ course_id}} : {{ course_name }}</h1>
+                <h1>{{ course_id }} : {{ course_name }}</h1>
                 <p>Credits</p>
             </div>
         </div>
@@ -23,23 +23,50 @@
 
         <!-- MAIN CARDS STARTS HERE -->
         <div class="main__cards">
-            <a href=" /faculty_assignment/?course_id={{ course_id }}&course_name={{ course_name }} ">
-                <div class="card2">
-                    <img width="45" src={% static 'css/assignment.svg' %} alt=""/>
+            {% if designation == "faculty" %}
+                <a href=" /faculty_assignment/?course_id={{ course_id }}&course_name={{ course_name }} ">
+                    <div class="card2">
+                        <img width="45" src={% static 'css/assignment.svg' %} alt=""/>
 
-                    <div class="card_in">
-                        <p class="text-primary-p ">Assignments</p>
+                        <div class="card_in">
+                            <p class="text-primary-p ">Assignments</p>
+                        </div>
+
                     </div>
+                </a>
+            {% else %}
+                <a href=" /student_assignment/?course_id={{ course_id }}&course_name={{ course_name }} ">
+                    <div class="card2">
+                        <img width="45" src={% static 'css/assignment.svg' %} alt=""/>
 
-                </div>
-            </a>
-            <div class="card2">
-                <img width="50" src={% static 'css/cgpa.svg' %} alt=""/>
-                <div class="card_in">
-                    <p class="text-primary-p">Grades</p>
-                </div>
-            </div>
+                        <div class="card_in">
+                            <p class="text-primary-p ">Assignments</p>
+                        </div>
 
+                    </div>
+                </a>
+            {% endif %}
+            {% if designation == "faculty" %}
+                <a href=" /faculty_assignment_list_for_grading/?course_id={{ course_id }}&course_name={{ course_name }} ">
+
+                    <div class="card2">
+                        <img width="50" src={% static 'css/cgpa.svg' %} alt=""/>
+                        <div class="card_in">
+                            <p class="text-primary-p">Grades</p>
+                        </div>
+                    </div>
+                </a>
+            {% else %}
+                <a href=" /get_students_grade/?course_id={{ course_id }}&course_name={{ course_name }} ">
+
+                    <div class="card2">
+                        <img width="50" src={% static 'css/cgpa.svg' %} alt=""/>
+                        <div class="card_in">
+                            <p class="text-primary-p">Grades</p>
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
             <div class="card2">
                 <img width="45" src={% static 'css/upload.svg' %} alt=""/>
 
@@ -48,6 +75,7 @@
                 </div>
             </div>
         </div>
+
         <!-- MAIN CARDS ENDS HERE -->
 
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>

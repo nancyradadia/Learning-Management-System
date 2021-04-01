@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{ pdf }}
+<form enctype="multipart/form-data" action="" method="POST" onsubmit="return validateForm()" name="myForm">
+    {% csrf_token %}
+
+    <h4 style="text-align:center">Add Assignment Grades</h4>
+    <div class="container">
+        <input type="number" placeholder="Assignment marks" name="marks" >
+        <br>
+        <input type="text" placeholder="Add comments" name="comments" >
+        <br>
+        <button type="submit" value="POST">Upload</button>
+
+    </div>
+</form>
+
+<script>
+    function validateForm() {
+  var x = document.forms["myForm"]["marks"].value;
+  var y = document.forms["myForm"]["Comments"].value;
+  if (x == "" ||  y == "") {
+    alert("All the fields must be filled !");
+    return false;
+  }
+}
+</script>
+</body>
+</html>
