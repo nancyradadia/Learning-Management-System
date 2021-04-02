@@ -1,106 +1,92 @@
-{#Faculty upload#}
-{% extends "lms/base.html" %} {% load static %} {% block content %}
-    <link rel="stylesheet" type="text/css" href={% static 'css/fac_style.css' %}>
+{#Faculty upload#} 
+{% extends "lms/base.html" %} {% load static %} {% block content %} 
+<link rel="stylesheet" type="text/css" href={% static 'css/fac_style.css' %}> 
+<link rel="stylesheet" type="text/css" href={% static 'css/temp.css' %}>
 
-    <div class="main__container scroll">
-        <!-- MAIN TITLE STARTS HERE -->
+<div class="main__container scroll">
+  <!-- MAIN TITLE STARTS HERE -->
 
-        <div class="main__title">
-            <img src={% static 'css/course.svg' %} alt=""/>
-            <div class="main__greeting">
-                <h1>Course Name</h1>
-                <p>Credits</p>
-            </div>
+  <div class="main__title">
+    <img src={% static 'css/course.svg' %} alt=""/>
+    <div class="main__greeting">
+      <h1>Course Name</h1>
+      <p>Credits</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <nav><h1>Upload Assignment</h1></nav>
+    <main><form
+      enctype="multipart/form-data"
+      action=""
+      method="POST"
+      onsubmit="return validateForm()"
+      name="myForm"
+    >
+      {% csrf_token %}
+      <table>
+        <tr>
+          <th>Assignment</th>
+          <td>PDF</td>
+        </tr>
+        <tr>
+          <th>Weightage</th>
+          <td>Maria Anders</td>
+        </tr>
+        <tr>
+          <th>Deadline</th>
+          <td>Maria Anders</td>
+        </tr> 
+        <tr>
+          <th>Submission status</th>
+          <td>Maria Anders</td>
+        </tr>
+      </table>
+    </form>
+    <div class="blk">
+        <div class="upload-btn-wrapper">
+            <button class="btn">Choose Assignment</button>
+            <input id="uploadBtn" type="file" name="PDF"/>
         </div>
-
-        <div class="container cont1">
-            <h1>Upload Assignment</h1>
-            <form enctype="multipart/form-data" action="" method="POST" onsubmit="return validateForm()" name="myForm">
-                {% csrf_token %}
-                <div class="form-row1">
-                    <div class="input-data">
-                        <div class="form-group">
-                            <div class="upload-btn-wrapper">
-                            <a href="../{{ i.PDF }}" target="_blank">
-                                <button class="btn">Assignment</button>
-                            </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row1">
-                <div class="input-data">
-                        <div class="form-group">
-                        <h3>Marks:30</h3>
-                  </div>
-                  </div>
-                  </div>
-                  <div class="form-row1">
-                <div class="input-data">
-                        <div class="form-group">
-                        <h3> Remaining Time:30 mins</h3>
-                  </div>
-                  </div>
-                  </div>
-                
-                <div class="form-row1">
-                    <div class="input-data">
-                        <div class="form-group">
-                                <div class="upload-btn-wrapper">
-                                    <button class="btn">Choose Assignment</button>
-                                <input id="uploadBtn" type="file" name="PDF"/>
-
-                                </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row1">
-                    <div class="input-data">
-                        <div class="form-group">
-                            <input id="uploadFile"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row1 submit-btn">
-                    <input type="submit" class="btn1" value="POST" value="Submit"/>
-                </div>
-            </form>
+        <div>
+            <input  id="uploadFile"/>
+        </div>
+        <div class="form-row1 submit-btn">
+            <input type="submit" class="btn1" value="POST" value="Submit" />
         </div>
     </div>
-    <script>
-        document.getElementById("uploadBtn").onchange = function () {
-            document.getElementById("uploadFile").value = this.value;
-            console.log(this.value)
-        };
+    </main>
+  </div>
+</div>
+<script>
+  document.getElementById("uploadBtn").onchange = function () {
+    document.getElementById("uploadFile").value = this.value;
+    console.log(this.value);
+  };
 
-        document.getElementById("dhatri").onchange = function () {
-            var temp = this.value;
-            console.log(temp)
-        };
+  document.getElementById("dhatri").onchange = function () {
+    var temp = this.value;
+    console.log(temp);
+  };
+</script>
+<script>
+  function deadline_func() {
+    var temp2 = "Test";
+    console.log(temp2);
+  }
 
+  function validateForm() {
+    var y = document.forms["myForm"]["PDF"].value;
+    if (y == "") {
+      alert("All the fields must be filled !");
+      return false;
+    }
+  }
+</script>
 
-    </script>
-    <script>
-        function deadline_func() {
-            var temp2 = "Test";
-            console.log(temp2);
-        };
+{% endblock %} 
 
-        function validateForm() {
-            var x = document.forms["myForm"]["marks"].value;
-            var y = document.forms["myForm"]["PDF"].value;
-            var z = document.forms["myForm"]["deadline"].value;
-            if (x == "" || y == "" || z == "") {
-                alert("All the fields must be filled !");
-                return false;
-            }
-        }
-
-    </script>
-
-{% endblock %}
-
-{#  <!--<!DOCTYPE html>#}
+{#<!DOCTYPE html>#}
 {#<html lang="en">#}
 {#<head>#}
 {#    <meta charset="UTF-8">#}
@@ -200,3 +186,51 @@
 </script>
 </body>
 </html>-->
+{% comment %}
+<div class="form-row1">
+  <div class="input-data">
+    <div class="form-group">
+      <div class="upload-btn-wrapper">
+        <a href="../{{ i.PDF }}" target="_blank">
+          <button class="btn">Assignment</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="form-row1">
+  <div class="input-data">
+    <div class="form-group">
+      <h3>Marks:30</h3>
+    </div>
+  </div>
+</div>
+<div class="form-row1">
+  <div class="input-data">
+    <div class="form-group">
+      <h3>Remaining Time:30 mins</h3>
+    </div>
+  </div>
+</div>
+
+<div class="form-row1">
+  <div class="input-data">
+    <div class="form-group">
+      <div class="upload-btn-wrapper">
+        <button class="btn">Choose Assignment</button>
+        <input id="uploadBtn" type="file" name="PDF" />
+      </div>
+    </div>
+  </div>
+</div>
+<div class="form-row1">
+  <div class="input-data">
+    <div class="form-group">
+      <input id="uploadFile" />
+    </div>
+  </div>
+</div>
+<div class="form-row1 submit-btn">
+  <input type="submit" class="btn1" value="POST" value="Submit" />
+</div>
+{% endcomment %}
