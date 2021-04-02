@@ -26,7 +26,7 @@ table {
     height: max-content;
   }
   tr:nth-child(even) {
-    background-color: #8a8888;
+    background-color: #b4b4b4;
     height: max-content;
   }
   .blk{
