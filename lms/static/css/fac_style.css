@@ -86,7 +86,7 @@ a {
 main {
     background: #ffffff;
     grid-area: main;
-    overflow-y: hidden;
+    overflow-y: auto;
 }
 
 .main__container {

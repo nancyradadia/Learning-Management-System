@@ -83,6 +83,7 @@
                    class="form-control">
         </div>
     </div>
+ <h4>Grades of {{ course_name }}</h4>
     <table class="table table-striped table-class" id="table-id">
 
 
@@ -107,7 +108,7 @@
                 {% endif %}
 
                 <td>
-                    <a id="cour" class="nav-link"  href="/faculty_grades/?assign_id={{ i.assign_id }}&course_id={{ course_id }}&student_id={{ i.student_id }}">
+                    <a id="cour" class="nav-link"  href="/faculty_grades/?assign_id={{ i.assign_id }}&course_id={{ course_id }}&student_id={{ i.student_id }}&course_name={{ course_name }}">
                         {{ i.marks }}
                     </a>
                 </td>

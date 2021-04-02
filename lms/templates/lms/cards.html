@@ -89,9 +89,9 @@
               <div class="content">
                   <h4>Id: {{ i.assign_id }}</h4>
                   <h4>Deadline: {{ i.deadline }}</h4>
-                  <h4>Evaluation: {{i.status}}<h4>
+                  <h4>Evaluation: {{i.status}}</h4>
                   <h4>-----------------------------</h4>
-                  <a href="/students_submission_list/?assign_id={{ i.assign_id }}">Enter marks</a>
+                  <a href="/students_submission_list/?assign_id={{ i.assign_id }}&course_name={{ course_name }}">Enter marks</a>
               </div>
           </div>
           {% endfor %}   

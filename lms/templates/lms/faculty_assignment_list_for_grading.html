@@ -24,9 +24,9 @@
         <div class="content">
             <h6>Assignment Id: {{ i.assign_id }}</h6>
             <h6>Deadline : {{ i.deadline }}</h6>
-            <h6>Assesment status :<h6>
+            <h6>Assesment status : {{ i.status }}</h6>
             <h6>---------------------------</h6>
-            <a href="/students_submission_list/?assign_id={{ i.assign_id }}">Enter marks</a>
+            <a href="/students_submission_list/?assign_id={{ i.assign_id }}&course_id={{ course_id }}">Enter marks</a>
         </div>
     </div>
     {% endfor %}
@@ -42,22 +42,22 @@
       }
 </script>
 
-<!--
-  <h4 class="header">Assignment of {{ course_id }}: {{ course_name }} list for grading</h4>
-    {% for i in assign_info %}
-    <div class="card horizontal">
-      <div class="card-stacked">
-        <div class="card-content">
-          <p><a id="cour" class="nav-link"  href="/students_submission_list/?assign_id={{ i.assign_id }}">
-            {{ i.assign_id }}
-        </a></p>
-        </div>
-        <div class="card-action">
-           Deadline: {{ i.deadline }}
-        </div>
-      </div>
-    </div>-->>
-    {% endfor %}
+{#<!--#}
+{#  <h4 class="header">Assignment of {{ course_id }}: {{ course_name }} list for grading</h4>#}
+{#    {% for i in assign_info %}#}
+{#    <div class="card horizontal">#}
+{#      <div class="card-stacked">#}
+{#        <div class="card-content">#}
+{#          <p><a id="cour" class="nav-link"  href="/students_submission_list/?assign_id={{ i.assign_id }}">#}
+{#            {{ i.assign_id }}#}
+{#        </a></p>#}
+{#        </div>#}
+{#        <div class="card-action">#}
+{#           Deadline: {{ i.deadline }}#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>-->>#}
+{#    {% endfor %}#}
 
 {#    <h3>Assignment of {{ course_id }} list for grading</h3>#}
 {#    {% for i in assign_info %}#}

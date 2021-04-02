@@ -8,10 +8,11 @@
         <div class="main__title">
             <img src={% static 'css/course.svg' %} alt=""/>
             <div class="main__greeting">
-                <h1>Course Name</h1>
+                <h1>{{ course_name }}</h1>
                 <p>Credits</p>
             </div>
         </div>
+
 
         <div class="container cont1">
             <h1>Grading Assignment</h1>
@@ -21,73 +22,66 @@
                     <div class="input-data">
                         <div class="form-group">
                             <div class="upload-btn-wrapper">
-                            <a href="../{{ i.PDF }}" target="_blank">
-                                <button class="btn">Assignment</button>
-                            </a>
+                                <a href="../{{ pdf }}" target="_blank">
+                                    <h4>Student Submission</h4>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-row1">
-                <div class="input-data">
-                        <div class="form-group">
-                        <h3>Total Marks:30</h3>
-                  </div>
-                  </div>
-                  </div>
-                  <div class="form-row1">
-                <div class="input-data">
-                        <div class="form-group">
-                        <h3> Submission Status: Before 30 mins</h3>
-                  </div>
-                  </div>
-                  </div>
-                
-                <div class="form-row1">
                     <div class="input-data">
                         <div class="form-group">
-                          <input type="number" placeholder="Enter Marks" name="marks" value={{ marks }}>
+                            <h3>Total Marks:{{ total_marks }}</h3>
                         </div>
                     </div>
                 </div>
-                <div class="div3">
-                        <textarea rows="4" cols="50" name="comment" form="usrform" placeholder="Enter Comment..."></textarea>
+                <div class="form-row1">
+                    <div class="input-data">
+                        <div class="form-group">
+                            <h3> {{ status }}</h3>
                         </div>
+                    </div>
+                </div>
+
+
+                <div class="form-row1">
+                    <div class="input-data">
+                        <div class="form-group">
+                            <input type="number" placeholder="Enter Marks" name="marks">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row1">
+                    <div class="input-data">
+                        <div class="form-group">
+                            <input type="text" placeholder="Enter Comments" name="comments">
+                        </div>
+                    </div>
+                </div>
+
+                {#                <div class="div3">#}
+                {#                        <textarea rows="4" cols="50" name="comment" form="usrform" placeholder="Enter Comment..."></textarea>#}
+                {#                </div>#}
                 <div class="form-row1 submit-btn">
-                    <input type="submit" class="btn1" value="POST" value="Upload"/>
+                    <input type="submit" class="btn1" value="POST">
                 </div>
             </form>
         </div>
     </div>
+
+
     <script>
-        document.getElementById("uploadBtn").onchange = function () {
-            document.getElementById("uploadFile").value = this.value;
-            console.log(this.value)
-        };
-
-        document.getElementById("dhatri").onchange = function () {
-            var temp = this.value;
-            console.log(temp)
-        };
-
-
-    </script>
-    <script>
-        function deadline_func() {
-            var temp2 = "Test";
-            console.log(temp2);
-        };
-
         function validateForm() {
             var x = document.forms["myForm"]["marks"].value;
-            var y = document.forms["myForm"]["PDF"].value;
-            var z = document.forms["myForm"]["deadline"].value;
-            if (x == "" || y == "" || z == "") {
+            console.log(x);
+            var y = document.forms["myForm"]["comments"].value;
+            if (x == null || y == "") {
                 alert("All the fields must be filled !");
                 return false;
             }
         }
-
     </script>
 
 {% endblock %}
@@ -99,9 +93,9 @@
     <title>Title</title>
 </head>
 <body>
-{{ pdf }}
+{#{{ pdf }}#}
 <form enctype="multipart/form-data" action="" method="POST" onsubmit="return validateForm()" name="myForm">
-    {% csrf_token %}
+{#    {% csrf_token %}#}
 
     <h4 style="text-align:center">Add Assignment Grades</h4>
     <div class="container">
@@ -114,15 +108,6 @@
     </div>
 </form>
 
-<script>
-    function validateForm() {
-  var x = document.forms["myForm"]["marks"].value;
-  var y = document.forms["myForm"]["Comments"].value;
-  if (x == "" ||  y == "") {
-    alert("All the fields must be filled !");
-    return false;
-  }
-}
-</script>
+
 </body>
 </html>-->
