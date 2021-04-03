@@ -50,11 +50,19 @@ def dashboard(request):
     course = []
     no_of_course = 0
     total_credits = 0
+    due_assignments = 0
     for i in stu_course_info:
         cn = Course.objects.filter(course_id=i.course_id)
+        total_assignments = Faculty_Assignment.objects.filter(course_id=i.course_id).count()
+        completed_assignments = Student_Assignment.objects.filter(course_id=i.course_id,student_id=request.user).count()
+        due_assignments = due_assignments + (total_assignments-completed_assignments)
+        print(due_assignments)
+        due = total_assignments-completed_assignments
+
         for j in cn:
             data = {"course_id": i.course_id,
                     "course_name": j.course_name,
+                    "due":due
                     }
             course.append(data)
             no_of_course = no_of_course + 1
@@ -62,7 +70,7 @@ def dashboard(request):
 
     return render(request, 'lms/dashboard.html',
                   context={"name": student_info.f_name, "course": course, "no_of_course": no_of_course,
-                           "total_credits": total_credits})
+                           "total_credits": total_credits,"due_assignments":due_assignments})
 
 
 ## Faculty dashboard
@@ -121,61 +129,6 @@ def faculty_assignment(request):
 
     return render(request, 'lms/faculty_assignments.html',
                   context={"course_id": course_id, "assign_info": assign_info, "course_name": course_name})
-
-
-## views where student can view the assignments uploaded by repective faculties
-def student_assignment(request):
-    course_id = request.GET.get('course_id')
-    course_name = request.GET.get('course_name')
-    assignments = Faculty_Assignment.objects.filter(course_id=course_id)
-
-    assign_info = []
-    total_assignment = 0
-    deadline = 0
-    submisson = 0
-
-    for i in assignments:
-        count_check = Student_Assignment.objects.filter(assign_id=i.assign_id, student_id=request.user).count()
-        if (count_check == 0):
-            status = "Upload"
-            d = Faculty_Assignment.objects.filter(assign_id=i.assign_id)
-            for i in d:
-                deadline = i.deadline
-            tz = pytz.timezone('asia/kolkata')
-            ct = datetime.datetime.now(tz=tz)
-
-            sub = deadline - ct
-            string_format = str(sub)
-            k = string_format.partition('.')
-            diff = k[0]
-
-        else:
-            time_of_sub = Student_Assignment.objects.filter(assign_id=i.assign_id, student_id=request.user)
-            d = Faculty_Assignment.objects.filter(assign_id=i.assign_id)
-            for i in time_of_sub:
-                submisson = i.time_of_submission
-            for i in d:
-                deadline = i.deadline
-
-            sub = deadline - submisson
-            string_format = str(sub)
-            k = string_format.partition('.')
-            diff = k[0]
-
-            status = "Edit"
-
-        data = {"assign_id": i.assign_id,
-                "marks": i.marks,
-                "PDF": i.PDF,
-                "deadline": i.deadline,
-                "status": status,
-                "time_status": diff
-                }
-        total_assignment = total_assignment + 1
-        assign_info.append(data)
-    return render(request, 'lms/student_assignment.html',
-                  context={"assign_info": assign_info, "course_id": course_id, "course_name": course_name})
-
 
 
 ## views where faculty can add and edit their assignments
@@ -241,54 +194,128 @@ def static_page(request):
                   context={"course_id": course_id, "designation": designation.designation, "course_name": course_name})
 
 
+
+## views where student can view the assignments uploaded by repective faculties
+def student_assignment(request):
+    course_id = request.GET.get('course_id')
+    course_name = request.GET.get('course_name')
+    assignments = Faculty_Assignment.objects.filter(course_id=course_id)
+
+    assign_info = []
+    deadline = 0
+
+    for i in assignments:
+
+        d = Faculty_Assignment.objects.filter(assign_id=i.assign_id)
+        for i in d:
+            deadline = i.deadline
+
+        count_check = Student_Assignment.objects.filter(assign_id=i.assign_id, student_id=request.user).count()
+        if (count_check == 0):
+            status = "Upload"
+
+        else:
+            graded = Student_Grade.objects.filter(assign_id=i.assign_id,student_id=request.user).count()
+            if(graded == 0):
+                status = "Edit"
+            else:
+                print("yes")
+                status = "View Grades"
+
+        data = {"assign_id": i.assign_id,
+                "deadline": deadline,
+                "status": status,
+                }
+        assign_info.append(data)
+    return render(request, 'lms/student_assignment.html',
+                  context={"assign_info": assign_info, "course_id": course_id, "course_name": course_name})
+
+
+
 # Where student can upload or edit assignments
 def upload_student_assignment(request):
     if request.method == 'GET':
         assign_id = request.GET.get('assign_id')
+        course_name = request.GET.get('course_name')
+
+        d = Faculty_Assignment.objects.filter(assign_id=assign_id)
+        PDF = None
+
+        for i in d:
+            deadline = i.deadline
+            weightage = i.marks
+            PDF = i.PDF
+
+
+        count_check = Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user).count()
+        if (count_check == 0):
+            tz = pytz.timezone('asia/kolkata')
+            ct = datetime.datetime.now(tz=tz)
+
+            sub = deadline - ct
+            string_format = str(sub)
+            k = string_format.partition('.')
+            diff = k[0] + ' Left for submission'
+        else:
+            time_of_sub = Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user)
+
+            for i in time_of_sub:
+                submisson = i.time_of_submission
+
+            sub = deadline - submisson
+            string_format = str(sub)
+            k = string_format.partition('.')
+            diff = 'Submitted before ' + k[0]
+
     else:
         assign_id = []
+        course_name = []
+
+
 
     if request.method == 'POST':
-        if request.POST:
+            if request.POST:
 
-            assign_id = request.GET.get('assign_id')
-            j = assign_id.partition('_')
-            course_id = j[0]
+                assign_id = request.GET.get('assign_id')
 
-            file = request.FILES['PDF']
-            f = FileSystemStorage()
-            fileName = f.save(file.name, file)
-            f = 'static/files/' + fileName
+                j = assign_id.partition('_')
+                course_id = j[0]
 
-            status_check = Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user).count()
+                file = request.FILES['PDF']
+                f = FileSystemStorage()
+                fileName = f.save(file.name, file)
+                f = 'static/files/' + fileName
 
-            if (status_check == 0):
-                post = Student_Assignment()
-                post.assign_id = assign_id
-                post.course_id = course_id
-                post.student_id = request.user
+                status_check = Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user).count()
 
-                tz = pytz.timezone('asia/kolkata')
-                ct = datetime.datetime.now(tz=tz)
+                if (status_check == 0):
+                    post = Student_Assignment()
+                    post.assign_id = assign_id
+                    post.course_id = course_id
+                    post.student_id = request.user
 
-                post.time_of_submission = ct
-                post.PDF = f
-                post.save()
+                    tz = pytz.timezone('asia/kolkata')
+                    ct = datetime.datetime.now(tz=tz)
 
-            else:
-                post = Student_Assignment()
-                post.PDF = f
-                tz = pytz.timezone('asia/kolkata')
-                ct = datetime.datetime.now(tz=tz)
+                    post.time_of_submission = ct
+                    post.PDF = f
 
-                post.time_of_submission = ct
-                Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user).update(PDF=post.PDF,
-                                                                                                       time_of_submission=post.time_of_submission)
+                    post.save()
 
-            s = '/student_assignment/?course_id=' + course_id
-            return redirect(s)
+                else:
+                    post = Student_Assignment()
+                    post.PDF = f
+                    tz = pytz.timezone('asia/kolkata')
+                    ct = datetime.datetime.now(tz=tz)
 
-    return render(request, 'lms/student_upload.html', context={"assign_id": assign_id})
+                    post.time_of_submission = ct
+                    Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user).update(PDF=post.PDF,
+                                                                                                           time_of_submission=post.time_of_submission)
+
+                s = '/student_assignment/?course_id=' + course_id
+                return redirect(s)
+
+    return render(request, 'lms/student_upload.html', context={"assign_id": assign_id,"course_name":course_name,"weightage":weightage,"PDF":PDF,"status":diff,"deadline":deadline})
 
 ## Where faculty gets list of their assignment for grading
 def faculty_assignment_list_for_grading(request):

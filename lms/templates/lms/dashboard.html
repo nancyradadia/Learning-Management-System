@@ -28,7 +28,7 @@
             <img width="40" src={% static 'css/due assignments.svg' %} />
             <div class="card_inner">
                 <p class="text-primary-p">Due Assingments</p>
-                <span class="font-bold text-title">2</span>
+                <span class="font-bold text-title">{{ due_assignments }}</span>
             </div>
         </div>
 
@@ -58,6 +58,7 @@
 
                                 <h1>{{ i.course_id}}</h1>
                                 <h1>{{ i.course_name}}</h1>
+                              <h3>Assignments Due: {{ i.due }}</h3>
                           </a>
                           </div>
                           <script>
