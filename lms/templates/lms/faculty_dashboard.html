@@ -28,7 +28,7 @@
             <img width="35" src={% static 'css/assignment.svg' %} />
             <div class="card_inner">
                 <p class="text-primary-p">Ungraded Assingments</p>
-                <span class="font-bold text-title">2</span>
+                <span class="font-bold text-title">{{ ungraded_assignments }}</span>
             </div>
         </div>
 
@@ -60,7 +60,8 @@
                           <h1>{{ i.course_id}}</h1>
                           <h1>{{ i.course_name}}</h1>
                         </a>
-                        <p>Number of students enrolled: {{i.course_count}}</p>
+                        <h3>Number of students enrolled: {{i.course_count}}</h3>
+                        <h3>Ungraded assignments: {{i.due}}</h3>
                         </div>
                         <script>
                           var colors = ["#e9c46a","#f4a261","#e76f51","#90e0ef"];

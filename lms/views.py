@@ -80,24 +80,33 @@ def faculty_dashboard(request):
     fac_course_info = Faculty_Course.objects.filter(email=fac_info)
     course = []
     no_of_course = 0
+    ungraded_assignments = 0
     no_of_students = []
     for i in fac_course_info:
+
         cn = Course.objects.filter(course_id=i.course_id)
         total_stu = Student_Course.objects.filter(course_id=i.course_id)
+
+        total_assign = Student_Assignment.objects.filter(course_id=i.course_id).count()
+        graded_assign = Student_Grade.objects.filter(course_id=i.course_id).count()
+        ungraded_assignments = ungraded_assignments + (total_assign - graded_assign)
+        due = total_assign - graded_assign
+
         for j in cn:
             count = 0
             for k in total_stu:
                 count = count + 1
             data = {"course_id": i.course_id,
                     "course_name": j.course_name,
-                    "course_count": count
+                    "course_count": count,
+                    "due": due
                     }
             course.append(data)
             no_of_course = no_of_course + 1
 
     return render(request, 'lms/faculty_dashboard.html',
                   context={"name": fac_info.f_name, "course": course, "no_of_course": no_of_course,
-                           "total_students": no_of_students})
+                           "total_students": no_of_students,"ungraded_assignments":ungraded_assignments})
 
 
 
