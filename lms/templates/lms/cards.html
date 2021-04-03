@@ -74,27 +74,33 @@
             <i class="fa fa-clock-o" aria-hidden="true"></i>
           </a>
           <a href="#">
-            <img width="30" src="assets/avatar.svg" alt="" />
+            <img width="30" src={% static 'css/avatar.svg' %} alt="" />
             <!-- <i class="fa fa-user-circle-o" aria-hidden="true"></i> -->
           </a>
         </div>
       </nav>
       <main>
         <div class="container">
-          {% for i in assign_info %}
-          <div class="card">
-              <div class="circle">
-                  <h2>{{forloop.counter}}</h2>
-              </div>
-              <div class="content">
-                  <h4>Id: {{ i.assign_id }}</h4>
-                  <h4>Deadline: {{ i.deadline }}</h4>
-                  <h4>Evaluation: {{i.status}}</h4>
-                  <h4>-----------------------------</h4>
-                  <a href="/students_submission_list/?assign_id={{ i.assign_id }}&course_name={{ course_name }}">Enter marks</a>
-              </div>
+          {% if assign_info %}
+            {% for i in assign_info %}
+            <div class="card">
+                <div class="circle">
+                    <h2>{{forloop.counter}}</h2>
+                </div>
+                <div class="content">
+                    <h4>Id: {{ i.assign_id }}</h4>
+                    <h4>Deadline: {{ i.deadline }}</h4>
+                    <h4>Evaluation: {{i.status}}</h4>
+                    <h4>-----------------------------</h4>
+                    <a href="/students_submission_list/?assign_id={{ i.assign_id }}&course_name={{ course_name }}">Enter marks</a>
+                </div>
+            </div>
+            {% endfor %}
+          {% else %}
+          <div class="error">
+            <h1>No Assignments given!</h1>
           </div>
-          {% endfor %}   
+          {% endif %}
         </div>
         </main>
          <script src="script.js"></script>

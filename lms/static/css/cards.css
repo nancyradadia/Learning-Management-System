@@ -93,3 +93,8 @@ body {
 .container .card:nth-child() .content a {
     background: #333;
 }
+
+.error{
+    text-align: center;
+    padding-top: 200px;
+}
