@@ -252,7 +252,7 @@ main {
     height: 100vh;
     margin-left: 60px;
     grid-template-columns: 1fr;
-    /* grid-template-rows: 0.2fr 2.2fr; */
+     /*grid-template-rows: 0.2fr 2.2fr; */
     grid-template-rows: 0.2fr 3fr;
     grid-template-areas: "nav" "main";
 }
