@@ -126,7 +126,7 @@ def delete_faculty_profile(sender, instance, **kwargs):
 
 class Student_Course(models.Model):
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE,null=False)
-    course_enrollment_year = models.DateField(default=timezone.now(),null=False)
+    course_enrollment_year = models.DateField(default=timezone.now,null=False)
     email = models.ForeignKey(Student, on_delete=models.CASCADE,null=False)
 
     class Meta:
