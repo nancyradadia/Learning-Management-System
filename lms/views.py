@@ -536,6 +536,5 @@ def get_students_grade(request):
                 "comments": i.comments}
         graded_assignments.append(data)
 
-    return render(request, 'lms/get_students_grade.html',
-                  context={"course_id": course_id, "graded_assignments": graded_assignments,
-                           "course_name": course_name})
+    return render(request, 'lms/students_submission_list.html',
+                  context={"course_id": course_id, "graded_assignments": graded_assignments,"course_name": course_name})

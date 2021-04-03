@@ -85,14 +85,19 @@
 
             <thead>
                 <tr>
+                    {% if assign_id%}
                     <th>Student ID</th>
                     <th>Student email</th>
                     <th>Status</th>
                     <th>Grading</th>
+                    {% else%}
+                    <th>Assignment email</th>
+                    <th>Marks</th>
+                    <th>Comment</th>{% endif %}
                 </tr>
             </thead>
             <tbody>
-                {% for i in student_list %}
+                {% if assign_id%} {% for i in student_list %}
                 <tr>
 
                     <td>{{ i.identification }}</td>
@@ -110,7 +115,15 @@
                     </td>
 
                 </tr>
-                {% endfor %}
+                {% endfor %} {% else %} {% for i in graded_assignments %}
+                <tr>
+
+                    <td>{{ i.assign_id }}</td>
+                    <td>{{ i.marks }}</td>
+                    <td>{{ i.comments }}</td>
+
+                </tr>
+                {% endfor %} {% endif %}
 
                 <tbody>
         </table>
