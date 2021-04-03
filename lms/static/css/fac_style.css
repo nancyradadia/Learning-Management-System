@@ -435,7 +435,7 @@ form .form-row .textarea {
     border: 2px solid gray;
     color: gray;
     background-color: white;
-    padding: 8px 20px;
+    padding: 8px 10px;
     border-radius: 8px;
     font-size: 20px;
     font-weight: bold;
@@ -459,7 +459,7 @@ form .form-row .textarea {
     border: none;
     background-image: linear-gradient(to right, #F3DC2B, #F3DC2B, #F3DC2B);
     background-size: 200%;
-    font-size: 1.2rem;
+    font-size: 80%;
     color: rgb(0, 0, 0);
     font-family: 'Poppins', sans-serif;
     text-transform: uppercase;
