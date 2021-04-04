@@ -1,23 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
-
-
 ::-webkit-scrollbar {
     width: 5px;
     height: 6px;
 }
-
 
 ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px #a5aaad;
     border-radius: 10px;
 }
 
-
 ::-webkit-scrollbar-thumb {
     background: #a19f3e;
     border-radius: 10px;
 }
-
 
 ::-webkit-scrollbar-thumb:hover {
     background: #a5aaad;
@@ -60,7 +55,6 @@ a {
     align-items: center;
     justify-content: space-between;
     padding: 0 30px 0 30px;
-
 }
 
 .navbar__right {
@@ -69,12 +63,12 @@ a {
     align-items: center;
 }
 
-.navbar__right > a {
+.navbar__right>a {
     margin-left: 20px;
     text-decoration: none;
 }
 
-.navbar__right > a > i {
+.navbar__right>a>i {
     color: #a5aaad;
     font-size: 16px;
     border-radius: 50px;
@@ -98,19 +92,19 @@ main {
     align-items: center;
 }
 
-.main__title > img {
+.main__title>img {
     max-height: 100px;
     object-fit: contain;
     margin-right: 20px;
 }
 
-.main__greeting > h1 {
+.main__greeting>h1 {
     font-size: 24px;
     color: #2e4a66;
     margin-bottom: 5px;
 }
 
-.main__greeting > p {
+.main__greeting>p {
     font-size: 14px;
     font-weight: 700;
     color: #a5aaad;
@@ -140,7 +134,6 @@ main {
     justify-content: space-between;
 }
 
-
 .charts__right {
     padding: 25px;
     border-radius: 5px;
@@ -154,12 +147,11 @@ main {
     justify-content: space-between;
 }
 
-.charts__right__title > h1 {
+.charts__right__title>h1 {
     font-size: 24px;
     color: #2e4a66;
     margin-bottom: 5px;
 }
-
 
 .charts__right__cards {
     display: grid;
@@ -177,7 +169,9 @@ main {
     font-size: 14px;
 }
 
+
 /*  SIDEBAR STARTS HERE  */
+
 .navigation {
     position: fixed;
     width: 60px;
@@ -248,12 +242,13 @@ main {
 }
 
 .container {
-    display: grid;
-    height: 100vh;
-    margin-left: 60px;
+    display: flex;
+    flex-direction: column;
+    /* min-height: 100vh; */
+    margin-left: 40px;
     grid-template-columns: 1fr;
-     /*grid-template-rows: 0.2fr 2.2fr; */
-    grid-template-rows: 0.2fr 3fr;
+    /*grid-template-rows: 0.2fr 2.2fr; */
+    /* grid-template-rows: 0.2fr 3fr; */
     grid-template-areas: "nav" "main";
 }
 
@@ -263,24 +258,20 @@ main {
         gap: 10px;
         margin-bottom: 0;
     }
-
     .charts__right__cards {
         grid-template-columns: 1fr 1fr;
     }
-
     .navigation {
         left: -60px;
     }
-
     .navigation.active {
         left: -0px;
         width: 100%;
     }
-
     .toggle.active {
-        background: #cfbb23;;
+        background: #cfbb23;
+        ;
     }
-
     .toggle:before {
         content: "\f0c9";
         font-family: fontAwesome;
@@ -291,33 +282,32 @@ main {
         font-size: 24px;
         color: #333;
     }
-
     .toggle.active:before {
         content: "\f00d";
         z-index: 3;
         color: #fff;
     }
-
     .container {
         margin: 0;
     }
 }
 
 @media (max-width: 500px) {
-
     .charts__right__cards {
         grid-template-columns: 1fr;
     }
 }
 
+
 /*COurses*/
+
 .card_in {
     display: flex;
     align-items: center;
     justify-content: space-around;
 }
 
-.card2 > img {
+.card2>img {
     padding-bottom: 8px;
 }
 
@@ -333,23 +323,27 @@ main {
     box-shadow: 5px 5px 13px #ededed, -5px -5px 13px #ffffff;
 }
 
+
 /*Assignment*/
+
 form {
     padding: 30px 0 0 0;
 }
-h3{
+
+h3 {
     color: #333;
     padding-top: 3%;
 }
+
 .container form .form-row {
     display: flex;
-    margin:0;
+    margin: 0;
     justify-content: center;
 }
 
-.form-row1{
+.form-row1 {
     display: flex;
-    margin:0;
+    margin: 0;
     justify-content: center;
     width: 100%;
     height: 40px;
@@ -357,10 +351,11 @@ h3{
     text-align: center;
     padding: 0.7%;
 }
+
 form .form-row .input-data {
     width: 100%;
     height: 40px;
-    margin:20px;
+    margin: 20px;
     position: relative;
     text-align: center;
 }
@@ -368,7 +363,6 @@ form .form-row .input-data {
 form .form-row .textarea {
     height: 70px;
 }
-
 
 .input-data input {
     display: block;
@@ -380,8 +374,8 @@ form .form-row .textarea {
     text-align: center;
 }
 
-.input-data input:focus ~ label,
-.input-data input:valid ~ label {
+.input-data input:focus~label,
+.input-data input:valid~label {
     transform: translateY(-20px);
     font-size: 14px;
     color: #333;
@@ -393,7 +387,7 @@ form .form-row .textarea {
     bottom: 25px;
     font-size: 16px;
     transition: all 0.3s ease;
-    margin-left: -3% ;
+    margin-left: -3%;
 }
 
 .input-data .underline {
@@ -483,7 +477,7 @@ form .form-row .textarea {
     padding-right: 10%;
 }
 
-.cont1 > h1 {
+.cont1>h1 {
     text-align: center;
     color: #2e4a66;
 }
@@ -505,12 +499,16 @@ form .form-row .textarea {
     opacity: 0;
     filter: alpha(opacity=0);
 }
- /*graded*/
- .div3{
-     display: flex;
+
+
+/*graded*/
+
+.div3 {
+    display: flex;
     justify-content: center;
- }
- textarea {
+}
+
+textarea {
     width: 50%;
     padding: 2%;
     box-sizing: border-box;
@@ -518,4 +516,4 @@ form .form-row .textarea {
     border-radius: 4px;
     background-color: #f8f8f8;
     resize: none;
-  }
+}

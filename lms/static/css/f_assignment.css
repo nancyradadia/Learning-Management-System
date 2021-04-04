@@ -5,7 +5,6 @@ ul li i:after {
     transition: all 0.25s ease-in-out;
 }
 
-
 .flipIn,
 h1,
 ul li {
@@ -23,10 +22,9 @@ h2 {
     user-select: none;
 }
 
-
 .right {
     /*float: left;*/
-    width: 100%;
+    /* width: 100%; */
     height: 100%;
     overflow-y: auto;
     padding: 0px 10px 10px;
@@ -35,11 +33,22 @@ h2 {
     text-align: center;
 }
 
+
 /*::-webkit-scrollbar {*/
+
+
 /*    width: 0px;*/
+
+
 /*    background: transparent;*/
+
+
 /*    !*overflow-y: hidden;*!*/
+
+
 /*    !* make scrollbar transparent *!*/
+
+
 /*}*/
 
 h1,
@@ -80,7 +89,6 @@ p {
     z-index: 2;
 }
 
-
 .right ul {
     list-style: none;
     padding: 0;
@@ -95,19 +103,28 @@ p {
     border-top: 1px dotted black;
     padding-left: 50px;
     padding-right: 50px;
-
 }
 
 .right ul li:nth-of-type(n) {
     animation-delay: 0.5s;
 }
 
+
 /*.right ul li:nth-of-type(2) {*/
+
+
 /*    animation-delay: 0.75s;*/
+
+
 /*}*/
 
+
 /*.right ul li:nth-of-type(3) {*/
+
+
 /*    animation-delay: 1.0s;*/
+
+
 /*}*/
 
 .right ul li:last-of-type {
@@ -127,7 +144,6 @@ ul li i:after {
     position: absolute;
     width: 3px;
     height: 9px;
-
 }
 
 .right ul li i:before {
@@ -142,6 +158,10 @@ ul li i:after {
 
 .right ul li input[type=checkbox] {
     position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    right: 0;
     cursor: pointer;
     width: 100%;
     height: 100%;
@@ -149,18 +169,18 @@ ul li i:after {
     opacity: 0;
 }
 
-.right ul li input[type=checkbox]:checked ~ p {
+.right ul li input[type=checkbox]:checked~p {
     margin-top: 0;
     max-height: 0;
     opacity: 0;
     transform: translate(0, 50%);
 }
 
-.right ul li input[type=checkbox]:checked ~ i:before {
+.right ul li input[type=checkbox]:checked~i:before {
     transform: translate(2px, 0) rotate(45deg);
 }
 
-.right ul li input[type=checkbox]:checked ~ i:after {
+.right ul li input[type=checkbox]:checked~i:after {
     transform: translate(-2px, 0) rotate(-45deg);
 }
 
@@ -187,4 +207,3 @@ ul li i:after {
         transform: rotateX(0deg);
     }
 }
-

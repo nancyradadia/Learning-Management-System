@@ -10,12 +10,22 @@ import requests
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Student, Student_Course, CustomUser, Course, Faculty, Faculty_Course, Faculty_Assignment, \
-    Student_Assignment, Student_Grade
+from .models import Student, Student_Course, CustomUser, Course, Faculty, Faculty_Course, Faculty_Assignment, Student_Assignment, Student_Grade
 
 
 def loginPage(request):
-    if request.method == 'POST':
+
+    if request.user.is_authenticated:
+        info = CustomUser.objects.filter(email=request.user)
+        for i in info:
+            status = i.designation
+        if status == 'student':
+            return redirect('dashboard')
+        else:
+            return redirect('faculty_dashboard')
+
+
+    elif request.method == 'POST':
         password = request.POST.get('password')
         email = request.POST.get('email')
 
@@ -526,6 +536,5 @@ def get_students_grade(request):
                 "comments": i.comments}
         graded_assignments.append(data)
 
-    return render(request, 'lms/get_students_grade.html',
-                  context={"course_id": course_id, "graded_assignments": graded_assignments,
-                           "course_name": course_name})
+    return render(request, 'lms/students_submission_list.html',
+                  context={"course_id": course_id, "graded_assignments": graded_assignments,"course_name": course_name})
