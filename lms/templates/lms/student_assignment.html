@@ -1,9 +1,5 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+{% extends "lms/base.html" %} {% load static %} {% block content %}
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"/>
     <link rel="stylesheet" href={% static 'css/fac_style.css' %}>
@@ -229,76 +225,18 @@
             }
 
         }
+    .no-assign{
+            text-align: center;
+        }
     </style>
-</head>
 
-<body id="body">
-<div class="navigation">
-    <ul>
-        <li>
-            <a href="">
-                <span class="icon"><i class="fa fa-home"></i></span>
-                <span class="title">Home</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <span class="icon"><i class="fa fa-book"></i></span>
-                <span class="title">Courses</span>
-            </a>
-        </li>
 
-        <li>
-            <a href="">
-                <span class="icon"><i class="fa fa-trophy"></i></span>
-                <span class="title">Grades</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <span class="icon"><i class="fa fa-pencil"></i></span>
-                <span class="title">Quiz</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <span class="icon"><i class="fa fa-comment"></i></span>
-                <span class="title">Messages</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <span class="icon"><i class="fa fa-cog"></i></span>
-                <span class="title">Settings</span>
-            </a>
-        </li>
-
-        <li>
-            <a href="{% url 'logout' %}">
-                <span class="icon"><i class="fa fa-sign-out"></i></span>
-                <span class="title">Log out</span>
-            </a>
-        </li>
-
-    </ul>
-</div>
 <div class="container1">
-    <nav class="navbar">
-        <div class="toggle" onclick="toggleMenu()"></div>
-        <div class="navbar__right">
-            <a href="#">
-                <i class="fa fa-clock-o" aria-hidden="true"></i>
-            </a>
-            <a href="#">
-                <img width="30" src={% static 'css/avatar.svg' %}/>
-                <!-- <i class="fa fa-user-circle-o" aria-hidden="true"></i> -->
-            </a>
-        </div>
-    </nav>
     <h2>Assignments of {{ course_id }} : {{ course_name }}</h2>
 
 </div>
 {#    <div class="container-1">#}
+{% if assign_info %}
 {% for i in assign_info %}
     <div class="course">
         <div class="preview">
@@ -358,6 +296,11 @@
     </div>
 
 {% endfor %}
+    {% else %}
+     <div class="no-assign">
+        <h1>No Assignments given!</h1>
+    </div>
+    {% endif %}
 {#    </div>#}
 {#</div>#}
 <script>
@@ -365,8 +308,8 @@
     trunc.innerText = trunc.innerText.substring(0, 100) + '...';
 
 </script>
-</body>
-</html>
+{#</body>#}
+{% endblock %}
 
 
 

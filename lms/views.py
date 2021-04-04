@@ -66,7 +66,7 @@ def dashboard(request):
         total_assignments = Faculty_Assignment.objects.filter(course_id=i.course_id).count()
         completed_assignments = Student_Assignment.objects.filter(course_id=i.course_id,student_id=request.user).count()
         due_assignments = due_assignments + (total_assignments-completed_assignments)
-        print(due_assignments)
+
         due = total_assignments-completed_assignments
 
         for j in cn:
@@ -163,7 +163,7 @@ def faculty_assignment(request):
         total_assignment = total_assignment + 1
         assign_info.append(data)
 
-    print(designation)
+
 
     return render(request, 'lms/faculty_assignments.html',
                   context={"course_id": course_id, "assign_info": assign_info, "course_name": course_name,"course":course,"designation":designation})
@@ -240,27 +240,45 @@ def static_page(request):
         course_id = request.GET.get('course_id')
         course_name = request.GET.get('course_name')
 
-        fac_course =  Faculty_Course.objects.filter(email=request.user)
-        course =[]
-
-        for i in fac_course:
-
-            cn = Course.objects.filter(course_id=i.course_id)
-
-            for j in cn:
-           
-                d = {"course_id": i.course_id,
-                    "course_name": j.course_name,
-                        }
-                course.append(d)
-
-
 
     else:
         course_id = []
         course_name = []
 
     designation = CustomUser.objects.get(email=request.user)
+
+    if(designation.designation=="faculty"):
+        fac_course = Faculty_Course.objects.filter(email=request.user)
+        course = []
+        for i in fac_course:
+
+            cn = Course.objects.filter(course_id=i.course_id)
+
+            for j in cn:
+                d = {"course_id": i.course_id,
+                     "course_name": j.course_name,
+                     }
+                course.append(d)
+
+    else:
+
+        email = Student.objects.get(email_id=request.user)
+        stu_course = Student_Course.objects.filter(email=email)
+        course = []
+
+
+        for i in stu_course:
+
+            cn = Course.objects.filter(course_id=i.course_id)
+
+            for j in cn:
+                d = {"course_id": i.course_id,
+                     "course_name": j.course_name,
+                     }
+                course.append(d)
+
+
+
 
     return render(request, 'lms/static.html',
                   context={"course_id": course_id, "designation": designation.designation, "course_name": course_name,"course":course})
@@ -276,8 +294,8 @@ def student_assignment(request):
     assign_info = []
     deadline = 0
 
-
-    stu_course =  Student_Course.objects.filter(email=request.user)
+    email = Student.objects.get(email_id=request.user)
+    stu_course =  Student_Course.objects.filter(email=email)
     course =[]
     designation = "student"
 
@@ -291,8 +309,6 @@ def student_assignment(request):
                     "course_name": j.course_name,
                         }
             course.append(d)
-
-
 
 
     for i in assignments:
@@ -310,7 +326,6 @@ def student_assignment(request):
             if(graded == 0):
                 status = "Edit"
             else:
-                print("yes")
                 status = "View Grades"
 
         data = {"assign_id": i.assign_id,
@@ -322,7 +337,6 @@ def student_assignment(request):
                   context={"assign_info": assign_info, "course_id": course_id, "course_name": course_name,"course":course,"designation":designation})
 
 
-
 # Where student can upload or edit assignments
 def upload_student_assignment(request):
     if request.method == 'GET':
@@ -331,6 +345,21 @@ def upload_student_assignment(request):
 
         d = Faculty_Assignment.objects.filter(assign_id=assign_id)
         PDF = None
+
+        email = Student.objects.get(email_id=request.user)
+        stu_course = Student_Course.objects.filter(email=email)
+        course = []
+        designation = "student"
+
+        for i in stu_course:
+
+            cn = Course.objects.filter(course_id=i.course_id)
+
+            for j in cn:
+                data = {"course_id": i.course_id,
+                     "course_name": j.course_name,
+                     }
+                course.append(data)
 
         for i in d:
             deadline = i.deadline
@@ -406,7 +435,7 @@ def upload_student_assignment(request):
                 s = '/student_assignment/?course_id=' + course_id
                 return redirect(s)
 
-    return render(request, 'lms/student_upload.html', context={"assign_id": assign_id,"course_name":course_name,"weightage":weightage,"PDF":PDF,"status":diff,"deadline":deadline})
+    return render(request, 'lms/student_upload.html', context={"assign_id": assign_id,"course_name":course_name,"weightage":weightage,"PDF":PDF,"status":diff,"deadline":deadline,"designation":designation,"course":course})
 
 ## Where faculty gets list of their assignment for grading
 def faculty_assignment_list_for_grading(request):
@@ -642,6 +671,22 @@ def get_students_grade(request):
     if request.method == 'GET':
         course_id = request.GET.get('course_id')
         course_name = request.GET.get('course_name')
+
+        email = Student.objects.get(email_id=request.user)
+        stu_course = Student_Course.objects.filter(email=email)
+        course = []
+        designation = "student"
+
+        for i in stu_course:
+
+            cn = Course.objects.filter(course_id=i.course_id)
+
+            for j in cn:
+                d = {"course_id": i.course_id,
+                     "course_name": j.course_name,
+                     }
+                course.append(d)
+
     else:
         course_id = []
         course_name = []
@@ -661,6 +706,6 @@ def get_students_grade(request):
         graded_assignments.append(data)
 
     return render(request, 'lms/students_submission_list.html',
-                  context={"course_id": course_id, "graded_assignments": graded_assignments,"course_name": course_name})
+                  context={"course_id": course_id, "graded_assignments": graded_assignments,"course_name": course_name,"course":course,"designation":designation})
 
 
