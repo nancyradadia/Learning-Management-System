@@ -189,7 +189,7 @@ main {
 }
 
 .navigation ul {
-    position: absolute;
+    position: relative;
     margin-top: 60px;
     left: 0;
     width: 100%;
@@ -207,6 +207,20 @@ main {
 
 .navigation ul li a:hover {
     color: #333;
+}
+
+.navigation ul li ul li {
+    padding-left: 40px;
+}
+.navigation ul li ul {
+    margin-top: 0;
+    top: 0%;
+    display: block;
+}
+.navigation ul li ul li ul{
+    margin-top: 0;
+    top: 0%;
+    display: block;
 }
 
 .navigation ul li a {

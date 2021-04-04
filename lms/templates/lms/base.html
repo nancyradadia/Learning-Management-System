@@ -15,35 +15,42 @@
     <div class="navigation">
         <ul>
             <li>
-                <a href="">
-                    <span class="icon"><i class="fa fa-home"></i></span>
-                    <span class="title">Home</span>
-                </a>
+
+                {% if designation == "faculty" %}
+
+                    
+                   <a href="{% url 'faculty_dashboard' %}">
+                        <span class="icon"><i class="fa fa-home"></i></span>
+                        <span class="title">Home</span>
+                    </a>
+                {% else %}
+
+                    <a href="{% url 'dashboard' %}">
+                        <span class="icon"><i class="fa fa-home"></i></span>
+                        <span class="title">Home</span>
+                    </a>
+
+                {% endif %}
+
             </li>
-            <li>
-                <a href="">
+            <li class="submenu">
+                <a>
                     <span class="icon"><i class="fa fa-book"></i></span>
                     <span class="title">Courses</span>
+                    <i class="fa fa-caret-down right" style="line-height:60px;"></i>
                 </a>
-            </li>
-
-            <li>
-                <a href="">
-                    <span class="icon"><i class="fa fa-trophy"></i></span>
-                    <span class="title">Grades</span>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <span class="icon"><i class="fa fa-pencil"></i></span>
-                    <span class="title">Quiz</span>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <span class="icon"><i class="fa fa-comment"></i></span>
-                    <span class="title">Messages</span>
-                </a>
+                <ul>
+                    {% for i in course %}
+                        {% if forloop.counter  %}
+                        <li>
+                            <a  id="cour" class="nav-link"  href="/static_page/?course_id={{ i.course_id }}&course_name={{ i.course_name }}">
+                                <span class="icon"><i class="fa fa-pencil"></i></span>
+                                <span class="title">{{i.course_id}}</span> 
+                            </a>
+                        </li>
+                        {%  endif %}
+                    {% endfor %}
+                </ul>
             </li>
             <li>
                 <a href="">
@@ -87,6 +94,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts "></script>
     <script src={% static 'css/script.js' %}></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript ">
         function toggleMenu() {
             let navigation = document.querySelector(".navigation");
@@ -94,6 +102,17 @@
             navigation.classList.toggle("active");
             toggle.classList.toggle("active");
         }
+        $(".submenu ul").hide();
+        $(".submenu a").click(function (){
+            $(this).parent(".submenu").children("ul").slideToggle("100");
+            $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+
+        });
+        $(".navigation").mouseleave(function (){
+            $(".submenu ul").hide();
+            $(".right").removeClass("fa-caret-up");
+            $(".right").addClass("fa-caret-down");
+        });
     </script>
 </body>
 

@@ -135,6 +135,23 @@ def faculty_assignment(request):
 
     course_info = Faculty_Assignment.objects.filter(course_id=course_id)
 
+
+    fac_course =  Faculty_Course.objects.filter(email=request.user)
+    course =[]
+    designation = "faculty"
+
+    for i in fac_course:
+
+        cn = Course.objects.filter(course_id=i.course_id)
+
+        for j in cn:
+           
+            d = {"course_id": i.course_id,
+                    "course_name": j.course_name,
+                        }
+            course.append(d)
+
+
     assign_info = []
     total_assignment = 0
     for i in course_info:
@@ -146,8 +163,10 @@ def faculty_assignment(request):
         total_assignment = total_assignment + 1
         assign_info.append(data)
 
+    print(designation)
+
     return render(request, 'lms/faculty_assignments.html',
-                  context={"course_id": course_id, "assign_info": assign_info, "course_name": course_name})
+                  context={"course_id": course_id, "assign_info": assign_info, "course_name": course_name,"course":course,"designation":designation})
 
 
 ## views where faculty can add and edit their assignments
@@ -155,6 +174,23 @@ def edit_upload_assignment(request):
     if request.method == 'GET':
         course_id = request.GET.get('course_id')
         course_name = request.GET.get('course_name')
+
+        fac_course =  Faculty_Course.objects.filter(email=request.user)
+        course =[]
+        designation = "faculty"
+
+        for i in fac_course:
+
+            cn = Course.objects.filter(course_id=i.course_id)
+
+            for j in cn:
+           
+                d = {"course_id": i.course_id,
+                    "course_name": j.course_name,
+                        }
+                course.append(d)
+
+
     else:
         course_id = []
         course_name = []
@@ -195,7 +231,7 @@ def edit_upload_assignment(request):
             s = '/faculty_assignment/?course_id=' + course_id + '&course_name=' + course_name
             return redirect(s)
 
-    return render(request, 'lms/upload.html', context={"course_id": course_id, "course_name": course_name})
+    return render(request, 'lms/upload.html', context={"course_id": course_id, "course_name": course_name,"course":course,"designation":designation})
 
 
 ## Assignment-Marks-Upload_Resources
@@ -203,6 +239,23 @@ def static_page(request):
     if request.method == 'GET':
         course_id = request.GET.get('course_id')
         course_name = request.GET.get('course_name')
+
+        fac_course =  Faculty_Course.objects.filter(email=request.user)
+        course =[]
+
+        for i in fac_course:
+
+            cn = Course.objects.filter(course_id=i.course_id)
+
+            for j in cn:
+           
+                d = {"course_id": i.course_id,
+                    "course_name": j.course_name,
+                        }
+                course.append(d)
+
+
+
     else:
         course_id = []
         course_name = []
@@ -210,7 +263,7 @@ def static_page(request):
     designation = CustomUser.objects.get(email=request.user)
 
     return render(request, 'lms/static.html',
-                  context={"course_id": course_id, "designation": designation.designation, "course_name": course_name})
+                  context={"course_id": course_id, "designation": designation.designation, "course_name": course_name,"course":course})
 
 
 
@@ -222,6 +275,25 @@ def student_assignment(request):
 
     assign_info = []
     deadline = 0
+
+
+    stu_course =  Student_Course.objects.filter(email=request.user)
+    course =[]
+    designation = "student"
+
+    for i in stu_course:
+
+        cn = Course.objects.filter(course_id=i.course_id)
+
+        for j in cn:
+           
+            d = {"course_id": i.course_id,
+                    "course_name": j.course_name,
+                        }
+            course.append(d)
+
+
+
 
     for i in assignments:
 
@@ -247,7 +319,7 @@ def student_assignment(request):
                 }
         assign_info.append(data)
     return render(request, 'lms/student_assignment.html',
-                  context={"assign_info": assign_info, "course_id": course_id, "course_name": course_name})
+                  context={"assign_info": assign_info, "course_id": course_id, "course_name": course_name,"course":course,"designation":designation})
 
 
 
@@ -342,6 +414,23 @@ def faculty_assignment_list_for_grading(request):
         course_id = request.GET.get('course_id')
         course_name = request.GET.get('course_name')
 
+
+        fac_course =  Faculty_Course.objects.filter(email=request.user)
+        course =[]
+        designation = "faculty"
+
+        for i in fac_course:
+
+            cn = Course.objects.filter(course_id=i.course_id)
+
+            for j in cn:
+           
+                d = {"course_id": i.course_id,
+                    "course_name": j.course_name,
+                        }
+                course.append(d)
+
+
     else:
         course_id = []
         course_name = []
@@ -365,7 +454,7 @@ def faculty_assignment_list_for_grading(request):
                 }
         assign_info.append(data)
     return render(request, 'lms/cards.html',
-                  context={"course_id": course_id, "assign_info": assign_info, "course_name": course_name})
+                  context={"course_id": course_id, "assign_info": assign_info, "course_name": course_name,"course":course,"designation":designation})
 
 
 # Where faculty can view students submission
@@ -373,6 +462,22 @@ def students_submission_list(request):
     if request.method == 'GET':
         assign_id = request.GET.get('assign_id')
         course_name = request.GET.get('course_name')
+
+
+        fac_course =  Faculty_Course.objects.filter(email=request.user)
+        course =[]
+        designation = "faculty"
+        for i in fac_course:
+
+            cn = Course.objects.filter(course_id=i.course_id)
+
+            for j in cn:
+           
+                d = {"course_id": i.course_id,
+                    "course_name": j.course_name,
+                        }
+                course.append(d)
+
 
     else:
         assign_id = []
@@ -432,7 +537,7 @@ def students_submission_list(request):
 
     return render(request, 'lms/students_submission_list.html',
                   context={"course_id": course_id, "assign_id": assign_id, "student_list": student_list,
-                           "total_submissions": total_submissions,"course_name":course_name})
+                           "total_submissions": total_submissions,"course_name":course_name,"course":course,"designation":designation})
 
 
 # where faculty can upload marks of each student
@@ -442,6 +547,25 @@ def faculty_grades(request):
         assign_id = request.GET.get('assign_id')
         student_id = request.GET.get('student_id')
         course_name = request.GET.get('course_name')
+
+
+        fac_course =  Faculty_Course.objects.filter(email=request.user)
+        course =[]
+        designation = "faculty"
+
+        for i in fac_course:
+
+            cn = Course.objects.filter(course_id=i.course_id)
+
+            for j in cn:
+           
+                d = {"course_id": i.course_id,
+                    "course_name": j.course_name,
+                        }
+                course.append(d)
+
+
+
     else:
         course_id = []
         assign_id = []
@@ -510,7 +634,7 @@ def faculty_grades(request):
             return redirect(s)
 
     return render(request, 'lms/faculty_grades.html',
-                  context={"course_id": course_id, "assign_id": assign_id, "pdf": pdf,"course_name":course_name,"total_marks":total_marks,"status":status})
+                  context={"course_id": course_id, "assign_id": assign_id, "pdf": pdf,"course_name":course_name,"total_marks":total_marks,"status":status,"course":course,"designation":designation})
 
 
 # students get their grades afetr evaluation
@@ -538,3 +662,5 @@ def get_students_grade(request):
 
     return render(request, 'lms/students_submission_list.html',
                   context={"course_id": course_id, "graded_assignments": graded_assignments,"course_name": course_name})
+
+
