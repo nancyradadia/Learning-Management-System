@@ -1,47 +1,354 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <link rel="stylesheet" href={% static 'css/cards.css' %}>
-    <link rel="stylesheet" href={% static 'css/styles.css' %}>
-</head>
 
-<body >
-  <main>
-  <div class="container">
-    {% for i in assign_info %}
-    <div class="card">
-        <div class="circle">
-            <h2>{{forloop.counter}}</h2>
+{% extends "lms/base.html" %} {% load static %} {% block content %}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"/>
+    <link rel="stylesheet" href={% static 'css/fac_style.css' %}>
+
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Muli&display=swap");
+
+
+        .course {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 2px 8px;
+        rgba(0, 0, 0, 0.2);
+            display: flex;
+            max-width: 100%;
+            overflow: hidden;
+            width: 900px;
+            height: 100%;
+            position: relative;
+            margin-top: 0.9rem;
+            margin-bottom: 0.9rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+        }
+
+        .course h6 {
+            opacity: 0.6;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+
+        }
+
+        .course h2 {
+            letter-spacing: 1px;
+            margin: 10px 0;
+
+        }
+
+        .preview {
+            background: #d5d5d0;
+            color: #333;
+            padding: 30px;
+            width: 250px;
+            position: relative;
+            box-shadow: black;
+        }
+
+        .preview h2 {
+            color: #333;
+        }
+
+        .preview h6 {
+            color: #766c00;
+            font-weight: bold;
+        }
+
+        .preview a {
+            color: #fff;
+            font-size: 12px;
+            opacity: 0.6;
+            margin-top: 30px;
+            text-decoration: none;
+
+        }
+
+        .info {
+            padding: 30px;
+            position: relative;
+            width: 100%;
+
+        }
+
+        .progress-wrapper {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            text-align: right;
+            width: 150px;
+
+        }
+
+        .progress {
+            background: #dddddd;
+            border-radius: 3px;
+            height: 5px;
+            width: 100%;
+
+        }
+
+        .progress::after {
+            content: '';
+            border-radius: 3px;
+            background: #716d6d;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 5px;
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 10px;
+            opacity: 0.6;
+            letter-spacing: 1px;
+
+        }
+
+        .progress1 {
+            background: #dddddd;
+            border-radius: 3px;
+            height: 5px;
+            width: 100%;
+
+        }
+
+        .progress1::after {
+            content: '';
+            border-radius: 3px;
+            background: #716d6d;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 5px;
+            width: 100%;
+        }
+
+        .progress1-text {
+            font-size: 10px;
+            opacity: 0.6;
+            letter-spacing: 1px;
+
+        }
+
+        .info p {
+            font-size: 12px;
+            font-weight: bold;
+
+        }
+
+        .btn {
+            background: #716d6d;
+            border: 1px solid transparent;
+            box-shadow: 0px 5px 10px;
+        rgba(0, 0, 0, 0.2);
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 20px;
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.4s ease-in-out;
+            font-weight: bold;
+            border-radius: 20px;
+        }
+
+        .container1 {
+            display: grid;
+            /*height: 100vh;*/
+            margin-left: 60px;
+            grid-template-columns: 1fr;
+            /* grid-template-rows: 0.2fr 2.2fr; */
+            grid-template-rows: 0.2fr 3fr;
+            grid-template-areas: "nav" "main";
+        }
+
+        {#.btn:hover {#}
+        {#    background: #fff;#}
+        {#    color: #716d6d;#}
+        {#    border: 1px solid #716d6d;#}
+        {#    transform: scale(1.05);#}
+        {##}
+
+        {#.btn <a>:hover {#}
+        {#    background: #fff;#}
+        {#    color: #716d6d;#}
+        {#    border: 1px solid #716d6d;#}
+        {#    transform: scale(1.05);#}
+        {##}
+
+
+        .container1 h2 {
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .course {
+                flex-direction: column;
+                width: 90%;
+
+            }
+
+            .preview {
+                width: 100%;
+
+            }
+
+            .preview h2 {
+                margin: 10px 0 0;
+
+            }
+
+            .preview a {
+                margin-top: 10px;
+
+            }
+
+            .info h2 {
+                margin-top: 20px;
+            }
+
+            .info p {
+                margin-bottom: 50px;
+            }
+
+            .btn {
+                padding: 10px 15px;
+                float: right;
+                font-size: 14px;
+            }
+
+        }
+    .no-assign{
+            text-align: center;
+        }
+    </style>
+
+
+<div class="container1">
+    <h2>Assignments of {{ course_id }} : {{ course_name }}</h2>
+
+</div>
+{#    <div class="container-1">#}
+{% if assign_info %}
+{% for i in assign_info %}
+    <div class="course">
+        <div class="preview">
+            <h6>Assignment name</h6>
+            <h2 style="color: #333">{{ i.assign_id }}</h2>
+            {#                    <a href="#">View all chapters</a>#}
+
         </div>
-        <div class="content">
-            <h6>Assignment Id: {{ i.assign_id }}</h6>
-            <h6>Deadline : {{ i.deadline }}</h6>
-            <h6>Assesment status : {{ i.status }}</h6>
-            <h6>---------------------------</h6>
-            <a href="/students_submission_list/?assign_id={{ i.assign_id }}&course_id={{ course_id }}">Enter marks</a>
+        <div class="info">
+            <div class="progress-wrapper">
+
+{#                    <div class="progress"></div>#}
+                    <span class="progress-text">
+                        Status : {{ i.status }}
+                    </span>
+
+            </div>
+            <h6>
+                Deadline
+            </h6>
+            <h2> {{ i.deadline }}</h2>
+            {#                    <p class="p-trunc"> {{  }}</p>#}
+
+
+            {#                    {% if i.status == "Upload" %}#}
+            {#                        <a href="/upload_student_assignment/?assign_id={{ i.assign_id }}&course_name={{ course_name }}">{{ i.status }} Assignment</a>#}
+            {#                         <br> {{ i.time_status }} left for submission#}
+            {#                    {% else %}#}
+            {#                        <a href="/upload_student_assignment/?assign_id={{ i.assign_id }}&course_name={{ course_name }}">{{ i.status }} Assignment</a>#}
+            {#                         <br> Submitted before {{ i.time_status }}#}
+            {#                    {% endif %}#}
+
+
+            <button class="btn">
+
+
+
+                    <a href=" /students_submission_list/?assign_id={{ i.assign_id }}&course_id={{ course_id }}&course_name={{ course_name }} "
+                   class="btn-a"
+                   style="color: #ffffff">Enter Marks</a>
+
+
+
+            </button>
         </div>
     </div>
-    {% endfor %}
-  </div>
-  </main>
-<script src="script.js"></script>
-    <script type="text/javascript">
-      function toggleMenu() {
-        let navigation = document.querySelector(".navigation");
-        let toggle = document.querySelector(".toggle");
-        navigation.classList.toggle("active");
-        toggle.classList.toggle("active");
-      }
-</script>
 
+{% endfor %}
+    {% else %}
+     <div class="no-assign">
+        <h1>No Assignments given!</h1>
+    </div>
+    {% endif %}
+{#    </div>#}
+{#</div>#}
+<script>
+    const trunc = document.querySelector('.p-trunc');
+    trunc.innerText = trunc.innerText.substring(0, 100) + '...';
+
+</script>
+{#</body>#}
+{% endblock %}
+
+
+
+
+{#{% load static %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#    <!-- Compiled and minified CSS -->#}
+{#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">#}
+{##}
+{#    <!-- Compiled and minified JavaScript -->#}
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>#}
+{#    <link rel="stylesheet" href={% static 'css/cards.css' %}>#}
+{#    <link rel="stylesheet" href={% static 'css/styles.css' %}>#}
+{#</head>#}
+{##}
+{#<body >#}
+{#  <main>#}
+{#  <div class="container">#}
+{#    {% for i in assign_info %}#}
+{#    <div class="card">#}
+{#        <div class="circle">#}
+{#            <h2>{{forloop.counter}}</h2>#}
+{#        </div>#}
+{#        <div class="content">#}
+{#            <h6>Assignment Id: {{ i.assign_id }}</h6>#}
+{#            <h6>Deadline : {{ i.deadline }}</h6>#}
+{#            <h6>Assesment status : {{ i.status }}</h6>#}
+{#            <h6>---------------------------</h6>#}
+{#            <a href="/students_submission_list/?assign_id={{ i.assign_id }}&course_id={{ course_id }}">Enter marks</a>#}
+{#        </div>#}
+{#    </div>#}
+{#    {% endfor %}#}
+{#  </div>#}
+{#  </main>#}
+{#<script src="script.js"></script>#}
+{#    <script type="text/javascript">#}
+{#      function toggleMenu() {#}
+{#        let navigation = document.querySelector(".navigation");#}
+{#        let toggle = document.querySelector(".toggle");#}
+{#        navigation.classList.toggle("active");#}
+{#        toggle.classList.toggle("active");#}
+{#      }#}
+{#</script>#}
+{##}
 {#<!--#}
 {#  <h4 class="header">Assignment of {{ course_id }}: {{ course_name }} list for grading</h4>#}
 {#    {% for i in assign_info %}#}
@@ -58,15 +365,15 @@
 {#      </div>#}
 {#    </div>-->>#}
 {#    {% endfor %}#}
-
+{##}
 {#    <h3>Assignment of {{ course_id }} list for grading</h3>#}
 {#    {% for i in assign_info %}#}
 {#        <a id="cour" class="nav-link"  href="/students_submission_list/?assign_id={{ i.assign_id }}">#}
 {#        <h4>{{ i.assign_id }} &emsp;&emsp; Deadline: {{ i.deadline }}</h4>#}
 {#        </a>#}
 {#    {% endfor %}#}
-
-
-
-</body>
-</html>
+{##}
+{##}
+{##}
+{#</body>#}
+{#</html>#}

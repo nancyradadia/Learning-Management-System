@@ -15,6 +15,10 @@ urlpatterns = [
     path('students_submission_list/', views.students_submission_list, name='students_submission_list'),
     path('get_students_grade/', views.get_students_grade, name='get_students_grade'),
     path('faculty_dashboard/', views.faculty_dashboard, name='faculty_dashboard'),
+    path('resources_list/', views.resources_list, name='resources_list'),
+    path('add_resource/', views.add_resource, name='add_resource'),
+    path('download_resources/', views.download_resources, name='download_resources'),
+    path('edit_profile/', views.edit_profile, name='edit_profile'),
     path('login/', views.logoutUser, name="logout"),
 
 

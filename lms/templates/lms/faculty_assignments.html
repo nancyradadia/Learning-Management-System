@@ -32,7 +32,9 @@
 
 
                     <a href="/edit_upload_assignment/?assign_id={{ i.assign_id }}&PDF={{ i.PDF }}&marks={{ i.marks }}&deadline={{ i.deadline }}&course_id={{ course_id }}&course_name={{ course_name }}"
-                       onclick="return foo()">Edit Assignment</a>
+                       onclick="return foo()">Edit </a> /
+                    <a href="/faculty_assignment/?assign_id={{ i.assign_id }}&course_id={{ course_id }}&course_name={{ course_name }} "
+                       onclick="return confirm('Are you sure you want to delete this?')">Delete </a>
                     <br>
                     <b>Assignment:</b>
 

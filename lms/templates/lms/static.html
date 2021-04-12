@@ -16,7 +16,7 @@
             <img src={% static 'css/course.svg' %} alt=""/>
             <div class="main__greeting">
                 <h1>{{ course_id }} : {{ course_name }}</h1>
-                <p>Credits</p>
+                {#                <p>Credits</p>#}
             </div>
         </div>
         <!-- MAIN TITLE ENDS HERE -->
@@ -67,13 +67,27 @@
                     </div>
                 </a>
             {% endif %}
-            <div class="card2">
-                <img width="45" src={% static 'css/upload.svg' %} alt=""/>
+            {% if designation == "faculty" %}
+                <a href=" /resources_list/?course_id={{ course_id }}&course_name={{ course_name }} ">
+                    <div class="card2">
+                        <img width="45" src={% static 'css/upload.svg' %} alt=""/>
 
-                <div class="card_in">
-                    <p class="text-primary-p">Upload Resources</p>
-                </div>
-            </div>
+                        <div class="card_in">
+                            <p class="text-primary-p">Upload Resources</p>
+                        </div>
+                    </div>
+                </a>
+            {% else %}
+                <a href=" /download_resources/?course_id={{ course_id }}&course_name={{ course_name }} ">
+                    <div class="card2">
+                        <img width="45" src={% static 'css/upload.svg' %} alt=""/>
+
+                        <div class="card_in">
+                            <p class="text-primary-p">View/Download Resources</p>
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
         </div>
 
         <!-- MAIN CARDS ENDS HERE -->

@@ -1,5 +1,7 @@
 import datetime
+import smtplib
 
+from django.contrib.auth.forms import PasswordChangeForm
 from django.db.models import Count
 
 from .forms import CreateUserForm
@@ -7,13 +9,17 @@ import pytz
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
 import requests
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.views import PasswordChangeView
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Student, Student_Course, CustomUser, Course, Faculty, Faculty_Course, Faculty_Assignment, Student_Assignment, Student_Grade
+from .models import Student, Student_Course, CustomUser, Course, Faculty, Faculty_Course, Faculty_Assignment, \
+    Student_Assignment, Student_Grade, Resource
 
 
 def loginPage(request):
+
 
     if request.user.is_authenticated:
         info = CustomUser.objects.filter(email=request.user)
@@ -32,7 +38,6 @@ def loginPage(request):
         user = authenticate(request, email=email, password=password)
 
         if user is not None:
-            messages.info(request, 'Logged in')
             login(request, user)
             info = CustomUser.objects.filter(email=request.user)
             for i in info:
@@ -125,13 +130,16 @@ def faculty_dashboard(request):
 def faculty_assignment(request):
     if request.method == 'GET':
         course_id = request.GET.get('course_id')
-        assignment_id = request.GET.get('i.assign_id')
+        assignment_id = request.GET.get('assign_id')
         course_name = request.GET.get('course_name')
 
     else:
         course_id = []
         assignment_id = []
         course_name = []
+
+    if(assignment_id):
+        Faculty_Assignment.objects.filter(course_id=course_id,assign_id=assignment_id).delete()
 
     course_info = Faculty_Assignment.objects.filter(course_id=course_id)
 
@@ -199,8 +207,8 @@ def edit_upload_assignment(request):
     if request.method == 'POST':
         course_id = request.GET.get('course_id')
         course_name = request.GET.get('course_name')
-        course_info = Faculty_Assignment.objects.filter(course_id=course_id)
-        l = len(course_info)
+        # course_info = Faculty_Assignment.objects.filter(course_id=course_id)
+        # l = len(course_info)
 
         if request.POST:
             post = Faculty_Assignment()
@@ -218,15 +226,31 @@ def edit_upload_assignment(request):
             assign_id = request.GET.get('assign_id')
 
             if (assign_id == None):
-                id = course_id + '_' + str(l + 1)
+
+                assig = Faculty_Assignment.objects.filter(course_id=course_id)
+                arr = []
+                for i in assig:
+                    a = i.assign_id.split("_", 1)
+                    arr.append(int(a[1]))
+
+                id = course_id + '_' + str(max(arr) + 1)
                 post.assign_id = id
 
                 post.save()
+
+                text = 'New assignment has been added under course '+course_name
+                subject = 'Check out new assignment on lms'
+                email_sender(subject, text, course_id)
 
             else:
 
                 Faculty_Assignment.objects.filter(assign_id=assign_id).update(PDF=post.PDF, marks=post.marks,
                                                                               deadline=post.deadline)
+
+                text = 'Assignment ' + assign_id + ' has been edited under course ' + course_name
+                subject = 'Check out changes in assignment ' + assign_id + 'on lms'
+                email_sender(subject,text,course_id)
+
 
             s = '/faculty_assignment/?course_id=' + course_id + '&course_name=' + course_name
             return redirect(s)
@@ -234,7 +258,7 @@ def edit_upload_assignment(request):
     return render(request, 'lms/upload.html', context={"course_id": course_id, "course_name": course_name,"course":course,"designation":designation})
 
 
-## Assignment-Marks-Upload_Resources
+## Assignment-Marks-Upload-Resources
 def static_page(request):
     if request.method == 'GET':
         course_id = request.GET.get('course_id')
@@ -482,7 +506,7 @@ def faculty_assignment_list_for_grading(request):
                 "status": status
                 }
         assign_info.append(data)
-    return render(request, 'lms/cards.html',
+    return render(request, 'lms/faculty_assignment_list_for_grading.html',
                   context={"course_id": course_id, "assign_info": assign_info, "course_name": course_name,"course":course,"designation":designation})
 
 
@@ -593,8 +617,6 @@ def faculty_grades(request):
                         }
                 course.append(d)
 
-
-
     else:
         course_id = []
         assign_id = []
@@ -647,8 +669,33 @@ def faculty_grades(request):
                 post.marks = request.POST.get('marks')
                 post.comments = request.POST.get('comments')
 
-
                 post.save()
+
+                email_list = Student_Grade.objects.filter(course_id=course_id)
+                print(email_list)
+                addresslist = []
+                for i in email_list:
+                    email_id = i.student_id
+                    e = CustomUser.objects.filter(email=email_id)
+                    for j in e:
+                        addresslist.append(j.email)
+                print(addresslist)
+                fromaddr = 'seas.gict@gmail.com'
+                for address in addresslist:
+                    toaddrs = address
+                    text = 'Assignment Garde for ' + assign_id + ' has been added under course ' + course_name
+                    subject = 'Check out your grades for ' + assign_id + 'on lms'
+                    msg = 'Subject: %s\n\n%s' % (subject, text)
+                    username = 'seas.gict@gmail.com'
+                    password = 'admin@7016176980'
+
+                    server = smtplib.SMTP('smtp.gmail.com', 587)
+                    server.starttls()
+                    server.login(username, password)
+                    server.sendmail(fromaddr, toaddrs, msg)
+                    server.quit()
+                    print("mail sent")
+
 
             else:
 
@@ -656,8 +703,32 @@ def faculty_grades(request):
                 post.marks = request.POST.get('marks')
                 post.comments = request.POST.get('comments')
 
-
                 Student_Grade.objects.filter(assign_id=assign_id, student_id=student_id).update(marks=post.marks,comments=post.comments)
+
+                email_list = Student_Grade.objects.filter(course_id=course_id)
+                print(email_list)
+                addresslist = []
+                for i in email_list:
+                    email_id = i.student_id
+                    e = CustomUser.objects.filter(email=email_id)
+                    for j in e:
+                        addresslist.append(j.email)
+                print(addresslist)
+                fromaddr = 'seas.gict@gmail.com'
+                for address in addresslist:
+                    toaddrs = address
+                    text = 'Assignment Garde for ' + assign_id + ' has been reviewed under course ' + course_name
+                    subject = 'Check out your reviewed grades for ' + assign_id + 'on lms'
+                    msg = 'Subject: %s\n\n%s' % (subject, text)
+                    username = 'seas.gict@gmail.com'
+                    password = 'admin@7016176980'
+
+                    server = smtplib.SMTP('smtp.gmail.com', 587)
+                    server.starttls()
+                    server.login(username, password)
+                    server.sendmail(fromaddr, toaddrs, msg)
+                    server.quit()
+                    print("mail sent")
 
             s = '/students_submission_list/?assign_id=' + assign_id + '&course_name='+course_name
             return redirect(s)
@@ -666,7 +737,7 @@ def faculty_grades(request):
                   context={"course_id": course_id, "assign_id": assign_id, "pdf": pdf,"course_name":course_name,"total_marks":total_marks,"status":status,"course":course,"designation":designation})
 
 
-# students get their grades afetr evaluation
+# students get their grades after evaluation
 def get_students_grade(request):
     if request.method == 'GET':
         course_id = request.GET.get('course_id')
@@ -709,3 +780,221 @@ def get_students_grade(request):
                   context={"course_id": course_id, "graded_assignments": graded_assignments,"course_name": course_name,"course":course,"designation":designation})
 
 
+#### function to list resources on faculty side
+def resources_list(request):
+
+    if request.method == 'GET':
+        course_id = request.GET.get('course_id')
+        course_name = request.GET.get('course_name')
+        resource_id = request.GET.get('resource_id')
+    else:
+        course_id = []
+        course_name = []
+        resource_id = []
+
+    if(resource_id):
+        Resource.objects.filter(course_id=course_id, resource_id=resource_id).delete()
+
+    res = Resource.objects.filter(course_id=course_id)
+
+    resource_info = []
+
+    for i in res:
+        data = {"resource_id":i.resource_id,
+                "description":i.description,
+                "PDF":i.resource_material}
+        resource_info.append(data)
+
+    fac_course = Faculty_Course.objects.filter(email=request.user)
+    course = []
+    designation = "faculty"
+    for i in fac_course:
+
+        cn = Course.objects.filter(course_id=i.course_id)
+
+        for j in cn:
+            d = {"course_id": i.course_id,
+                 "course_name": j.course_name,
+                 }
+            course.append(d)
+
+    return render(request,'lms/resources_list.html',context={"course":course,"designation":designation,"course_name":course_name,"course_id":course_id,"resource_info":resource_info})
+
+
+def add_resource(request):
+
+    if request.method == 'GET':
+        course_id = request.GET.get('course_id')
+        course_name = request.GET.get('course_name')
+
+        fac_course = Faculty_Course.objects.filter(email=request.user)
+        course = []
+        designation = "faculty"
+
+        for i in fac_course:
+
+            cn = Course.objects.filter(course_id=i.course_id)
+
+            for j in cn:
+                d = {"course_id": i.course_id,
+                     "course_name": j.course_name,
+                     }
+                course.append(d)
+
+    else:
+        course_id = []
+        course_name = []
+
+    if request.method == 'POST':
+        if request.POST:
+            course_id = request.GET.get('course_id')
+            course_name = request.GET.get('course_name')
+
+            post = Resource()
+
+            post.course_id = course_id
+            email = CustomUser.objects.get(email=request.user)
+            post.faculty_id = email.email
+            post.description = request.POST.get('description')
+            print(post.description)
+            file = request.FILES['PDF']
+            f = FileSystemStorage()
+            fileName = f.save(file.name, file)
+            f = 'static/files/' + fileName
+            post.resource_material = f
+
+            resource_id = request.GET.get('resource_id')
+
+            if (resource_id == None):
+
+                res = Resource.objects.filter(course_id=course_id)
+                arr = []
+                for i in res:
+                    r = i.resource_id.split("_", 2)
+                    arr.append(int(r[2]))
+
+                id = 'R'+'_'+course_id + '_' + str(max(arr) + 1)
+                post.resource_id = id
+                post.save()
+            else:
+                Resource.objects.filter(course_id=course_id, resource_id=resource_id).update(description=post.description,
+                                                                                                resource_material=post.resource_material)
+            s = '/resources_list/?course_id=' + course_id + '&course_name=' + course_name
+            return redirect(s)
+
+    return render(request,'lms/add_resource.html',context={"course_id":course_id,"course_name":course_name,"course":course,"designation":designation})
+
+
+### student can view and download resources uploaded by faculty
+def download_resources(request):
+
+    if request.method == 'GET':
+        course_id = request.GET.get('course_id')
+        course_name = request.GET.get('course_name')
+    else:
+        course_id = []
+        course_name = []
+
+    res = Resource.objects.filter(course_id=course_id)
+
+    resource_info = []
+
+    for i in res:
+        data = {"resource_id": i.resource_id,
+                "description": i.description,
+                "PDF": i.resource_material}
+        resource_info.append(data)
+
+    email = Student.objects.get(email_id=request.user)
+    stu_course = Student_Course.objects.filter(email=email)
+    course = []
+    designation = "student"
+
+    for i in stu_course:
+
+        cn = Course.objects.filter(course_id=i.course_id)
+
+        for j in cn:
+            d = {"course_id": i.course_id,
+                 "course_name": j.course_name,
+                 }
+            course.append(d)
+
+    return render(request,'lms/download_resources.html',context={"course_id":course_id,"course_name":course_name,"resource_info":resource_info,"designation":designation,"course":course})
+
+def edit_profile(request):
+
+    d = CustomUser.objects.filter(email=request.user)
+    des = None
+    for i in d:
+        des = i.designation
+
+    if des == "student":
+
+        email = Student.objects.get(email_id=request.user)
+        stu_course = Student_Course.objects.filter(email=email)
+        course = []
+
+        for i in stu_course:
+
+            cn = Course.objects.filter(course_id=i.course_id)
+
+            for j in cn:
+                d = {"course_id": i.course_id,
+                     "course_name": j.course_name,
+                     }
+                course.append(d)
+    else:
+        fac_course = Faculty_Course.objects.filter(email=request.user)
+        course = []
+
+        for i in fac_course:
+
+            cn = Course.objects.filter(course_id=i.course_id)
+
+            for j in cn:
+                d = {"course_id": i.course_id,
+                    "course_name": j.course_name,
+                    }
+                course.append(d)
+
+    if request.method == 'POST':
+        print(request.user)
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('logout')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'lms/edit_profile.html', context={"course":course,"form": form})
+
+
+#### Function to send to email
+def email_sender(subject,text,course_id):
+
+    email_list = Student_Course.objects.filter(course_id=course_id)
+    print(email_list)
+    addresslist = []
+    for i in email_list:
+        email_id = i.email
+        e = CustomUser.objects.filter(email=email_id)
+        for j in e:
+            addresslist.append(j.email)
+    print(addresslist)
+    fromaddr = 'seas.gict@gmail.com'
+    for address in addresslist:
+        toaddrs = address
+        msg = 'Subject: %s\n\n%s' % (subject, text)
+        username = 'seas.gict@gmail.com'
+        password = 'admin@7016176980'
+
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(username, password)
+        server.sendmail(fromaddr, toaddrs, msg)
+        server.quit()
+        print("mail sent")
+
+    return

@@ -134,7 +134,7 @@ class Student_Course(models.Model):
         unique_together = (('course_id', 'email', 'course_enrollment_year'),)
 
     def __str__(self):
-        return str(self.email)
+        return str(self.course_id)
 
 @receiver(pre_delete, sender=CustomUser)
 def delete_profile(sender, instance, **kwargs):
@@ -179,3 +179,15 @@ class Student_Grade(models.Model):
 
     def __str__(self):
         return str(self.assign_id)
+
+
+class Resource(models.Model):
+
+    resource_id = models.CharField(primary_key=True,max_length=10)
+    course_id = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+    faculty_id = models.CharField(max_length=50)
+    resource_material = models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.resource_id)
