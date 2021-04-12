@@ -20,6 +20,7 @@ urlpatterns = [
     path('download_resources/', views.download_resources, name='download_resources'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
     path('login/', views.logoutUser, name="logout"),
+    path('enrolled_students/', views.enrolled_students, name="enrolled_students"),
 
 
 

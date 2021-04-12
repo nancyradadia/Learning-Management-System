@@ -1,6 +1,7 @@
 .container>nav>h1{
     text-align: center;
     align-items: center;
+    color: #2e4a66;
 }
 form{
     display: flex;

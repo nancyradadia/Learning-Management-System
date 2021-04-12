@@ -1,80 +1,74 @@
 {% extends "lms/base.html" %} {% load static %} {% block content %}
     <link rel="stylesheet" type="text/css" href={% static 'css/fac_style.css' %}>
 
-<div class="main__container">
-    <!-- MAIN TITLE STARTS HERE -->
+    <div class="main__container">
+        <!-- MAIN TITLE STARTS HERE -->
 
-    <div class="main__title">
-        <img src={% static 'css/faculty.svg' %} />
-        <div class="main__greeting">
-            <h1>Hello, {{ name }}</h1>
-            <p>Welcome to your dashboard</p>
-        </div>
-    </div>
-
-    <!-- MAIN TITLE ENDS HERE -->
-
-    <!-- MAIN CARDS STARTS HERE -->
-    <div class="main__cards">
-        <div class="card">
-            <img width="40" src={% static 'css/books.svg' %} />
-            <div class="card_inner">
-                <p class="text-primary-p">Number of courses</p>
-                <span class="font-bold text-title">{{no_of_course}}</span>
+        <div class="main__title">
+            <img src={% static 'css/faculty.svg' %}/>
+            <div class="main__greeting">
+                <h1>Hello, {{ name }}</h1>
+                <p>Welcome to your dashboard</p>
             </div>
         </div>
 
-        <div class="card">
-            <img width="35" src={% static 'css/assignment.svg' %} />
-            <div class="card_inner">
-                <p class="text-primary-p">Ungraded Assingments</p>
-                <span class="font-bold text-title">{{ ungraded_assignments }}</span>
+        <!-- MAIN TITLE ENDS HERE -->
+
+        <!-- MAIN CARDS STARTS HERE -->
+        <div class="faculty-cards">
+            <div class="main__cards">
+                <div class="card">
+                    <img width="40" src={% static 'css/books.svg' %}/>
+                    <div class="card_inner">
+                        <p class="text-primary-p">Number of courses</p>
+                        <span class="font-bold text-title">{{ no_of_course }}</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img width="35" src={% static 'css/assignment.svg' %}/>
+                    <div class="card_inner">
+                        <p class="text-primary-p">Ungraded Assingments</p>
+                        <span class="font-bold text-title">{{ ungraded_assignments }}</span>
+                    </div>
+                </div>
             </div>
+
         </div>
+        <!-- MAIN CARDS ENDS HERE -->
+
+        <!-- CHARTS STARTS HERE -->
+
+        <div class="charts__right">
+            <div class="charts__right__title">
+                <h1>Your Courses</h1>
+            </div>
 
 
-
-{#        <div class="card">#}
-{#            <img width="40" src={% static 'css/exam.svg' %} />#}
-{#            <div class="card_inner">#}
-{#                <p class="text-primary-p">Upcoming Quizes</p>#}
-{#                <span class="font-bold text-title">2</span>#}
-{#            </div>#}
-{#        </div>#}
-    </div>
-    <!-- MAIN CARDS ENDS HERE -->
-
-          <!-- CHARTS STARTS HERE -->
-
-            <div class="charts__right">
-              <div class="charts__right__title">
-                  <h1>Your Courses</h1>
-              </div>
-
-
-              <div class="charts__right__cards">
-                  {% for i in course %}
-                      {% if forloop.counter  %}
-                        <div class="card1" id="{{i.course_id}}">
-                        <a class="nav-link" href="/static_page/?course_id={{ i.course_id }}&course_name={{ i.course_name }}">
-                          <h1>{{ i.course_id}}</h1>
-                          <h1>{{ i.course_name}}</h1>
-                        </a>
-                        <h3>Number of students enrolled: {{i.course_count}}</h3>
-                        <h3>Ungraded assignments: {{i.due}}</h3>
+            <div class="charts__right__cards">
+                {% for i in course %}
+                    {% if forloop.counter %}
+                        <div class="card1" id="{{ i.course_id }}">
+                            <a class="nav-link"
+                               href="/static_page/?course_id={{ i.course_id }}&course_name={{ i.course_name }}">
+                                <h1>{{ i.course_id }}</h1>
+                                <h1>{{ i.course_name }}</h1>
+                            </a>
+                            <h3>Number of students enrolled: {{ i.course_count }}</h3>
+                            <h3>Ungraded assignments: {{ i.due }}</h3>
                         </div>
                         <script>
-                          var colors = ["#e9c46a","#f4a261","#e76f51","#90e0ef"];
-                          var randomColor = colors[Math.floor(Math.random() * colors.length)];
-                          document.getElementById("{{i.course_id}}").style.backgroundColor = randomColor;  
+                            var colors = ["#e9c46a", "#f4a261", "#e76f51", "#90e0ef"];
+                            var randomColor = colors[Math.floor(Math.random() * colors.length)];
+                            document.getElementById("{{i.course_id}}").style.backgroundColor = randomColor;
                         </script>
-                      {% endif %}
-                  {% endfor %}
-              </div>
+                    {% endif %}
+                {% endfor %}
             </div>
-          <!-- CHARTS ENDS HERE -->
         </div>
+        <!-- CHARTS ENDS HERE -->
+    </div>
     </div>
     <!-- CHARTS ENDS HERE -->
-</div>
+    </div>
 {% endblock %}

@@ -3,119 +3,129 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"/>
     <link rel="stylesheet" href={% static 'css/fac_style.css' %}>
     <title>Learning Management System</title>
-    
+
 </head>
 
 <body id="body">
-    <div class="navigation">
-        <ul>
-            <li>
+<div class="navigation">
+    <ul>
+{#        <li>#}
+{#            <a href="{% url 'edit_profile' %}">#}
+{#                <span class="icon"><img width="30" src={% static 'css/avatar.svg' %}/></span>#}
+{#                <span class="title">Edit Profile</span>#}
+{#                <!-- <i class="fa fa-user-circle-o" aria-hidden="true"></i> -->#}
+{#            </a>#}
+{#        </li>#}
+        <li>
 
-                {% if designation == "faculty" %}
+            {% if designation == "faculty" %}
 
-                    
-                   <a href="{% url 'faculty_dashboard' %}">
-                        <span class="icon"><i class="fa fa-home"></i></span>
-                        <span class="title">Home</span>
-                    </a>
-                {% else %}
 
-                    <a href="{% url 'dashboard' %}">
-                        <span class="icon"><i class="fa fa-home"></i></span>
-                        <span class="title">Home</span>
-                    </a>
-
-                {% endif %}
-
-            </li>
-            <li class="submenu">
-                <a>
-                    <span class="icon"><i class="fa fa-book"></i></span>
-                    <span class="title">Courses</span>
-                    <i class="fa fa-caret-down right" style="line-height:60px;"></i>
+                <a href="{% url 'faculty_dashboard' %}">
+                    <span class="icon"><i class="fa fa-home"></i></span>
+                    <span class="title">Home</span>
                 </a>
-                <ul>
-                    {% for i in course %}
-                        {% if forloop.counter  %}
+            {% else %}
+
+                <a href="{% url 'dashboard' %}">
+                    <span class="icon"><i class="fa fa-home"></i></span>
+                    <span class="title">Home</span>
+                </a>
+
+            {% endif %}
+
+        </li>
+        <li class="submenu">
+            <a>
+                <span class="icon"><i class="fa fa-book"></i></span>
+                <span class="title">Courses</span>
+                <i class="fa fa-caret-down right" style="line-height:60px;"></i>
+            </a>
+            <ul>
+                {% for i in course %}
+                    {% if forloop.counter %}
                         <li>
-                            <a  id="cour" class="nav-link"  href="/static_page/?course_id={{ i.course_id }}&course_name={{ i.course_name }}">
+                            <a id="cour" class="nav-link"
+                               href="/static_page/?course_id={{ i.course_id }}&course_name={{ i.course_name }}">
                                 <span class="icon"><i class="fa fa-pencil"></i></span>
-                                <span class="title">{{i.course_id}}</span> 
+                                <span class="title">{{ i.course_id }}</span>
                             </a>
                         </li>
-                        {%  endif %}
-                    {% endfor %}
-                </ul>
-            </li>
-            <li>
-                <a href="">
-                    <a  id="cour" class="nav-link"  href="/edit_profile/">
-                        <span class="icon"><i class="fa fa-cog"></i></span>
-                        <span class="title">Settings</span>
-                    </a>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
+        <li>
+            <a href="">
+                <a id="cour" class="nav-link" href="/edit_profile/">
+                    <span class="icon"><i class="fa fa-cog"></i></span>
+                    <span class="title">Settings</span>
                 </a>
-            </li>
+            </a>
+        </li>
 
-            <li>
-                <a href="{% url 'logout' %}">
-                    <span class="icon"><i class="fa fa-sign-out"></i></span>
-                    <span class="title">Log out</span>
-                </a>
-            </li>
+        <li>
+            <a href="{% url 'logout' %}">
+                <span class="icon"><i class="fa fa-sign-out"></i></span>
+                <span class="title">Log out</span>
+            </a>
+        </li>
 
-        </ul>
-    </div>
-    <div class="container">
-        <nav class="navbar">
-            <div class="toggle" onclick="toggleMenu()"></div>
-            <div class="navbar__right">
-                <a href="#">
-                    <i class="fa fa-clock-o" aria-hidden="true"></i>
-                </a>
-                <a href="#">
-                    <img width="30" src={% static 'css/avatar.svg' %} />
-                    <!-- <i class="fa fa-user-circle-o" aria-hidden="true"></i> -->
-                </a>
-            </div>
-        </nav>
+    </ul>
+</div>
+<div class="container">
+    <nav class="navbar">
+        <div class="toggle" onclick="toggleMenu()"></div>
+        <div class="navbar__right">
+            {#                <a href="#">#}
+            {#                    <i class="fa fa-clock-o" aria-hidden="true"></i>#}
+            {#                </a>#}
+            <a href="{% url 'edit_profile' %}">
+                <img width="30" src={% static 'css/avatar.svg' %}/>
+                <!-- <i class="fa fa-user-circle-o" aria-hidden="true"></i> -->
+            </a>
+        </div>
+    </nav>
 
-        <main>
-            {% block content %}
+    <main>
+        {% block content %}
 
 
             <!-- The main content goes here -->
 
 
-            {% endblock %}
-        </main>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts "></script>
-    <script src={% static 'css/script.js' %}></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript ">
-        function toggleMenu() {
-            let navigation = document.querySelector(".navigation");
-            let toggle = document.querySelector(".toggle");
-            navigation.classList.toggle("active");
-            toggle.classList.toggle("active");
-        }
-        $(".submenu ul").hide();
-        $(".submenu a").click(function (){
-            $(this).parent(".submenu").children("ul").slideToggle("100");
-            $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+        {% endblock %}
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts "></script>
+<script src={% static 'css/script.js' %}></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript ">
+    function toggleMenu() {
+        let navigation = document.querySelector(".navigation");
+        let toggle = document.querySelector(".toggle");
+        navigation.classList.toggle("active");
+        toggle.classList.toggle("active");
+    }
 
-        });
-        $(".navigation").mouseleave(function (){
-            $(".submenu ul").hide();
-            $(".right").removeClass("fa-caret-up");
-            $(".right").addClass("fa-caret-down");
-        });
-    </script>
+    $(".submenu ul").hide();
+    $(".submenu a").click(function () {
+        $(this).parent(".submenu").children("ul").slideToggle("100");
+        $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+
+    });
+    $(".navigation").mouseleave(function () {
+        $(".submenu ul").hide();
+        $(".right").removeClass("fa-caret-up");
+        $(".right").addClass("fa-caret-down");
+    });
+</script>
 </body>
 
 </html>

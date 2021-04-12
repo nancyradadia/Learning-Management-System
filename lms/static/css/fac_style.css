@@ -115,6 +115,7 @@ main {
     grid-template-columns: 1fr 1fr 1fr;
     gap: 30px;
     margin: 20px 0;
+
 }
 
 .card {
@@ -380,12 +381,14 @@ form .form-row .textarea {
 
 .input-data input {
     display: block;
-    width: 100%;
+    width: 50%;
     height: 100%;
     border: none;
     font-size: 17px;
     border-bottom: 2px solid rgba(0, 0, 0, 0.12);
     text-align: center;
+    align-items: center;
+    margin: auto;
 }
 
 .input-data input:focus~label,
@@ -531,3 +534,25 @@ textarea {
     background-color: #f8f8f8;
     resize: none;
 }
+.form-edit{
+    /*display: flex;*/
+    /*align-items: center;*/
+    margin: auto;
+    text-align: center;
+    padding-top: 50px;
+}
+
+.label-tag{
+    font-weight: bold;
+    font-size: large;
+    padding-bottom: 10px;
+}
+.error-message{
+    color: red;
+}
+
+.help-text{
+    color: green;
+    justify-content: right;
+ }
+

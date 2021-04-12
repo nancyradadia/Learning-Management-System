@@ -88,6 +88,18 @@
                     </div>
                 </a>
             {% endif %}
+        {% if designation == "faculty" %}
+                <a href=" /enrolled_students/?course_id={{ course_id }}&course_name={{ course_name }} ">
+                    <div class="card2">
+                        <img width="60" src={% static 'css/undraw_Hiring_re_yk5n.svg' %} alt=""/>
+
+                        <div class="card_in">
+                            <p class="text-primary-p ">Enrolled Students</p>
+                        </div>
+
+                    </div>
+                </a>
+        {% endif %}
         </div>
 
         <!-- MAIN CARDS ENDS HERE -->

@@ -169,19 +169,7 @@
             grid-template-areas: "nav" "main";
         }
 
-        {#.btn:hover {#}
-        {#    background: #fff;#}
-        {#    color: #716d6d;#}
-        {#    border: 1px solid #716d6d;#}
-        {#    transform: scale(1.05);#}
-        {##}
 
-        {#.btn <a>:hover {#}
-        {#    background: #fff;#}
-        {#    color: #716d6d;#}
-        {#    border: 1px solid #716d6d;#}
-        {#    transform: scale(1.05);#}
-        {##}
 
 
         .container1 h2 {
@@ -263,17 +251,6 @@
                 Deadline
             </h6>
             <h2> {{ i.deadline }}</h2>
-            {#                    <p class="p-trunc"> {{  }}</p>#}
-
-
-            {#                    {% if i.status == "Upload" %}#}
-            {#                        <a href="/upload_student_assignment/?assign_id={{ i.assign_id }}&course_name={{ course_name }}">{{ i.status }} Assignment</a>#}
-            {#                         <br> {{ i.time_status }} left for submission#}
-            {#                    {% else %}#}
-            {#                        <a href="/upload_student_assignment/?assign_id={{ i.assign_id }}&course_name={{ course_name }}">{{ i.status }} Assignment</a>#}
-            {#                         <br> Submitted before {{ i.time_status }}#}
-            {#                    {% endif %}#}
-
 
             <button class="btn">
 
@@ -285,7 +262,7 @@
 
                 {% else %}
 
-                    <a href="/upload_student_assignment/?assign_id={{ i.assign_id }}&course_name={{ course_name }}"
+                    <a href="/upload_student_assignment/?assign_id={{ i.assign_id }}&course_name={{ course_name }}&course_id={{ course_id }}"
                    class="btn-a"
                    style="color: #ffffff">{{ i.status }} Assignment</a>
 

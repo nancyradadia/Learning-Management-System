@@ -6,9 +6,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-              integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-              crossorigin="anonymous">
+
 
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
                 integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
@@ -16,7 +14,6 @@
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
                 integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
                 crossorigin="anonymous"></script>
-
         <style>
             /* body {
                 background-color: #eee;
@@ -25,15 +22,38 @@
             table th,
             table td {
                 text-align: center;
+
             }
 
             table tr:nth-child(even) {
                 background-color: #e4e3e3
             }
 
+            .container1 {
+                width: 70%;
+                margin: auto;
+            }
+
+
             th {
                 background: #333;
                 color: #fff;
+                padding-top: 10px;
+                padding-bottom: 10px;
+
+            }
+            tr {
+                background-color: lightgray;
+
+
+            }
+            td{
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            .table {
+                width: 100%;
+                border: none;
             }
 
             .pagination {
@@ -53,10 +73,6 @@
                 float: left;
             }
 
-            .tb_search {
-                width: 20%;
-                float: right;
-            }
 
             .pagination-container {
                 width: 70%;
@@ -69,6 +85,23 @@
                 text-align: right;
                 color: #999;
             }
+
+            .tb_search {
+                float: right;
+            {#border-radius: 20px;#}{#height: 20px;#}
+
+
+            }
+
+            .form-control {
+                height: 30px;
+                border-radius: 5px;
+                padding-left: 10px;
+                font-size: medium;
+                border-color: lightgray;
+                float: right;
+
+            }
         </style>
 
 
@@ -78,7 +111,7 @@
 
     <body>
 
-    <div class="container">
+    <div class="container1">
         <div class="header_wrap">
 
             <div class="tb_search">
@@ -86,13 +119,15 @@
                        class="form-control">
             </div>
         </div>
-        <h4>Resources of {{ course_name }}</h4>
+        <h2>Resources of {{ course_name }}</h2>
+        <br/>
         <p>
-            <a id="cour" class="nav-link" href="/add_resource/?course_id={{ course_id }}&course_name={{ course_name }}">
+            <a id="cour" class="nav-link" style="font-size: large" href="/add_resource/?course_id={{ course_id }}&course_name={{ course_name }}">
                 Add Resources
             </a>
         </p>
-        <table class="table table-striped table-class" id="table-id">
+    <br/>
+        <table cellspacing="0" cellpadding="0" class="table" id="table-id">
 
 
             <thead>
@@ -101,7 +136,7 @@
                 <th>Resource ID</th>
                 <th>Description</th>
                 <th>PDF</th>
-                <th>EDIT/DELETE</th>
+                <th>Delete/Edit</th>
             </tr>
             </thead>
             <tbody>
@@ -116,16 +151,20 @@
                         </a>
                     </td>
                     <td>
-                        
-                            <a id="cour" class="nav-link" style="display: inline-block"
-                               href="/resources_list/?course_id={{ course_id }}&course_name={{ course_name }}&resource_id={{ i.resource_id }}" onclick="return confirm('Are you sure you want to delete this?')">
-                                Delete
-                            </a>
-                            <a id="cour" class="nav-link" style="display:inline-block;"
-                                    href="/add_resource/?course_id={{ course_id }}&course_name={{ course_name }}&resource_id={{ i.resource_id }}">
-                            Edit
+
+                        <a id="cour" class="nav-link" style="display: inline-block; color: #000000"
+                           href="/resources_list/?course_id={{ course_id }}&course_name={{ course_name }}&resource_id={{ i.resource_id }}"
+                           onclick="return confirm('Are you sure you want to delete this?')">
+                            <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+
                         </a>
-                     
+/
+                        <a id="cour" class="nav-link" style="display:inline-block; color: #000000"
+                           href="/add_resource/?course_id={{ course_id }}&course_name={{ course_name }}&resource_id={{ i.resource_id }}">
+                           <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+
+                        </a>
+
                     </td>
 
                 </tr>
@@ -138,14 +177,12 @@
         <div class='pagination-container'>
             <nav>
                 <ul class="pagination">
-                    <!--	Here the JS Function Will Add the Rows -->
                 </ul>
             </nav>
         </div>
     </div>
 
 
-    <!--  Developed By Yasser Mas -->
 
 
     <script>
