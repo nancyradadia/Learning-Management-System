@@ -1,10 +1,13 @@
+from django.conf.urls import url
 from django.urls import path
 from . import views
 
 urlpatterns = [
     path('', views.loginPage, name='login'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('static_page/', views.static_page, name='static_page'),
+    url(r'^static_page/(?P<course_id>\w+)/(?P<course_name>\w+)/$', views.static_page, name='static_page'),
+
+    # path('static_page/', views.static_page, name='static_page'),
     path('edit_upload_assignment/', views.edit_upload_assignment, name='edit_upload_assignment'),
     path('faculty_assignment/', views.faculty_assignment, name='faculty_assignment'),
     path('student_assignment/', views.student_assignment, name='student_assignment'),

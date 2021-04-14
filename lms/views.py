@@ -253,19 +253,22 @@ def edit_upload_assignment(request):
 
 
 ## Assignment-Marks-Upload-Resources
-def static_page(request):
-    if request.method == 'GET':
-        course_id = request.GET.get('course_id')
-        course_name = request.GET.get('course_name')
+def static_page(request, course_name, course_id):
+    # if request.method == 'GET':
+    #     course_id = request.GET.get('course_id')
+    #     course_name = request.GET.get('course_name')
+    #
+    #
+    # else:
+    #     course_id = []
+    #     course_name = []
 
+    d = CustomUser.objects.filter(email=request.user)
+    designation = None
+    for i in d:
+        designation = i.designation
 
-    else:
-        course_id = []
-        course_name = []
-
-    designation = CustomUser.objects.get(email=request.user)
-
-    if (designation.designation == "faculty"):
+    if designation == "faculty":
         fac_course = Faculty_Course.objects.filter(email=request.user)
         course = []
         for i in fac_course:
@@ -280,7 +283,10 @@ def static_page(request):
 
     else:
 
-        email = Student.objects.get(email_id=request.user)
+        e = Student.objects.filter(email_id=request.user)
+        email = None
+        for i in e:
+            email = i.email_id
         stu_course = Student_Course.objects.filter(email=email)
         course = []
 
@@ -295,7 +301,7 @@ def static_page(request):
                 course.append(d)
 
     return render(request, 'lms/static.html',
-                  context={"course_id": course_id, "designation": designation.designation, "course_name": course_name,
+                  context={"course_id": course_id, "designation": designation, "course_name": course_name,
                            "course": course})
 
 
@@ -384,7 +390,7 @@ def upload_student_assignment(request):
             tz = pytz.timezone('asia/kolkata')
             ct = datetime.datetime.now(tz=tz)
 
-            if(deadline>ct):
+            if (deadline > ct):
                 sub = deadline - ct
                 string_format = str(sub)
                 k = string_format.partition('.')
@@ -401,13 +407,13 @@ def upload_student_assignment(request):
             for i in time_of_sub:
                 submisson = i.time_of_submission
 
-            if deadline>submisson:
+            if deadline > submisson:
                 sub = deadline - submisson
                 string_format = str(sub)
                 k = string_format.partition('.')
                 diff = 'Submitted before ' + k[0]
             else:
-                sub =  submisson - deadline
+                sub = submisson - deadline
                 string_format = str(sub)
                 k = string_format.partition('.')
                 diff = 'Submitted after ' + k[0]
@@ -421,7 +427,6 @@ def upload_student_assignment(request):
         if request.POST:
 
             assign_id = request.GET.get('assign_id')
-
 
             j = assign_id.partition('_')
             course_id = j[0]
