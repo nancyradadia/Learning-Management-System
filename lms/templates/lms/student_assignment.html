@@ -256,13 +256,13 @@
 
                 {% if i.status == "View Grades" %}
 
-                    <a href=" /get_students_grade/?course_id={{ course_id }}&course_name={{ course_name }} "
+                    <a href=" /get_students_grade/{{ course_id }}/{{ course_name }} "
                    class="btn-a"
                    style="color: #ffffff">{{ i.status }}</a>
 
                 {% else %}
 
-                    <a href="/upload_student_assignment/?assign_id={{ i.assign_id }}&course_name={{ course_name }}&course_id={{ course_id }}"
+                    <a href="/upload_student_assignment/{{ i.assign_id }}/{{ course_id }}/{{ course_name }}"
                    class="btn-a"
                    style="color: #ffffff">{{ i.status }} Assignment</a>
 

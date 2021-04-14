@@ -15,7 +15,7 @@
 
         <div class="container cont1">
             <h1> New Resource</h1>
-            <form enctype="multipart/form-data" action="" method="POST" onsubmit="return validateForm()" name="myForm">
+            <form enctype="multipart/form-data" action="" method="POST" name="myForm">
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="input-data">
@@ -79,3 +79,85 @@
     </script>
 
 {% endblock %}
+
+{#Faculty upload#}
+{#{% extends "lms/base.html" %} {% load static %} {% block content %}#}
+{#    <link rel="stylesheet" type="text/css" href={% static 'css/fac_style.css' %}>#}
+{##}
+{#    <div class="main__container scroll">#}
+{#        <!-- MAIN TITLE STARTS HERE -->#}
+{##}
+{#        <div class="main__title">#}
+{#            <img src={% static 'css/course.svg' %} alt=""/>#}
+{#            <div class="main__greeting">#}
+{#                <h1>Course {{ course_name }}</h1>#}
+{##}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="container cont1">#}
+{#            <h1> New Resource</h1>#}
+{#            <form enctype="multipart/form-data" action="" method="POST" onsubmit="return validateForm()" name="myForm">#}
+{#                {% csrf_token %}#}
+{#                <div class="form-row">#}
+{#                    <div class="input-data">#}
+{#                        <input type="text" name="description">#}
+{#                        <div class="underline"></div>#}
+{#                        <label for="">Description</label>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{#                <div class="form-row">#}
+{#                    <div class="input-data">#}
+{#                        <div class="form-group">#}
+{#                            <div class="upload-btn-wrapper">#}
+{##}
+{#                                <button class="btn">Choose Resource</button>#}
+{#                                <input id="file" type="file" name="PDF"/>#}
+{##}
+{##}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{#                            <input id="uploadFile" disabled="disabled"/>#}
+{##}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{##}
+{#                <br/>#}
+{#                <div class="form-row submit-btn">#}
+{#                    <input type="submit" class="btn1" value="POST" value="Create"/>#}
+{#                </div>#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+{#    <script>#}
+{#        document.getElementById("uploadBtn").onchange = function () {#}
+{#            document.getElementById("uploadFile").value = this.value;#}
+{#            console.log(this.value)#}
+{#        };#}
+{##}
+{##}
+{##}
+{##}
+{#    </script>#}
+{#    <script>#}
+{#        function deadline_func() {#}
+{#            var temp2 = "Test";#}
+{#            console.log(temp2);#}
+{#        };#}
+{##}
+{#        function validateForm() {#}
+{#            var x = document.forms["myForm"]["description"].value;#}
+{#            var y = document.forms["myForm"]["PDF"].value;#}
+{#            if (x == "" || y == "" ) {#}
+{#                alert("All the fields must be filled !");#}
+{#                return false;#}
+{#            }#}
+{#        }#}
+{##}
+{#    </script>#}
+{##}
+{#{% endblock %}#}

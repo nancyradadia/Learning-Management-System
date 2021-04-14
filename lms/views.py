@@ -19,8 +19,10 @@ from .models import Student, Student_Course, CustomUser, Course, Faculty, Facult
 
 
 def loginPage(request):
+    status = None
     if request.user.is_authenticated:
         info = CustomUser.objects.filter(email=request.user)
+
         for i in info:
             status = i.designation
         if status == 'student':
@@ -40,9 +42,12 @@ def loginPage(request):
             info = CustomUser.objects.filter(email=request.user)
             for i in info:
                 status = i.designation
+            print(status)
             if status == 'student':
+                print("no")
                 return redirect('dashboard')
             else:
+                print("yes")
                 return redirect('faculty_dashboard')
         else:
             messages.info(request, 'Username OR password is incorrect')
@@ -58,7 +63,12 @@ def logoutUser(request):
 
 @login_required(login_url='login')
 def dashboard(request):
-    student_info = Student.objects.get(email_id=request.user)
+    student_info = None
+    s = Student.objects.filter(email_id=request.user)
+    for i in s:
+        student_info = i.email_id
+        f_name = i.f_name
+
     stu_course_info = Student_Course.objects.filter(email=student_info)
     course = []
     no_of_course = 0
@@ -83,7 +93,7 @@ def dashboard(request):
             total_credits = total_credits + j.course_credits
 
     return render(request, 'lms/dashboard.html',
-                  context={"name": student_info.f_name, "course": course, "no_of_course": no_of_course,
+                  context={"name": f_name, "course": course, "no_of_course": no_of_course,
                            "total_credits": total_credits, "due_assignments": due_assignments})
 
 
@@ -125,18 +135,12 @@ def faculty_dashboard(request):
 
 ## view where faculty can view its added assignment, deadline etc..
 @login_required(login_url='login')
-def faculty_assignment(request):
-    if request.method == 'GET':
-        course_id = request.GET.get('course_id')
-        assignment_id = request.GET.get('assign_id')
-        course_name = request.GET.get('course_name')
+def faculty_assignment(request,course_name, course_id,assignment_id):
 
-    else:
-        course_id = []
-        assignment_id = []
-        course_name = []
+    print("faculty assignment")
+    print(course_id)
 
-    if (assignment_id):
+    if (assignment_id!=None):
         Faculty_Assignment.objects.filter(course_id=course_id, assign_id=assignment_id).delete()
 
     course_info = Faculty_Assignment.objects.filter(course_id=course_id)
@@ -172,34 +176,35 @@ def faculty_assignment(request):
 
 
 ## views where faculty can add and edit their assignments
-def edit_upload_assignment(request):
-    if request.method == 'GET':
-        course_id = request.GET.get('course_id')
-        course_name = request.GET.get('course_name')
+def edit_upload_assignment(request,course_id,course_name,assign_id):
+    print(assign_id)
+    # if request.method == 'GET':
+    #     course_id = request.GET.get('course_id')
+    #     course_name = request.GET.get('course_name')
+    # else:
+    #     course_id = []
+    #     course_name = []
 
-        fac_course = Faculty_Course.objects.filter(email=request.user)
-        course = []
-        designation = "faculty"
+    fac_course = Faculty_Course.objects.filter(email=request.user)
+    course = []
+    designation = "faculty"
 
-        for i in fac_course:
+    for i in fac_course:
 
-            cn = Course.objects.filter(course_id=i.course_id)
+        cn = Course.objects.filter(course_id=i.course_id)
 
-            for j in cn:
-                d = {"course_id": i.course_id,
-                     "course_name": j.course_name,
-                     }
-                course.append(d)
+        for j in cn:
+            d = {"course_id": i.course_id,
+                 "course_name": j.course_name,
+                 }
+            course.append(d)
 
 
-    else:
-        course_id = []
-        course_name = []
+
     email = request.user
     faculty = Faculty.objects.get(email_id=email)
     if request.method == 'POST':
-        course_id = request.GET.get('course_id')
-        course_name = request.GET.get('course_name')
+
         # course_info = Faculty_Assignment.objects.filter(course_id=course_id)
         # l = len(course_info)
 
@@ -216,12 +221,12 @@ def edit_upload_assignment(request):
             f = 'static/files/' + fileName
             post.PDF = f
 
-            assign_id = request.GET.get('assign_id')
+            # assign_id = request.GET.get('assign_id')
 
-            if (assign_id == None):
+            if assign_id == "None":
 
                 assig = Faculty_Assignment.objects.filter(course_id=course_id)
-                arr = []
+                arr = [0]
                 for i in assig:
                     a = i.assign_id.split("_", 1)
                     arr.append(int(a[1]))
@@ -231,20 +236,22 @@ def edit_upload_assignment(request):
 
                 post.save()
 
-                text = 'New assignment has been added under course ' + course_name
+
+                text = 'New assignment has been added under course ' + str(course_name)
                 subject = 'Check out new assignment on lms'
-                email_sender(subject, text, course_id)
+                # email_sender(subject, text, course_id)
 
             else:
+                print("yes")
 
                 Faculty_Assignment.objects.filter(assign_id=assign_id).update(PDF=post.PDF, marks=post.marks,
                                                                               deadline=post.deadline)
 
-                text = 'Assignment ' + assign_id + ' has been edited under course ' + course_name
-                subject = 'Check out changes in assignment ' + assign_id + 'on lms'
-                email_sender(subject, text, course_id)
-
-            s = '/faculty_assignment/?course_id=' + course_id + '&course_name=' + course_name
+                text = 'Assignment ' + str(assign_id) + ' has been edited under course ' + str(course_name)
+                subject = 'Check out changes in assignment ' + str(assign_id) + 'on lms'
+                # email_sender(subject, text, course_id)
+            # return redirect('faculty_assignment')
+            s = '/faculty_assignment/' + str(course_id) + '/' + str(course_name) +'/' + 'None'
             return redirect(s)
 
     return render(request, 'lms/upload.html',
@@ -306,9 +313,8 @@ def static_page(request, course_name, course_id):
 
 
 ## views where student can view the assignments uploaded by repective faculties
-def student_assignment(request):
-    course_id = request.GET.get('course_id')
-    course_name = request.GET.get('course_name')
+def student_assignment(request,course_id,course_name):
+
     assignments = Faculty_Assignment.objects.filter(course_id=course_id)
 
     assign_info = []
@@ -357,79 +363,67 @@ def student_assignment(request):
 
 
 # Where student can upload or edit assignments
-def upload_student_assignment(request):
-    if request.method == 'GET':
-        assign_id = request.GET.get('assign_id')
-        course_name = request.GET.get('course_name')
+def upload_student_assignment(request,assign_id,course_id,course_name):
 
-        d = Faculty_Assignment.objects.filter(assign_id=assign_id)
-        PDF = None
 
-        email = Student.objects.get(email_id=request.user)
-        stu_course = Student_Course.objects.filter(email=email)
-        course = []
-        designation = "student"
+    d = Faculty_Assignment.objects.filter(assign_id=assign_id)
+    PDF = None
 
-        for i in stu_course:
+    email = Student.objects.get(email_id=request.user)
+    stu_course = Student_Course.objects.filter(email=email)
+    course = []
+    designation = "student"
 
-            cn = Course.objects.filter(course_id=i.course_id)
+    for i in stu_course:
 
-            for j in cn:
-                data = {"course_id": i.course_id,
-                        "course_name": j.course_name,
-                        }
-                course.append(data)
+        cn = Course.objects.filter(course_id=i.course_id)
 
-        for i in d:
-            deadline = i.deadline
-            weightage = i.marks
-            PDF = i.PDF
+        for j in cn:
+            data = {"course_id": i.course_id,
+                    "course_name": j.course_name,
+                    }
+            course.append(data)
 
-        count_check = Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user).count()
-        if (count_check == 0):
-            tz = pytz.timezone('asia/kolkata')
-            ct = datetime.datetime.now(tz=tz)
+    for i in d:
+        deadline = i.deadline
+        weightage = i.marks
+        PDF = i.PDF
 
-            if (deadline > ct):
-                sub = deadline - ct
-                string_format = str(sub)
-                k = string_format.partition('.')
-                diff = k[0] + ' Left for submission'
-            else:
-                sub = ct - deadline
-                string_format = str(sub)
-                k = string_format.partition('.')
-                diff = k[0] + ' Due for submission'
+    count_check = Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user).count()
+    if (count_check == 0):
+        tz = pytz.timezone('asia/kolkata')
+        ct = datetime.datetime.now(tz=tz)
 
+        if (deadline > ct):
+            sub = deadline - ct
+            string_format = str(sub)
+            k = string_format.partition('.')
+            diff = k[0] + ' Left for submission'
         else:
-            time_of_sub = Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user)
-
-            for i in time_of_sub:
-                submisson = i.time_of_submission
-
-            if deadline > submisson:
-                sub = deadline - submisson
-                string_format = str(sub)
-                k = string_format.partition('.')
-                diff = 'Submitted before ' + k[0]
-            else:
-                sub = submisson - deadline
-                string_format = str(sub)
-                k = string_format.partition('.')
-                diff = 'Submitted after ' + k[0]
-
+            sub = ct - deadline
+            string_format = str(sub)
+            k = string_format.partition('.')
+            diff = k[0] + ' Due for submission'
 
     else:
-        assign_id = []
-        course_name = []
+        time_of_sub = Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user)
+
+        for i in time_of_sub:
+            submisson = i.time_of_submission
+
+        if deadline > submisson:
+            sub = deadline - submisson
+            string_format = str(sub)
+            k = string_format.partition('.')
+            diff = 'Submitted before ' + k[0]
+        else:
+            sub = submisson - deadline
+            string_format = str(sub)
+            k = string_format.partition('.')
+            diff = 'Submitted after ' + k[0]
 
     if request.method == 'POST':
         if request.POST:
-
-            assign_id = request.GET.get('assign_id')
-
-            j = assign_id.partition('_')
-            course_id = j[0]
 
             file = request.FILES['PDF']
             f = FileSystemStorage()
@@ -459,11 +453,9 @@ def upload_student_assignment(request):
                 ct = datetime.datetime.now(tz=tz)
 
                 post.time_of_submission = ct
-                Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user).update(PDF=post.PDF,
-                                                                                                       time_of_submission=post.time_of_submission)
-            course_name = request.GET.get('course_name')
-            course_id = request.GET.get('course_id')
-            s = '/student_assignment/?course_id=' + course_id + '&course_name=' + course_name
+                Student_Assignment.objects.filter(assign_id=assign_id, student_id=request.user).update(PDF=post.PDF,time_of_submission=post.time_of_submission)
+
+            s = '/student_assignment/' + str(course_id) + '/' + str(course_name)
             return redirect(s)
 
     return render(request, 'lms/student_upload.html',
@@ -472,29 +464,21 @@ def upload_student_assignment(request):
 
 
 ## Where faculty gets list of their assignment for grading
-def faculty_assignment_list_for_grading(request):
-    if request.method == 'GET':
-        course_id = request.GET.get('course_id')
-        course_name = request.GET.get('course_name')
+def faculty_assignment_list_for_grading(request,course_id,course_name):
 
-        fac_course = Faculty_Course.objects.filter(email=request.user)
-        course = []
-        designation = "faculty"
+    fac_course = Faculty_Course.objects.filter(email=request.user)
+    course = []
+    designation = "faculty"
 
-        for i in fac_course:
+    for i in fac_course:
 
-            cn = Course.objects.filter(course_id=i.course_id)
+        cn = Course.objects.filter(course_id=i.course_id)
 
-            for j in cn:
-                d = {"course_id": i.course_id,
-                     "course_name": j.course_name,
-                     }
-                course.append(d)
-
-
-    else:
-        course_id = []
-        course_name = []
+        for j in cn:
+            d = {"course_id": i.course_id,
+                 "course_name": j.course_name,
+                 }
+            course.append(d)
 
     course_info = Faculty_Assignment.objects.filter(course_id=course_id)
 
@@ -520,31 +504,23 @@ def faculty_assignment_list_for_grading(request):
 
 
 # Where faculty can view students submission
-def students_submission_list(request):
-    if request.method == 'GET':
-        assign_id = request.GET.get('assign_id')
-        course_name = request.GET.get('course_name')
+def students_submission_list(request,assign_id,course_id,course_name):
+    # if request.method == 'GET':
+    #     assign_id = request.GET.get('assign_id')
+    #     course_name = request.GET.get('course_name')
 
-        fac_course = Faculty_Course.objects.filter(email=request.user)
-        course = []
-        designation = "faculty"
-        for i in fac_course:
+    fac_course = Faculty_Course.objects.filter(email=request.user)
+    course = []
+    designation = "faculty"
+    for i in fac_course:
 
-            cn = Course.objects.filter(course_id=i.course_id)
+        cn = Course.objects.filter(course_id=i.course_id)
 
-            for j in cn:
-                d = {"course_id": i.course_id,
-                     "course_name": j.course_name,
-                     }
-                course.append(d)
-
-
-    else:
-        assign_id = []
-        course_name = []
-
-    j = assign_id.partition('_')
-    course_id = j[0]
+        for j in cn:
+            d = {"course_id": i.course_id,
+                 "course_name": j.course_name,
+                 }
+            course.append(d)
 
     deadline = 0
     total_marks = 0
@@ -599,32 +575,21 @@ def students_submission_list(request):
 
 
 # where faculty can upload marks of each student
-def faculty_grades(request):
-    if request.method == 'GET':
-        course_id = request.GET.get('course_id')
-        assign_id = request.GET.get('assign_id')
-        student_id = request.GET.get('student_id')
-        course_name = request.GET.get('course_name')
+def faculty_grades(request, assign_id, course_id, student_id, course_name):
 
-        fac_course = Faculty_Course.objects.filter(email=request.user)
-        course = []
-        designation = "faculty"
+    fac_course = Faculty_Course.objects.filter(email=request.user)
+    course = []
+    designation = "faculty"
 
-        for i in fac_course:
+    for i in fac_course:
 
-            cn = Course.objects.filter(course_id=i.course_id)
+        cn = Course.objects.filter(course_id=i.course_id)
 
-            for j in cn:
-                d = {"course_id": i.course_id,
-                     "course_name": j.course_name,
-                     }
-                course.append(d)
-
-    else:
-        course_id = []
-        assign_id = []
-        student_id = []
-        course_name = []
+        for j in cn:
+            d = {"course_id": i.course_id,
+                 "course_name": j.course_name,
+                 }
+            course.append(d)
 
     get_pdf = Student_Assignment.objects.filter(assign_id=assign_id, student_id=student_id)
     time_of_sub = 0
@@ -656,10 +621,6 @@ def faculty_grades(request):
     if request.method == 'POST':
         if request.POST:
 
-            course_id = request.GET.get('course_id')
-            assign_id = request.GET.get('assign_id')
-            student_id = request.GET.get('student_id')
-            course_name = request.GET.get('course_name')
             status_check = Student_Grade.objects.filter(assign_id=assign_id, student_id=student_id).count()
 
             if (status_check == 0):
@@ -684,8 +645,8 @@ def faculty_grades(request):
                 fromaddr = 'seas.gict@gmail.com'
                 for address in addresslist:
                     toaddrs = address
-                    text = 'Assignment Garde for ' + assign_id + ' has been added under course ' + course_name
-                    subject = 'Check out your grades for ' + assign_id + 'on lms'
+                    text = 'Assignment Garde for ' + str(assign_id) + ' has been added under course ' + str(course_name)
+                    subject = 'Check out your grades for ' + str(assign_id) + 'on lms'
                     msg = 'Subject: %s\n\n%s' % (subject, text)
                     username = 'seas.gict@gmail.com'
                     password = 'admin@7016176980'
@@ -696,7 +657,6 @@ def faculty_grades(request):
                     server.sendmail(fromaddr, toaddrs, msg)
                     server.quit()
                     print("mail sent")
-
 
             else:
 
@@ -719,8 +679,8 @@ def faculty_grades(request):
                 fromaddr = 'seas.gict@gmail.com'
                 for address in addresslist:
                     toaddrs = address
-                    text = 'Assignment Garde for ' + assign_id + ' has been reviewed under course ' + course_name
-                    subject = 'Check out your reviewed grades for ' + assign_id + 'on lms'
+                    text = 'Assignment Garde for ' + str(assign_id) + ' has been reviewed under course ' + str(course_name)
+                    subject = 'Check out your reviewed grades for ' + str(assign_id) + 'on lms'
                     msg = 'Subject: %s\n\n%s' % (subject, text)
                     username = 'seas.gict@gmail.com'
                     password = 'admin@7016176980'
@@ -732,7 +692,7 @@ def faculty_grades(request):
                     server.quit()
                     print("mail sent")
 
-            s = '/students_submission_list/?assign_id=' + assign_id + '&course_name=' + course_name
+            s = '/students_submission_list/' + str(assign_id) + '/' + str(course_id) + '/' + str(course_name)
             return redirect(s)
 
     return render(request, 'lms/faculty_grades.html',
@@ -741,29 +701,22 @@ def faculty_grades(request):
 
 
 # students get their grades after evaluation
-def get_students_grade(request):
-    if request.method == 'GET':
-        course_id = request.GET.get('course_id')
-        course_name = request.GET.get('course_name')
+def get_students_grade(request,course_id,course_name):
 
-        email = Student.objects.get(email_id=request.user)
-        stu_course = Student_Course.objects.filter(email=email)
-        course = []
-        designation = "student"
+    email = Student.objects.get(email_id=request.user)
+    stu_course = Student_Course.objects.filter(email=email)
+    course = []
+    designation = "student"
 
-        for i in stu_course:
+    for i in stu_course:
 
-            cn = Course.objects.filter(course_id=i.course_id)
+        cn = Course.objects.filter(course_id=i.course_id)
 
-            for j in cn:
-                d = {"course_id": i.course_id,
-                     "course_name": j.course_name,
-                     }
-                course.append(d)
-
-    else:
-        course_id = []
-        course_name = []
+        for j in cn:
+            d = {"course_id": i.course_id,
+                 "course_name": j.course_name,
+                 }
+            course.append(d)
 
     marks = None
 
@@ -785,15 +738,7 @@ def get_students_grade(request):
 
 
 #### function to list resources on faculty side
-def resources_list(request):
-    if request.method == 'GET':
-        course_id = request.GET.get('course_id')
-        course_name = request.GET.get('course_name')
-        resource_id = request.GET.get('resource_id')
-    else:
-        course_id = []
-        course_name = []
-        resource_id = []
+def resources_list(request,course_id,course_name,resource_id):
 
     if (resource_id):
         Resource.objects.filter(course_id=course_id, resource_id=resource_id).delete()
@@ -826,33 +771,26 @@ def resources_list(request):
                            "course_id": course_id, "resource_info": resource_info})
 
 
-def add_resource(request):
-    if request.method == 'GET':
-        course_id = request.GET.get('course_id')
-        course_name = request.GET.get('course_name')
+def add_resource(request,course_id,course_name,resource_id):
 
-        fac_course = Faculty_Course.objects.filter(email=request.user)
-        course = []
-        designation = "faculty"
 
-        for i in fac_course:
+    fac_course = Faculty_Course.objects.filter(email=request.user)
+    course = []
+    designation = "faculty"
 
-            cn = Course.objects.filter(course_id=i.course_id)
+    for i in fac_course:
 
-            for j in cn:
-                d = {"course_id": i.course_id,
-                     "course_name": j.course_name,
-                     }
-                course.append(d)
+        cn = Course.objects.filter(course_id=i.course_id)
 
-    else:
-        course_id = []
-        course_name = []
+        for j in cn:
+            d = {"course_id": i.course_id,
+                 "course_name": j.course_name,
+                 }
+            course.append(d)
+
 
     if request.method == 'POST':
         if request.POST:
-            course_id = request.GET.get('course_id')
-            course_name = request.GET.get('course_name')
 
             post = Resource()
 
@@ -867,12 +805,10 @@ def add_resource(request):
             f = 'static/files/' + fileName
             post.resource_material = f
 
-            resource_id = request.GET.get('resource_id')
-
-            if (resource_id == None):
+            if (resource_id == "None"):
 
                 res = Resource.objects.filter(course_id=course_id)
-                arr = []
+                arr = [0]
                 for i in res:
                     r = i.resource_id.split("_", 2)
                     arr.append(int(r[2]))
@@ -884,7 +820,7 @@ def add_resource(request):
                 Resource.objects.filter(course_id=course_id, resource_id=resource_id).update(
                     description=post.description,
                     resource_material=post.resource_material)
-            s = '/resources_list/?course_id=' + course_id + '&course_name=' + course_name
+            s = '/resources_list/' + str(course_id) + '/' + str(course_name) + '/None'
             return redirect(s)
 
     return render(request, 'lms/add_resource.html',
@@ -893,13 +829,7 @@ def add_resource(request):
 
 
 ### student can view and download resources uploaded by faculty
-def download_resources(request):
-    if request.method == 'GET':
-        course_id = request.GET.get('course_id')
-        course_name = request.GET.get('course_name')
-    else:
-        course_id = []
-        course_name = []
+def download_resources(request,course_id,course_name):
 
     res = Resource.objects.filter(course_id=course_id)
 
@@ -1007,13 +937,8 @@ def email_sender(subject, text, course_id):
     return
 
 
-def enrolled_students(request):
-    if request.method == 'GET':
-        course_id = request.GET.get('course_id')
-        course_name = request.GET.get('course_name')
-    else:
-        course_id = []
-        course_name = []
+def enrolled_students(request,course_id,course_name):
+
 
     fac_course = Faculty_Course.objects.filter(email=request.user)
     course = []

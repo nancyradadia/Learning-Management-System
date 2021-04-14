@@ -51,8 +51,9 @@
                 {% for i in course %}
                     {% if forloop.counter %}
                         <li>
+
                             <a id="cour" class="nav-link"
-                               href="/static_page/?course_id={{ i.course_id }}&course_name={{ i.course_name }}">
+                               href="/static_page/{{ i.course_id }}/{{ i.course_name }}">
                                 <span class="icon"><i class="fa fa-pencil"></i></span>
                                 <span class="title">{{ i.course_id }}</span>
                             </a>

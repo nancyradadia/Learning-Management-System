@@ -5,14 +5,30 @@ from lms.models import Student, Student_Course, CustomUser, Course, Faculty, Fac
     Student_Assignment, Student_Grade, Resource
 
 #
-class TestViews(TestCase):
+# class TestViews(TestCase):
 
 
-    def test_static_GET(self):
+    # def test_dashboard_GET(self):
+    #     client = Client()
+    #
+    #     response = client.get(reverse('dashboard'))
+    #     self.assertEquals(response.status_code, 302)
+    #     self.assertTemplateUsed(response, 'lms/dashboard.html')
 
-        client = Client()
 
-        response = client.get(reverse('static_page',args=['course_id','course_name']))
-
-        self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'lms/static.html')
+    # def test_static_GET(self):
+    #
+    #     client = Client()
+    #
+    #     response = client.get(reverse('static_page',args=['course_id','course_name']))
+    #
+    #     self.assertEquals(response.status_code, 200)
+    #     self.assertTemplateUsed(response, 'lms/static.html')
+    #
+    # def test_faculty_assignment_GET(self):
+    #     client = Client()
+    #
+    #     response = client.get(reverse('faculty_assignment', args=['course_id', 'course_name','assignment_id']))
+    #
+    #     self.assertEquals(response.status_code, 200)
+    #     self.assertTemplateUsed(response, 'lms/static.html')

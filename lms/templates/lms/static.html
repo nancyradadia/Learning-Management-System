@@ -24,7 +24,8 @@
         <!-- MAIN CARDS STARTS HERE -->
         <div class="main__cards">
             {% if designation == "faculty" %}
-                <a href=" /faculty_assignment/?course_id={{ course_id }}&course_name={{ course_name }} ">
+
+                <a href="/faculty_assignment/{{ course_id }}/{{ course_name }}/{{ None }} ">
                     <div class="card2">
                         <img width="45" src={% static 'css/assignment.svg' %} alt=""/>
 
@@ -35,7 +36,7 @@
                     </div>
                 </a>
             {% else %}
-                <a href=" /student_assignment/?course_id={{ course_id }}&course_name={{ course_name }} ">
+                <a href=" /student_assignment/{{ course_id }}/{{ course_name }} ">
                     <div class="card2">
                         <img width="45" src={% static 'css/assignment.svg' %} alt=""/>
 
@@ -47,7 +48,7 @@
                 </a>
             {% endif %}
             {% if designation == "faculty" %}
-                <a href=" /faculty_assignment_list_for_grading/?course_id={{ course_id }}&course_name={{ course_name }} ">
+                <a href=" /faculty_assignment_list_for_grading/{{ course_id }}/{{ course_name }} ">
 
                     <div class="card2">
                         <img width="50" src={% static 'css/cgpa.svg' %} alt=""/>
@@ -57,7 +58,7 @@
                     </div>
                 </a>
             {% else %}
-                <a href=" /get_students_grade/?course_id={{ course_id }}&course_name={{ course_name }} ">
+                <a href=" /get_students_grade/{{ course_id }}/{{ course_name }} ">
 
                     <div class="card2">
                         <img width="50" src={% static 'css/cgpa.svg' %} alt=""/>
@@ -68,7 +69,7 @@
                 </a>
             {% endif %}
             {% if designation == "faculty" %}
-                <a href=" /resources_list/?course_id={{ course_id }}&course_name={{ course_name }} ">
+                <a href=" /resources_list/{{ course_id }}/{{ course_name }}/{{ None }} ">
                     <div class="card2">
                         <img width="45" src={% static 'css/upload.svg' %} alt=""/>
 
@@ -78,7 +79,7 @@
                     </div>
                 </a>
             {% else %}
-                <a href=" /download_resources/?course_id={{ course_id }}&course_name={{ course_name }} ">
+                <a href=" /download_resources/{{ course_id }}/{{ course_name }} ">
                     <div class="card2">
                         <img width="45" src={% static 'css/upload.svg' %} alt=""/>
 
@@ -88,8 +89,9 @@
                     </div>
                 </a>
             {% endif %}
+
         {% if designation == "faculty" %}
-                <a href=" /enrolled_students/?course_id={{ course_id }}&course_name={{ course_name }} ">
+                <a href=" /enrolled_students/{{ course_id }}/{{ course_name }} ">
                     <div class="card2">
                         <img width="60" src={% static 'css/undraw_Hiring_re_yk5n.svg' %} alt=""/>
 

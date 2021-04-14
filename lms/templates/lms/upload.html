@@ -8,7 +8,7 @@
         <div class="main__title">
             <img src={% static 'css/course.svg' %} alt=""/>
             <div class="main__greeting">
-                <h1>Course Name</h1>
+                <h1>Course Name: {{ course_name }}</h1>
 {#                <p>Credits</p>#}
             </div>
         </div>
@@ -42,12 +42,7 @@
                     <div class="input-data">
                         <div class="form-group">
                             <div class="upload-btn-wrapper">
-                                {#                            <input id="uploadFile"  disabled="disabled"/>#}
-                                {#                            <div class="fileUpload btn btn-primary btn">#}
-                                {#                                <span>Upload</span>#}
-                                {#                                <input id="uploadBtn" type="file" class="upload" name="PDF"/>#}
-                                {#                            </div>#}
-                                {#                            <input id="uploadFile"  disabled="disabled"/>#}
+
                                 <button class="btn">Choose Assignment</button>
                                 <input id="uploadBtn" type="file" name="PDF"/>
 

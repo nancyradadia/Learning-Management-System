@@ -151,8 +151,10 @@
                     {% endif %}
 
                     <td>
+
                         <a id="cour" class="nav-link"
-                           href="/faculty_grades/?assign_id={{ i.assign_id }}&course_id={{ course_id }}&student_id={{ i.student_id }}&course_name={{ course_name }}">
+
+                           href=" /faculty_grades/{{ i.assign_id }}/{{ course_id }}/{{ i.student_id }}/{{ course_name }}">
                             {{ i.marks }}
                         </a>
                     </td>
