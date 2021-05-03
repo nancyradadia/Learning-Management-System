@@ -22,7 +22,7 @@
                     <tr>
                         <th>Assignment</th>
                         <td><a href="/{{ PDF }}" target="_blank" style="color: #1a1a93">
-                            PDF
+                            Click here to view Assignment
                         </a></td>
                     </tr>
                     <tr>
@@ -42,14 +42,13 @@
                         enctype="multipart/form-data"
                         action=""
                         method="POST"
-                        onsubmit="return validateForm()"
                         name="myForm">
 
                     {% csrf_token %}
                     <div class="blk">
                         <div class="upload-btn-wrapper">
                             <button class="btn">Choose Assignment</button>
-                            <input id="uploadBtn" type="file" name="PDF"/>
+                            <input id="uploadBtn" type="file" name="PDF" required/>
                         </div>
                         <div>
                             <input id="uploadFile" disabled/>
@@ -73,18 +72,8 @@
 
     </script>
     <script>
-        function deadline_func() {
-            var temp2 = "Test";
-            console.log(temp2);
-        }
-
-        function validateForm() {
-            var y = document.forms["myForm"]["PDF"].value;
-            if (y == "") {
-                alert("All the fields must be filled !");
-                return false;
-            }
-        }
+        
+       
     </script>
 
 {% endblock %}

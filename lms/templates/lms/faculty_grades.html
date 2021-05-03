@@ -48,7 +48,7 @@
                 <div class="form-row1">
                     <div class="input-data">
                         <div class="form-group">
-                            <input type="number" placeholder="Enter Marks" name="marks">
+                            <input type="number" placeholder="Enter Marks" name="marks" required>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                 <div class="form-row1">
                     <div class="input-data">
                         <div class="form-group">
-                            <input type="text" placeholder="Enter Comments" name="comments">
+                            <input type="text" placeholder="Enter Comments" name="comments" required>
                         </div>
                     </div>
                 </div>
@@ -70,15 +70,7 @@
 
 
     <script>
-        function validateForm() {
-            var x = document.forms["myForm"]["marks"].value;
-            console.log(x);
-            var y = document.forms["myForm"]["comments"].value;
-            if (x == null || y == "") {
-                alert("All the fields must be filled !");
-                return false;
-            }
-        }
+        
     </script>
 
 {% endblock %}

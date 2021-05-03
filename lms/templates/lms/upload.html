@@ -19,7 +19,7 @@
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="input-data">
-                        <input type="number" name="marks" value={{ marks }}>
+                        <input type="number" name="marks" value="{{ marks }}" required>
                         <div class="underline"></div>
                         <label for="">Marks</label>
                     </div>
@@ -32,6 +32,7 @@
                                onfocus="(this.type='datetime-local')"
                                onload="deadline_func();"
                                onblur="(this.type='text')"
+                               required
                                value={{ deadline }}>
                         <div class="underline"></div>
                         <label for="">Deadline</label>
@@ -43,9 +44,9 @@
                         <div class="form-group">
                             <div class="upload-btn-wrapper">
 
-                                <button class="btn">Choose Assignment</button>
-                                <input id="uploadBtn" type="file" name="PDF"/>
-
+                                <button class="btn">Choose Assignment
+                                    <input id="uploadBtn" required type="file"  name="PDF" style="width: auto;"/>
+                                </button>
 
                             </div>
                         </div>
@@ -72,20 +73,6 @@
 
     </script>
     <script>
-        function deadline_func() {
-            var temp2 = "Test";
-            console.log(temp2);
-        };
-
-        function validateForm() {
-            var x = document.forms["myForm"]["marks"].value;
-            var y = document.forms["myForm"]["PDF"].value;
-            var z = document.forms["myForm"]["deadline"].value;
-            if (x == "" || y == "" || z == "") {
-                alert("All the fields must be filled !");
-                return false;
-            }
-        }
 
     </script>
 
