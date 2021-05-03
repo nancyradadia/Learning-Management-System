@@ -870,6 +870,7 @@ def edit_profile(request):
     if des == "student":
 
         email = Student.objects.get(email_id=request.user)
+        details=Student.objects.filter(email_id=email)
         stu_course = Student_Course.objects.filter(email=email)
         course = []
 
@@ -880,8 +881,18 @@ def edit_profile(request):
             for j in cn:
                 d = {"course_id": i.course_id,
                      "course_name": j.course_name,
+
                      }
                 course.append(d)
+        for i in details:
+
+
+                f_name= i.f_name
+                l_name= i.l_name
+                s_id=i.s_id
+
+
+
     else:
         fac_course = Faculty_Course.objects.filter(email=request.user)
         course = []
@@ -906,7 +917,7 @@ def edit_profile(request):
             return redirect('logout')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'lms/edit_profile.html', context={"course": course, "form": form})
+    return render(request, 'lms/edit_profile.html', context={"course": course, "form": form, "f_name":f_name,"l_name":l_name,"s_id":s_id})
 
 
 #### Function to send to email
