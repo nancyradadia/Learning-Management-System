@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser, Course, Student, Faculty, Student_Course, Faculty_Course, Faculty_Assignment, \
-    Student_Assignment, Resource
+    Student_Assignment, Resource, Student_Grade
 
 
 class CustomUserAdmin(UserAdmin):
@@ -34,5 +34,6 @@ admin.site.register(Student_Course)
 admin.site.register(Faculty_Course)
 admin.site.register(Faculty_Assignment)
 admin.site.register(Student_Assignment)
+admin.site.register(Student_Grade)
 admin.site.register(Resource)
 

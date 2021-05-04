@@ -71,7 +71,6 @@ class Student(models.Model):
 @receiver(post_save, sender=CustomUser)
 def create_profile(sender, instance, created, **kwargs):
     if created:
-
         print(instance.designation)
         if instance.designation == 'faculty':
             Faculty.objects.create(email_id=instance.email, f_id=instance.identification,
@@ -119,10 +118,6 @@ def create_faculty_profile(sender, instance, created, **kwargs):
     print(instance.professor_id)
     Faculty_Course.objects.create(course_id=instance.course_id, course_enrollment_year=year, email=instance.professor_id)
 
-@receiver(pre_delete, sender=Course)
-def delete_faculty_profile(sender, instance, **kwargs):
-    Faculty_Course.objects.filter(course_id=instance.course_id).delete()
-
 
 class Student_Course(models.Model):
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE,null=False)
@@ -136,15 +131,7 @@ class Student_Course(models.Model):
     def __str__(self):
         return str(self.course_id)
 
-@receiver(pre_delete, sender=CustomUser)
-def delete_profile(sender, instance, **kwargs):
-    if instance.designation == 'faculty':
-        Faculty.objects.filter(email_id=instance.email).delete()
-        Faculty_Course.objects.filter(email=instance.email).delete()
 
-    if instance.designation == 'student':
-        Student.objects.filter(email_id=instance.email).delete()
-        Student_Course.objects.filter(email=instance.email).delete()
 
 class Faculty_Assignment(models.Model):
 
@@ -163,7 +150,7 @@ class Student_Assignment(models.Model):
     assign_id = models.CharField(max_length=10)
     course_id = models.CharField(max_length=50)
     student_id = models.CharField(max_length=50)
-    PDF =  models.CharField(max_length=50)
+    PDF = models.CharField(max_length=50)
     time_of_submission = models.DateTimeField()
 
     def __str__(self):
@@ -191,3 +178,41 @@ class Resource(models.Model):
 
     def __str__(self):
         return str(self.resource_id)
+
+
+@receiver(pre_delete, sender=CustomUser)
+def delete_profile(sender, instance, **kwargs):
+    if instance.designation == 'faculty':
+        Faculty.objects.filter(email_id=instance.email).delete()
+        Faculty_Course.objects.filter(email=instance.email).delete()
+        course_id_qset = Faculty_Assignment.objects.filter(faculty_id=instance.email)
+
+        for i in course_id_qset:
+            course_id = i.course_id
+            Student_Assignment.objects.filter(course_id=course_id).delete()
+            Course.objects.filter(course_id=course_id).delete()
+            Student_Grade.objects.filter(course_id = course_id).delete()
+            Resource.objects.filter(course_id=course_id).delete()
+
+        Faculty_Assignment.objects.filter(faculty_id=instance.email).delete()
+
+    if instance.designation == 'student':
+        Student.objects.filter(email_id=instance.email).delete()
+        Student_Course.objects.filter(email=instance.email).delete()
+        Student_Assignment.objects.filter(student_id=instance.email).delete()
+        Student_Grade.objects.filter(student_id=instance.email).delete()
+
+@receiver(pre_delete, sender=Course)
+def delete_faculty_profile(sender, instance, **kwargs):
+
+    Faculty_Course.objects.filter(course_id=instance.course_id).delete()
+    Student_Assignment.objects.filter(course_id=instance.course_id).delete()
+    Student_Grade.objects.filter(course_id=instance.course_id).delete()
+    Resource.objects.filter(course_id=instance.course_id).delete()
+    Faculty_Assignment.objects.filter(course_id=instance.course_id).delete()
+
+@receiver(pre_delete, sender=Student_Course)
+def delete_student_course_profile(sender, instance, **kwargs):
+    Student_Assignment.objects.filter(student_id=instance.email).delete()
+    Student_Grade.objects.filter(student_id=instance.email).delete()
+
