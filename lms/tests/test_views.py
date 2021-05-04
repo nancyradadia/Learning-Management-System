@@ -1,10 +1,16 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 from django.urls import reverse
+<<<<<<< HEAD
+=======
+from lms.models import Student, Student_Course, CustomUser, Course, Faculty, Faculty_Course, Faculty_Assignment, \
+    Student_Assignment, Student_Grade, Resource
+>>>>>>> e830b2d9c36907344e2612ad6b9d5d075a5610ee
 
 
 class TestViews(TestCase):
 
+<<<<<<< HEAD
     def test_create_user(self):
         User = get_user_model()
         user = User.objects.create_user(email='normal@user.com', password='foo')
@@ -39,6 +45,15 @@ class TestViews(TestCase):
         with self.assertRaises(ValueError):
             User.objects.create_superuser(
                 email='super@user.com', password='foo', is_superuser=False)
+=======
+
+    def test_dashboard_GET(self):
+        client = Client()
+
+        response = client.get(reverse('dashboard'))
+        self.assertEquals(response.status_code, 302)
+        self.assertTemplateUsed(response, 'lms/dashboard.html')
+>>>>>>> e830b2d9c36907344e2612ad6b9d5d075a5610ee
 
 
     def test_static_GET(self):
@@ -48,16 +63,23 @@ class TestViews(TestCase):
         response = client.get(reverse('static_page',args=['course_id','course_name']))
 
         self.assertEquals(response.status_code, 200)
+<<<<<<< HEAD
         self.assertTemplateUsed(response, 'lms/static.html')
 
 
     def test_faculty_assignment_GET(self):
 
+=======
+        self.assertTemplateUsed(response, 'lms/course_page.html')
+
+    def test_faculty_assignment_GET(self):
+>>>>>>> e830b2d9c36907344e2612ad6b9d5d075a5610ee
         client = Client()
 
         response = client.get(reverse('faculty_assignment', args=['course_id', 'course_name','assignment_id']))
 
         self.assertEquals(response.status_code, 200)
+<<<<<<< HEAD
         self.assertTemplateUsed(response, 'lms/faculty_assignments.html')
 
 
@@ -103,3 +125,6 @@ class TestViews(TestCase):
 
 
 
+=======
+        self.assertTemplateUsed(response, 'lms/course_page.html')
+>>>>>>> e830b2d9c36907344e2612ad6b9d5d075a5610ee
