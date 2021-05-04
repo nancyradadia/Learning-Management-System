@@ -307,7 +307,7 @@ def static_page(request, course_name, course_id):
                      }
                 course.append(d)
 
-    return render(request, 'lms/static.html',
+    return render(request, 'lms/course_page.html',
                   context={"course_id": course_id, "designation": designation, "course_name": course_name,
                            "course": course})
 
