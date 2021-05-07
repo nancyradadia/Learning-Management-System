@@ -117,7 +117,7 @@ def faculty_dashboard(request):
             no_of_course = no_of_course + 1
 
     return render(request, 'lms/faculty_dashboard.html',
-                  context={"name": fac_info.f_name, "course": course, "no_of_course": no_of_course,
+                  context={"name": fac_info.f_name,"l_name": fac_info.l_name, "course": course, "no_of_course": no_of_course,
                            "total_students": no_of_students, "ungraded_assignments": ungraded_assignments})
 
 
