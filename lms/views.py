@@ -55,10 +55,12 @@ def logoutUser(request):
 def dashboard(request):
     student_info = None
     f_name = None
+    l_name = None
     s = Student.objects.filter(email_id=request.user)
     for i in s:
         student_info = i.email_id
         f_name = i.f_name
+        l_name = i.l_name
 
     stu_course_info = Student_Course.objects.filter(email=student_info)
     course = []
@@ -84,7 +86,7 @@ def dashboard(request):
             total_credits = total_credits + j.course_credits
 
     return render(request, 'lms/dashboard.html',
-                  context={"name": f_name, "course": course, "no_of_course": no_of_course,
+                  context={"name": f_name,"l_name":l_name, "course": course, "no_of_course": no_of_course,
                            "total_credits": total_credits, "due_assignments": due_assignments})
 
 
@@ -214,7 +216,7 @@ def edit_upload_assignment(request, course_id, course_name, assign_id):
                                                                               deadline=post.deadline)
 
                 text = 'Assignment ' + str(assign_id) + ' has been edited under course ' + str(course_name)
-                subject = 'Check out changes in assignment ' + str(assign_id) + 'on lms'
+                subject = 'Check out changes in assignment ' + str(assign_id) + ' on lms'
                 email_sender(subject, text, course_id)
 
             s = '/faculty_assignment/' + str(course_id) + '/' + str(course_name) + '/' + 'None'
@@ -597,8 +599,8 @@ def faculty_grades(request, assign_id, course_id, student_id, course_name):
                 fromaddr = 'seas.gict@gmail.com'
                 for address in addresslist:
                     toaddrs = address
-                    text = 'Assignment Garde for ' + str(assign_id) + ' has been added under course ' + str(course_name)
-                    subject = 'Check out your grades for ' + str(assign_id) + 'on lms'
+                    text = 'Assignment Grade for ' + str(assign_id) + ' has been added under course ' + str(course_name)
+                    subject = 'Check out your grades for ' + str(assign_id) + ' on lms'
                     msg = 'Subject: %s\n\n%s' % (subject, text)
                     username = 'seas.gict@gmail.com'
                     password = 'admin@7016176980'
@@ -631,9 +633,9 @@ def faculty_grades(request, assign_id, course_id, student_id, course_name):
                 fromaddr = 'seas.gict@gmail.com'
                 for address in addresslist:
                     toaddrs = address
-                    text = 'Assignment Garde for ' + str(assign_id) + ' has been reviewed under course ' + str(
+                    text = 'Assignment Grade for ' + str(assign_id) + ' has been reviewed under course ' + str(
                         course_name)
-                    subject = 'Check out your reviewed grades for ' + str(assign_id) + 'on lms'
+                    subject = 'Check out your reviewed grades for ' + str(assign_id) + ' on lms'
                     msg = 'Subject: %s\n\n%s' % (subject, text)
                     username = 'seas.gict@gmail.com'
                     password = 'admin@7016176980'
@@ -868,7 +870,7 @@ def edit_profile(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'lms/edit_profile.html',
-                  context={"course": course, "form": form, "f_name": f_name, "l_name": l_name, "id": stud_fac_id})
+                  context={"course": course, "form": form, "f_name": f_name, "l_name": l_name, "id": stud_fac_id,"designation":des})
 
 
 #### Function to send to email

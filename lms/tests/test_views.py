@@ -48,7 +48,7 @@ class TestViews(TestCase):
         response = client.get(reverse('static_page',args=['course_id','course_name']))
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'lms/static.html')
+        self.assertTemplateUsed(response, 'lms/course_page.html')
 
 
     def test_faculty_assignment_GET(self):
@@ -68,7 +68,7 @@ class TestViews(TestCase):
         response = client.get(reverse('static_page', args=['course_name', 'course_id']))
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'lms/static.html')
+        self.assertTemplateUsed(response, 'lms/course_page.html')
 
 
     def test_faculty_assignment_list_for_grading_GET(self):
