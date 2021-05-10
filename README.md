@@ -51,6 +51,14 @@ python manage.py runserver
 http://127.0.0.1:8000/
 ```
 
+
+## Requirements:
+```shell
+pip install django-session-timeout
+pip install django-livereload-server
+```
+
+
 ---
 **NOTE**
 
@@ -60,9 +68,3 @@ email: admin@gmail.com
 password: admin12345
 
 ---
-
-## Requirements:
-```shell
-pip install django-session-timeout
-pip install django-livereload-server
-```
